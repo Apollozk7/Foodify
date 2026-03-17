@@ -9,11 +9,11 @@ const MOCK_HISTORY = [
 ];
 
 const STYLE_PRESETS = [
-  { key: "dramatic", label: "Dramático", icon: "🌑" },
-  { key: "clean", label: "Limpo", icon: "⬜" },
-  { key: "rustic", label: "Rústico", icon: "🪵" },
-  { key: "minimal", label: "Minimalista", icon: "◻️" },
-  { key: "warm", label: "Quente", icon: "🌅" },
+  { key: "dramatic", label: "Dramático", icon: "🌑", description: "Sombras profundas e luz pontual" },
+  { key: "clean", label: "Limpo", icon: "⬜", description: "Fundo claro e luz suave" },
+  { key: "rustic", label: "Rústico", icon: "🪵", description: "Texturas de madeira e tons quentes" },
+  { key: "minimal", label: "Minimalista", icon: "◻️", description: "Cenário simples e foco total" },
+  { key: "warm", label: "Quente", icon: "🌅", description: "Golden hour e brilho dourado" },
 ];
 
 export default function DashboardPage() {
@@ -49,331 +49,277 @@ export default function DashboardPage() {
   ] as const;
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg-void)", display: "flex", flexDirection: "column" }}>
-      {/* Top nav */}
-      <header style={{ borderBottom: "1px solid var(--border)", background: "var(--bg-surface)", backdropFilter: "blur(20px)", position: "sticky", top: 0, zIndex: 50 }}>
-        <div className="container" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 60 }}>
-          <Link href="/" style={{ display: "flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
-            <div style={{ width: 28, height: 28, background: "linear-gradient(135deg, #f59e0b, #ef4444)", borderRadius: 7, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14 }}>🍽️</div>
-            <span style={{ fontWeight: 800, fontSize: "0.95rem", color: "#f2f2f3" }}>FoodSnap<span style={{ color: "#f59e0b" }}>AI</span></span>
-          </Link>
+    <div style={{ 
+      height: "100vh", 
+      background: "var(--bg-void)", 
+      display: "flex", 
+      overflow: "hidden",
+      fontFamily: "var(--font-body)"
+    }}>
+      
+      {/* Column 1: Side Nav (Narrow) */}
+      <aside style={{ 
+        width: "72px", 
+        background: "var(--bg-surface)", 
+        borderRight: "1px solid var(--border)",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        padding: "20px 0",
+        gap: 20,
+        zIndex: 100
+      }}>
+        <Link href="/" style={{ marginBottom: 20 }}>
+          <div style={{ width: 40, height: 40, background: "linear-gradient(135deg, #f59e0b, #ef4444)", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20 }}>🍽️</div>
+        </Link>
 
-          <nav style={{ display: "flex", gap: 4 }}>
-            {tabs.map(tab => (
-              <button key={tab.key}
-                onClick={() => setActiveTab(tab.key)}
-                style={{
-                  background: activeTab === tab.key ? "var(--bg-elevated)" : "transparent",
-                  border: activeTab === tab.key ? "1px solid var(--border)" : "1px solid transparent",
-                  borderRadius: 8,
-                  padding: "7px 16px",
-                  color: activeTab === tab.key ? "var(--text-primary)" : "var(--text-secondary)",
-                  fontSize: "0.84rem",
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 6,
-                  transition: "all 0.2s",
-                }}
-              >
-                {tab.icon} {tab.label}
-              </button>
-            ))}
-          </nav>
-
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            {/* Credits chip */}
-            <div style={{
-              display: "flex", alignItems: "center", gap: 6,
-              background: "var(--bg-elevated)", border: "1px solid rgba(245,158,11,0.3)",
-              borderRadius: 100, padding: "5px 12px",
-            }}>
-              <span style={{ fontSize: "0.7rem" }}>💎</span>
-              <span style={{ fontWeight: 700, fontSize: "0.82rem", color: "var(--accent)" }}>{credits} créditos</span>
-            </div>
-            {/* Avatar */}
-            <div style={{
-              width: 34, height: 34, borderRadius: "50%",
-              background: "linear-gradient(135deg, #f59e0b, #ef4444)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              fontWeight: 700, fontSize: "0.85rem", color: "#000",
+        {tabs.map(tab => (
+          <button
+            key={tab.key}
+            onClick={() => setActiveTab(tab.key)}
+            title={tab.label}
+            style={{
+              width: 48,
+              height: 48,
+              borderRadius: 12,
+              background: activeTab === tab.key ? "var(--accent-soft)" : "transparent",
+              border: "none",
+              color: activeTab === tab.key ? "var(--accent)" : "var(--text-muted)",
+              fontSize: "1.2rem",
               cursor: "pointer",
+              transition: "all 0.2s",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {tab.icon}
+          </button>
+        ))}
+
+        <div style={{ marginTop: "auto", display: "flex", flexDirection: "column", gap: 16 }}>
+           <div style={{
+              width: 36, height: 36, borderRadius: "50%",
+              background: "var(--bg-elevated)", border: "1px solid var(--border)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              fontWeight: 700, fontSize: "0.85rem", color: "var(--text-secondary)",
+              cursor: "pointer"
             }}>F</div>
-          </div>
         </div>
-      </header>
+      </aside>
 
-      {/* Main content */}
-      <main style={{ flex: 1, padding: "40px 0" }}>
-        <div className="container" style={{ maxWidth: 1000 }}>
+      {/* Main Container for columns 2 and 3 */}
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+        
+        {/* Top Header */}
+        <header style={{ 
+          height: "60px", 
+          background: "var(--bg-void)", 
+          borderBottom: "1px solid var(--border)",
+          display: "flex",
+          alignItems: "center",
+          padding: "0 24px",
+          justifyContent: "space-between"
+        }}>
+          <h1 style={{ fontSize: "1rem", fontWeight: 700, fontFamily: "var(--font-header)", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--text-secondary)" }}>
+            {tabs.find(t => t.key === activeTab)?.label}
+          </h1>
 
-          {/* GENERATE TAB */}
-          {activeTab === "generate" && (
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: 24 }}>
-              {/* Left: Editor */}
-              <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-                <div className="glass-card" style={{ padding: 28 }}>
-                  <h2 style={{ fontWeight: 800, fontSize: "1.15rem", marginBottom: 20 }}>Nova Geração</h2>
+          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+             <div style={{
+              display: "flex", alignItems: "center", gap: 6,
+              background: "var(--bg-surface)", border: "1px solid var(--border)",
+              borderRadius: 8, padding: "6px 14px",
+            }}>
+              <span style={{ fontSize: "0.8rem" }}>💎</span>
+              <span style={{ fontWeight: 700, fontSize: "0.85rem", color: "var(--accent)" }}>{credits}</span>
+            </div>
+            <button className="btn-primary" style={{ padding: "8px 16px", fontSize: "0.8rem" }}>Upgrade</button>
+          </div>
+        </header>
 
-                  {/* Upload area */}
+        <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
+          
+          {/* Column 2: Editor Controls */}
+          <section style={{ 
+            width: "400px", 
+            background: "var(--bg-surface)", 
+            borderRight: "1px solid var(--border)",
+            display: "flex",
+            flexDirection: "column",
+            overflowY: "auto",
+            padding: "24px"
+          }}>
+            {activeTab === "generate" ? (
+              <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", marginBottom: 12, textTransform: "uppercase", letterSpacing: "0.05em" }}>1. Imagem Base</label>
                   <div
                     onClick={() => fileRef.current?.click()}
                     style={{
-                      border: `2px dashed ${uploadedFile ? "rgba(245,158,11,0.4)" : "var(--border)"}`,
+                      border: `2px dashed ${uploadedFile ? "var(--accent)" : "var(--border)"}`,
                       borderRadius: 12,
-                      padding: uploadedFile ? 0 : "40px 20px",
+                      padding: uploadedFile ? 0 : "32px 16px",
                       textAlign: "center",
                       cursor: "pointer",
-                      marginBottom: 20,
-                      transition: "border-color 0.2s",
+                      transition: "all 0.2s",
                       overflow: "hidden",
-                      background: uploadedFile ? "var(--bg-muted)" : "transparent",
+                      background: uploadedFile ? "var(--bg-void)" : "rgba(255,255,255,0.02)",
                     }}
-                    onMouseOver={e => !uploadedFile && ((e.currentTarget as HTMLDivElement).style.borderColor = "var(--accent)")}
-                    onMouseOut={e => !uploadedFile && ((e.currentTarget as HTMLDivElement).style.borderColor = "var(--border)")}
                   >
                     <input ref={fileRef} type="file" accept="image/*" style={{ display: "none" }} onChange={handleFileChange} />
                     {uploadedFile ? (
                       <div style={{ position: "relative" }}>
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={uploadedFile} alt="preview" style={{ width: "100%", height: 200, objectFit: "cover", display: "block" }} />
+                        <img src={uploadedFile} alt="preview" style={{ width: "100%", height: 160, objectFit: "cover", display: "block" }} />
                         <div style={{
                           position: "absolute", top: 8, right: 8,
-                          background: "rgba(0,0,0,0.7)", borderRadius: 6, padding: "4px 8px",
-                          fontSize: "0.72rem", color: "#fff", cursor: "pointer",
+                          background: "rgba(0,0,0,0.8)", borderRadius: 6, padding: "4px 8px",
+                          fontSize: "0.7rem", color: "#fff", cursor: "pointer",
                         }} onClick={e => { e.stopPropagation(); setUploadedFile(null); }}>
                           ✕ Remover
                         </div>
                       </div>
                     ) : (
                       <>
-                        <div style={{ fontSize: "2rem", marginBottom: 10 }}>📷</div>
-                        <p style={{ color: "var(--text-secondary)", fontSize: "0.88rem", marginBottom: 4 }}>
-                          Arraste ou clique para enviar a foto do prato
-                        </p>
-                        <p style={{ color: "var(--text-muted)", fontSize: "0.75rem" }}>PNG, JPG, WEBP · até 20MB</p>
+                        <div style={{ fontSize: "1.5rem", marginBottom: 8 }}>📸</div>
+                        <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem" }}>Upload da foto original</p>
                       </>
                     )}
                   </div>
-
-                  {/* Style presets */}
-                  <div style={{ marginBottom: 20 }}>
-                    <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "var(--text-muted)", marginBottom: 10, textTransform: "uppercase", letterSpacing: "0.5px" }}>Estilo</label>
-                    <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                      {STYLE_PRESETS.map(s => (
-                        <button key={s.key}
-                          onClick={() => setSelectedStyle(s.key)}
-                          style={{
-                            background: selectedStyle === s.key ? "rgba(245,158,11,0.15)" : "var(--bg-muted)",
-                            border: `1px solid ${selectedStyle === s.key ? "var(--accent)" : "var(--border)"}`,
-                            borderRadius: 8, padding: "7px 13px",
-                            color: selectedStyle === s.key ? "var(--accent)" : "var(--text-secondary)",
-                            fontSize: "0.8rem", fontWeight: 600, cursor: "pointer",
-                            display: "flex", alignItems: "center", gap: 5,
-                            transition: "all 0.2s",
-                          }}
-                        >
-                          {s.icon} {s.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Prompt */}
-                  <div style={{ marginBottom: 20 }}>
-                    <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: "var(--text-muted)", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.5px" }}>Prompt (opcional)</label>
-                    <textarea
-                      value={prompt}
-                      onChange={e => setPrompt(e.target.value)}
-                      placeholder="Descreva o estilo: ex. 'fundo de mármore branco, iluminação natural, folhas de manjericão fresco'"
-                      className="input-field"
-                      style={{ resize: "vertical", minHeight: 80, fontSize: "0.87rem", lineHeight: 1.6 }}
-                    />
-                    <p style={{ color: "var(--text-muted)", fontSize: "0.72rem", marginTop: 6 }}>
-                      💡 Quanto mais específico, melhor o resultado. Nossa IA vai aprimorar seu prompt automaticamente.
-                    </p>
-                  </div>
-
-                  <button
-                    className="btn-primary"
-                    disabled={generating || (!uploadedFile && !prompt)}
-                    onClick={handleGenerate}
-                    style={{ width: "100%", justifyContent: "center", fontSize: "0.95rem", padding: "13px", opacity: (!uploadedFile && !prompt) ? 0.5 : 1 }}
-                  >
-                    {generating ? (
-                      <><span style={{ display: "inline-block", width: 16, height: 16, border: "2px solid rgba(0,0,0,0.3)", borderTopColor: "#000", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} /> Gerando...</>
-                    ) : "⚡ Gerar Imagem (5 créditos)"}
-                  </button>
                 </div>
+
+                <div>
+                  <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", marginBottom: 12, textTransform: "uppercase", letterSpacing: "0.05em" }}>2. Estilo Visual</label>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                    {STYLE_PRESETS.map(s => (
+                      <button key={s.key}
+                        onClick={() => setSelectedStyle(s.key)}
+                        style={{
+                          background: selectedStyle === s.key ? "var(--bg-void)" : "transparent",
+                          border: `1px solid ${selectedStyle === s.key ? "var(--accent)" : "var(--border)"}`,
+                          borderRadius: 10, padding: "12px",
+                          textAlign: "left",
+                          cursor: "pointer",
+                          transition: "all 0.2s",
+                        }}
+                      >
+                        <div style={{ fontSize: "1.2rem", marginBottom: 6 }}>{s.icon}</div>
+                        <div style={{ fontWeight: 700, fontSize: "0.85rem", color: selectedStyle === s.key ? "var(--text-primary)" : "var(--text-secondary)" }}>{s.label}</div>
+                        <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginTop: 2, lineHeight: 1.3 }}>{s.description}</div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 700, color: "var(--text-muted)", marginBottom: 12, textTransform: "uppercase", letterSpacing: "0.05em" }}>3. Detalhes (Opcional)</label>
+                  <textarea
+                    value={prompt}
+                    onChange={e => setPrompt(e.target.value)}
+                    placeholder="Ex: 'fundo de mármore, manjericão fresco...'"
+                    className="input-field"
+                    style={{ minHeight: 100, fontSize: "0.85rem" }}
+                  />
+                </div>
+
+                <button
+                  className="btn-primary"
+                  disabled={generating || (!uploadedFile && !prompt)}
+                  onClick={handleGenerate}
+                  style={{ width: "100%", justifyContent: "center", padding: "16px", marginTop: 8 }}
+                >
+                  {generating ? "Gerando Imagem..." : "⚡ Gerar Imagem (5 créditos)"}
+                </button>
               </div>
+            ) : activeTab === "gallery" ? (
+               <div style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>Selecione uma imagem para ver detalhes.</div>
+            ) : (
+               <div style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>Histórico de transações.</div>
+            )}
+          </section>
 
-              {/* Right: Result / Preview */}
-              <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-                <div className="glass-card" style={{ padding: 24 }}>
-                  <h3 style={{ fontWeight: 700, fontSize: "0.9rem", marginBottom: 16, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Resultado</h3>
-
+          {/* Column 3: Preview Area */}
+          <section style={{ 
+            flex: 1, 
+            background: "var(--bg-void)", 
+            padding: "40px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            overflowY: "auto"
+          }}>
+            {activeTab === "generate" ? (
+              <div style={{ width: "100%", maxWidth: "700px" }}>
+                <div style={{ 
+                  aspectRatio: "1",
+                  background: "var(--bg-surface)", 
+                  border: "1px solid var(--border)",
+                  borderRadius: 20,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  position: "relative",
+                  overflow: "hidden",
+                  boxShadow: "0 20px 80px rgba(0,0,0,0.4)"
+                }}>
                   {generating ? (
-                    <div style={{ height: 280, background: "var(--bg-muted)", borderRadius: 10, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 12 }}>
-                      <div style={{ width: 40, height: 40, border: "3px solid var(--border)", borderTopColor: "var(--accent)", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
-                      <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>Gerando com FLUX AI…</p>
+                    <div style={{ textAlign: "center" }}>
+                      <div style={{ width: 48, height: 48, border: "3px solid var(--border)", borderTopColor: "var(--accent)", borderRadius: "50%", animation: "spin 0.8s linear infinite", margin: "0 auto 16px" }} />
+                      <p style={{ color: "var(--text-secondary)", fontWeight: 500 }}>Processando sua foto com FLUX...</p>
                     </div>
                   ) : generated ? (
-                    <>
-                      <div style={{
-                        height: 280,
-                        background: "radial-gradient(ellipse at 40% 40%, #8b4513, #1a0a00)",
-                        borderRadius: 10,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: "5rem",
-                        marginBottom: 16,
-                        position: "relative",
-                        overflow: "hidden",
-                      }}>
-                        🍕
-                        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 50%)" }} />
-                      </div>
-                      <div style={{ display: "flex", gap: 8 }}>
-                        {["1K", "2K"].map(res => (
-                          <button key={res} className="btn-secondary" style={{ flex: 1, justifyContent: "center", fontSize: "0.82rem", padding: "9px" }}>
-                            ⬇ {res}
-                          </button>
-                        ))}
-                      </div>
-                      <p style={{ color: "var(--text-muted)", fontSize: "0.75rem", textAlign: "center", marginTop: 10 }}>
-                        Salvo na sua galeria automaticamente
-                      </p>
-                    </>
+                    <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?q=80&w=1200&auto=format&fit=crop" alt="Result" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                   ) : (
-                    <div style={{ height: 280, background: "var(--bg-muted)", borderRadius: 10, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 8 }}>
-                      <div style={{ fontSize: "2.5rem", opacity: 0.3 }}>🖼️</div>
-                      <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>O resultado aparecerá aqui</p>
+                    <div style={{ textAlign: "center", opacity: 0.3 }}>
+                      <div style={{ fontSize: "4rem", marginBottom: 16 }}>🍽️</div>
+                      <p style={{ fontWeight: 600 }}>Configure o editor e gere sua foto</p>
                     </div>
                   )}
                 </div>
 
-                {/* Recent generations */}
-                <div className="glass-card" style={{ padding: 24 }}>
-                  <h3 style={{ fontWeight: 700, fontSize: "0.9rem", marginBottom: 14, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Recentes</h3>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                    {MOCK_HISTORY.map(item => (
-                      <div key={item.id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 12px", background: "var(--bg-muted)", borderRadius: 10, cursor: "pointer", transition: "background 0.2s" }}
-                        onMouseOver={e => (e.currentTarget as HTMLDivElement).style.background = "var(--bg-elevated)"}
-                        onMouseOut={e => (e.currentTarget as HTMLDivElement).style.background = "var(--bg-muted)"}
-                      >
-                        <div style={{ width: 38, height: 38, background: "var(--bg-elevated)", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.2rem" }}>{item.emoji}</div>
-                        <div style={{ flex: 1 }}>
-                          <div style={{ fontWeight: 600, fontSize: "0.85rem" }}>{item.label}</div>
-                          <div style={{ color: "var(--text-muted)", fontSize: "0.75rem" }}>{item.time}</div>
-                        </div>
-                        <span style={{ color: "var(--accent)", fontSize: "0.7rem" }}>⬇</span>
+                {generated && !generating && (
+                  <div style={{ display: "flex", gap: 12, marginTop: 24, justifyContent: "center" }}>
+                    <button className="btn-secondary" style={{ padding: "12px 24px" }}>⬇ Download 1K</button>
+                    <button className="btn-secondary" style={{ padding: "12px 24px" }}>⬇ Download 2K</button>
+                    <button className="btn-primary" style={{ padding: "12px 24px" }}>✨ Upscale 4K</button>
+                  </div>
+                )}
+              </div>
+            ) : activeTab === "gallery" ? (
+               <div style={{ width: "100%", height: "100%", display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 20, alignContent: "start" }}>
+                  {MOCK_HISTORY.map(item => (
+                    <div key={item.id} className="glass-card" style={{ overflow: "hidden", cursor: "pointer" }}>
+                      <div style={{ height: 200, background: "var(--bg-surface)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "3rem" }}>{item.emoji}</div>
+                      <div style={{ padding: "12px" }}>
+                        <div style={{ fontWeight: 700, fontSize: "0.85rem" }}>{item.label}</div>
+                        <div style={{ color: "var(--text-muted)", fontSize: "0.7rem" }}>{item.time}</div>
                       </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* GALLERY TAB */}
-          {activeTab === "gallery" && (
-            <div>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-                <h2 style={{ fontWeight: 800, fontSize: "1.15rem" }}>Sua Galeria</h2>
-                <span style={{ color: "var(--text-muted)", fontSize: "0.82rem" }}>3 de 10 imagens usadas</span>
-              </div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
-                {MOCK_HISTORY.map(item => (
-                  <div key={item.id} className="glass-card" style={{ overflow: "hidden", cursor: "pointer", transition: "transform 0.2s, border-color 0.2s" }}
-                    onMouseOver={e => { (e.currentTarget as HTMLDivElement).style.transform = "scale(1.02)"; (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(245,158,11,0.4)"; }}
-                    onMouseOut={e => { (e.currentTarget as HTMLDivElement).style.transform = "none"; (e.currentTarget as HTMLDivElement).style.borderColor = "var(--border)"; }}
-                  >
-                    <div style={{ height: 180, background: "var(--bg-muted)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "3rem" }}>{item.emoji}</div>
-                    <div style={{ padding: "12px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <div>
-                        <div style={{ fontWeight: 600, fontSize: "0.84rem" }}>{item.label}</div>
-                        <div style={{ color: "var(--text-muted)", fontSize: "0.72rem" }}>{item.time}</div>
-                      </div>
-                      <button className="btn-secondary" style={{ padding: "6px 12px", fontSize: "0.75rem" }}>⬇ 1K</button>
-                    </div>
-                  </div>
-                ))}
-                {/* Empty state slots */}
-                {Array(7).fill(0).map((_, i) => (
-                  <div key={`empty-${i}`} style={{
-                    height: 214,
-                    background: "var(--bg-surface)",
-                    border: "2px dashed var(--border)",
-                    borderRadius: 12,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "var(--text-muted)",
-                    fontSize: "0.8rem",
-                    opacity: 0.4,
-                  }}>+ gerar</div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* CREDITS TAB */}
-          {activeTab === "credits" && (
-            <div style={{ maxWidth: 640, margin: "0 auto" }}>
-              <h2 style={{ fontWeight: 800, fontSize: "1.15rem", marginBottom: 24 }}>Seus Créditos</h2>
-
-              <div className="glass-card" style={{ padding: 28, marginBottom: 20 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <div>
-                    <p style={{ color: "var(--text-muted)", fontSize: "0.82rem", marginBottom: 6 }}>Saldo atual</p>
-                    <div style={{ fontSize: "2.5rem", fontWeight: 900, color: "var(--accent)" }}>{credits}</div>
-                    <p style={{ color: "var(--text-secondary)", fontSize: "0.82rem", marginTop: 4 }}>créditos disponíveis</p>
-                  </div>
-                  <div style={{ textAlign: "right" }}>
-                    <p style={{ color: "var(--text-muted)", fontSize: "0.82rem", marginBottom: 6 }}>Plano atual</p>
-                    <div style={{ fontWeight: 700, fontSize: "1rem" }}>Starter Grátis</div>
-                    <p style={{ color: "var(--text-muted)", fontSize: "0.78rem", marginTop: 4 }}>Renova diariamente</p>
-                  </div>
-                </div>
-
-                <div style={{ marginTop: 24, background: "var(--bg-muted)", borderRadius: 100, height: 8, overflow: "hidden" }}>
-                  <div style={{ width: "25%", height: "100%", background: "linear-gradient(90deg, #f59e0b, #ef4444)", borderRadius: 100, transition: "width 0.6s ease" }} />
-                </div>
-                <div style={{ display: "flex", justifyContent: "space-between", marginTop: 8, fontSize: "0.75rem", color: "var(--text-muted)" }}>
-                  <span>15 usados hoje</span>
-                  <span>5 restantes</span>
-                </div>
-              </div>
-
-              <div className="glass-card" style={{ padding: 28 }}>
-                <h3 style={{ fontWeight: 700, fontSize: "0.9rem", marginBottom: 16, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Comprar créditos avulsos</h3>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 20 }}>
-                  {[
-                    { amt: 20, price: "R$ 9", per: "R$ 0,45/crédito" },
-                    { amt: 50, price: "R$ 19", per: "R$ 0,38/crédito" },
-                    { amt: 120, price: "R$ 39", per: "R$ 0,33/crédito" },
-                  ].map((pkg, i) => (
-                    <div key={i} className="glass-card" style={{ padding: "16px", textAlign: "center", cursor: "pointer", transition: "border-color 0.2s, background 0.2s" }}
-                      onMouseOver={e => { (e.currentTarget as HTMLDivElement).style.borderColor = "var(--accent)"; (e.currentTarget as HTMLDivElement).style.background = "rgba(245,158,11,0.05)"; }}
-                      onMouseOut={e => { (e.currentTarget as HTMLDivElement).style.borderColor = "var(--border)"; (e.currentTarget as HTMLDivElement).style.background = ""; }}
-                    >
-                      <div style={{ fontWeight: 800, fontSize: "1.2rem", color: "var(--accent)" }}>{pkg.amt}</div>
-                      <div style={{ fontWeight: 600, fontSize: "0.8rem", marginBottom: 4 }}>créditos</div>
-                      <div style={{ fontWeight: 700, fontSize: "1rem" }}>{pkg.price}</div>
-                      <div style={{ color: "var(--text-muted)", fontSize: "0.72rem" }}>{pkg.per}</div>
                     </div>
                   ))}
+               </div>
+            ) : (
+              <div className="glass-card" style={{ width: "100%", maxWidth: "600px", padding: "32px" }}>
+                <h2 style={{ fontSize: "1.5rem", fontWeight: 800, marginBottom: 24, fontFamily: "var(--font-header)" }}>Gerenciar Créditos</h2>
+                <div style={{ background: "var(--bg-void)", padding: "24px", borderRadius: 12, marginBottom: 24 }}>
+                   <div style={{ color: "var(--text-muted)", fontSize: "0.8rem", marginBottom: 8 }}>Saldo Disponível</div>
+                   <div style={{ fontSize: "3rem", fontWeight: 900, color: "var(--accent)", lineHeight: 1 }}>{credits}</div>
                 </div>
-                <button className="btn-primary" style={{ width: "100%", justifyContent: "center", padding: "12px" }}>
-                  Comprar agora
-                </button>
+                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                   {["20 créditos - R$ 9", "50 créditos - R$ 19", "120 créditos - R$ 39"].map((p, i) => (
+                     <button key={i} className="btn-secondary" style={{ justifyContent: "space-between", padding: "16px" }}>
+                        <span>{p}</span>
+                        <span>→</span>
+                     </button>
+                   ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </section>
+
         </div>
-      </main>
+      </div>
     </div>
   );
 }
