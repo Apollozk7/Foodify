@@ -113,7 +113,7 @@ export default function Pricing() {
           display: "grid",
           gridTemplateColumns: "repeat(4, 1fr)",
           gap: 16,
-          alignItems: "start",
+          alignItems: "stretch",
         }}>
           {PLANS.map((plan) => (
             <div key={plan.key}
@@ -128,6 +128,8 @@ export default function Pricing() {
                 transform: plan.highlight ? "scale(1.03)" : hovered === plan.key ? "translateY(-4px)" : "none",
                 border: plan.highlight ? "1px solid rgba(245,158,11,0.6)" : "1px solid var(--border)",
                 boxShadow: plan.highlight ? "0 0 40px rgba(245,158,11,0.15)" : "none",
+                display: "flex",
+                flexDirection: "column",
               }}
             >
               {plan.highlight && (
@@ -138,41 +140,46 @@ export default function Pricing() {
                   background: "linear-gradient(90deg, #f59e0b, #ef4444)",
                 }} />
               )}
-              {plan.badge && (
-                <div style={{
-                  display: "inline-block",
-                  background: "linear-gradient(135deg, #f59e0b, #ef4444)",
-                  color: "#000",
-                  fontSize: "0.68rem",
-                  fontWeight: 800,
-                  padding: "3px 10px",
-                  borderRadius: 100,
-                  marginBottom: 16,
-                  letterSpacing: "0.5px",
-                  textTransform: "uppercase",
-                }}>
-                  {plan.badge}
+              
+              <div style={{ flex: "0 0 auto" }}>
+                {plan.badge ? (
+                  <div style={{
+                    display: "inline-block",
+                    background: "linear-gradient(135deg, #f59e0b, #ef4444)",
+                    color: "#000",
+                    fontSize: "0.68rem",
+                    fontWeight: 800,
+                    padding: "3px 10px",
+                    borderRadius: 100,
+                    marginBottom: 16,
+                    letterSpacing: "0.5px",
+                    textTransform: "uppercase",
+                  }}>
+                    {plan.badge}
+                  </div>
+                ) : (
+                  <div style={{ height: 26, marginBottom: 16 }} /> // Spacer to keep title alignment
+                )}
+
+                <h3 style={{ fontWeight: 700, fontSize: "1rem", marginBottom: 4 }}>{plan.name}</h3>
+                <div style={{ fontSize: "2rem", fontWeight: 900, letterSpacing: "-1px", color: plan.highlight ? "var(--accent)" : "var(--text-primary)", lineHeight: 1 }}>
+                  {plan.price}
                 </div>
-              )}
+                <div style={{ color: "var(--text-muted)", fontSize: "0.78rem", marginBottom: 24, marginTop: 4 }}>
+                  {plan.priceNote}
+                </div>
 
-              <h3 style={{ fontWeight: 700, fontSize: "1rem", marginBottom: 4 }}>{plan.name}</h3>
-              <div style={{ fontSize: "2rem", fontWeight: 900, letterSpacing: "-1px", color: plan.highlight ? "var(--accent)" : "var(--text-primary)", lineHeight: 1 }}>
-                {plan.price}
+                <Link href={plan.href}
+                  className={plan.highlight ? "btn-primary" : "btn-secondary"}
+                  style={{ display: "block", textAlign: "center", marginBottom: 24, padding: "11px 16px", fontSize: "0.85rem" }}
+                >
+                  {plan.cta}
+                </Link>
+
+                <hr style={{ border: "none", borderTop: "1px solid var(--border)", marginBottom: 20 }} />
               </div>
-              <div style={{ color: "var(--text-muted)", fontSize: "0.78rem", marginBottom: 24, marginTop: 4 }}>
-                {plan.priceNote}
-              </div>
 
-              <Link href={plan.href}
-                className={plan.highlight ? "btn-primary" : "btn-secondary"}
-                style={{ display: "block", textAlign: "center", marginBottom: 24, padding: "11px 16px", fontSize: "0.85rem" }}
-              >
-                {plan.cta}
-              </Link>
-
-              <hr style={{ border: "none", borderTop: "1px solid var(--border)", marginBottom: 20 }} />
-
-              <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 10 }}>
+              <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 10, flex: "1 1 auto" }}>
                 {plan.features.map((f, i) => (
                   <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: "0.82rem", color: "var(--text-secondary)", lineHeight: 1.4 }}>
                     <span style={{ color: "var(--accent)", flexShrink: 0, marginTop: 1 }}>✓</span>
