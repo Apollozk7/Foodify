@@ -1,25 +1,5 @@
 import Link from "next/link";
-
-const BEFORE_AFTER = [
-  {
-    emoji: "🍕",
-    label: "Pizza Margherita",
-    before: "Foto tirada com celular, fundo de mesa suja, iluminação péssima",
-    after: "Studio light, marble background, professional depth of field",
-  },
-  {
-    emoji: "🍔",
-    label: "X-Burguer",
-    before: "Embalagem aberta, ângulo reto, sem contexto visual",
-    after: "Golden hour, bokeh background, sesame seeds mid-air",
-  },
-  {
-    emoji: "🥗",
-    label: "Salada Caesar",
-    before: "Prato branco comum, mesa de plástico",
-    after: "Rustic wood surface, overhead shot, herb-scattered",
-  },
-];
+import ImageSlider from "./ImageSlider";
 
 const STATS = [
   { value: "3s", label: "Tempo médio de geração" },
@@ -35,8 +15,8 @@ export default function Hero() {
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
-      paddingTop: 100,
-      paddingBottom: 80,
+      paddingTop: 120,
+      paddingBottom: 100,
       position: "relative",
       overflow: "hidden",
     }}>
@@ -45,14 +25,6 @@ export default function Hero() {
         position: "absolute",
         top: 0, left: 0, right: 0, bottom: 0,
         background: "var(--grad-hero)",
-        pointerEvents: "none",
-      }} />
-      {/* Subtle grid */}
-      <div style={{
-        position: "absolute",
-        top: 0, left: 0, right: 0, bottom: 0,
-        backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px)",
-        backgroundSize: "32px 32px",
         pointerEvents: "none",
       }} />
 
@@ -67,45 +39,52 @@ export default function Hero() {
         {/* Heading */}
         <h1 className="animate-fade-up-delay-1" style={{
           textAlign: "center",
-          fontSize: "clamp(2.4rem, 6vw, 4.2rem)",
+          fontSize: "clamp(2.6rem, 7vw, 4.8rem)",
           fontWeight: 900,
-          lineHeight: 1.08,
-          letterSpacing: "-1.5px",
+          lineHeight: 1.05,
+          letterSpacing: "-0.04em",
           marginBottom: 24,
-          maxWidth: 820,
+          maxWidth: 900,
           margin: "0 auto 24px",
+          fontFamily: "var(--font-header)",
         }}>
           <span className="gradient-text">Fotos profissionais</span>
           <br />
           <span className="accent-text">de comida com IA</span>
-          <br />
-          <span style={{ color: "var(--text-secondary)", fontWeight: 400, fontSize: "0.65em" }}>
-            para quem não tem budget de fotógrafo
-          </span>
         </h1>
 
         {/* Sub */}
         <p className="animate-fade-up-delay-2" style={{
           textAlign: "center",
           color: "var(--text-secondary)",
-          fontSize: "1.1rem",
-          maxWidth: 560,
-          margin: "0 auto 40px",
-          lineHeight: 1.7,
+          fontSize: "1.15rem",
+          maxWidth: 600,
+          margin: "0 auto 48px",
+          lineHeight: 1.6,
         }}>
           Envie uma foto simples do seu prato e receba uma imagem de cardápio
           <strong style={{ color: "var(--text-primary)" }}> pronta para usar</strong> em segundos —
-          sem fotógrafo, sem estúdio, sem complicação.
+          sem estúdio, sem complicação.
         </p>
 
         {/* CTAs */}
-        <div className="animate-fade-up-delay-3" style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", marginBottom: 72 }}>
-          <Link href="/cadastro" className="btn-primary" style={{ fontSize: "1rem", padding: "14px 32px" }}>
+        <div className="animate-fade-up-delay-3" style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap", marginBottom: 80 }}>
+          <Link href="/cadastro" className="btn-primary" style={{ padding: "16px 36px", fontSize: "1rem" }}>
             🚀 Criar conta grátis
           </Link>
-          <a href="#galeria" className="btn-secondary" style={{ fontSize: "1rem", padding: "14px 32px" }}>
-            Ver exemplos
+          <a href="#galeria" className="btn-secondary" style={{ padding: "16px 36px", fontSize: "1rem" }}>
+            Ver galeria
           </a>
+        </div>
+
+        {/* Visual Showcase (Slider) */}
+        <div className="animate-fade-up-delay-3" style={{ maxWidth: 960, margin: "0 auto 80px" }}>
+          <ImageSlider 
+            before="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1200&auto=format&fit=crop" 
+            after="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?q=80&w=1200&auto=format&fit=crop"
+            beforeLabel="Foto do Celular"
+            afterLabel="Resultado FoodSnapAI"
+          />
         </div>
 
         {/* Stats */}
@@ -113,69 +92,24 @@ export default function Hero() {
           display: "grid",
           gridTemplateColumns: "repeat(4, 1fr)",
           gap: 1,
-          maxWidth: 640,
-          margin: "0 auto 72px",
+          maxWidth: 720,
+          margin: "0 auto",
           background: "var(--border)",
-          borderRadius: 16,
+          borderRadius: 12,
           overflow: "hidden",
           border: "1px solid var(--border)",
         }}>
           {STATS.map((s, i) => (
             <div key={i} style={{
-              background: "var(--bg-card)",
-              padding: "20px 16px",
+              background: "var(--bg-surface)",
+              padding: "24px 16px",
               textAlign: "center",
             }}>
-              <div style={{ fontSize: "1.6rem", fontWeight: 800, color: i === 3 ? "var(--text-primary)" : "var(--accent)", letterSpacing: "-1px" }}>
+              <div style={{ fontSize: "1.75rem", fontWeight: 800, color: i === 3 ? "var(--text-primary)" : "var(--accent)", letterSpacing: "-0.03em" }}>
                 {s.value}
               </div>
-              <div style={{ color: "var(--text-muted)", fontSize: "0.75rem", marginTop: 4, fontWeight: 500 }}>
+              <div style={{ color: "var(--text-muted)", fontSize: "0.75rem", marginTop: 4, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>
                 {s.label}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Before / After cards */}
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gap: 20,
-        }}>
-          {BEFORE_AFTER.map((item, i) => (
-            <div key={i} className="glass-card" style={{ padding: 24, position: "relative", overflow: "hidden" }}>
-              {/* Accent glow */}
-              <div style={{
-                position: "absolute",
-                top: -40, right: -40,
-                width: 120, height: 120,
-                background: "radial-gradient(circle, rgba(245,158,11,0.12), transparent 60%)",
-                pointerEvents: "none",
-              }} />
-              <div style={{ fontSize: "2rem", marginBottom: 12 }}>{item.emoji}</div>
-              <div style={{ fontWeight: 700, fontSize: "0.9rem", marginBottom: 16, color: "var(--text-primary)" }}>
-                {item.label}
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                <div style={{
-                  background: "rgba(239,68,68,0.08)",
-                  border: "1px solid rgba(239,68,68,0.2)",
-                  borderRadius: 8,
-                  padding: "10px 12px",
-                }}>
-                  <div style={{ fontSize: "0.68rem", fontWeight: 700, color: "#ef4444", letterSpacing: "1px", textTransform: "uppercase", marginBottom: 4 }}>Antes</div>
-                  <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)", lineHeight: 1.5 }}>{item.before}</div>
-                </div>
-                <div style={{ textAlign: "center", fontSize: "0.8rem", color: "var(--accent)" }}>↓ IA transforma em →</div>
-                <div style={{
-                  background: "rgba(245,158,11,0.08)",
-                  border: "1px solid rgba(245,158,11,0.25)",
-                  borderRadius: 8,
-                  padding: "10px 12px",
-                }}>
-                  <div style={{ fontSize: "0.68rem", fontWeight: 700, color: "var(--accent)", letterSpacing: "1px", textTransform: "uppercase", marginBottom: 4 }}>Depois</div>
-                  <div style={{ fontSize: "0.8rem", color: "var(--text-primary)", lineHeight: 1.5 }}>{item.after}</div>
-                </div>
               </div>
             </div>
           ))}
