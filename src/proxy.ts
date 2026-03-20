@@ -1,11 +1,16 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { updateSession } from "@/lib/supabase/middleware";
 
-const isProtectedRoute = createRouteMatcher(["/dashboard(.*)", "/api/generate(.*)"]);
+const isPublicRoute = createRouteMatcher([
+  "/",
+  "/sign-in(.*)",
+  "/sign-up(.*)",
+  "/api/webhooks(.*)",
+]);
 
 export default clerkMiddleware(async (auth, req) => {
-  // 1. Protect routes with Clerk
-  if (isProtectedRoute(req)) {
+  // 1. Protect all routes except public ones
+  if (!isPublicRoute(req)) {
     await auth.protect();
   }
 
