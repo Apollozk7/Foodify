@@ -1,6 +1,7 @@
 import React from "react";
 import NeumorphButton from "@/components/ui/neumorph-button";
 import { BeforeAfterSlider } from "@/components/ui/before-after-slider";
+import Link from "next/link";
 
 export function Hero() {
   return (
@@ -18,15 +19,36 @@ export function Hero() {
           </div>
           
           <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 w-full sm:w-auto">
-            <NeumorphButton intent="primary" size="large" className="w-full sm:w-auto">
-              Começar agora (5 fotos grátis)
-            </NeumorphButton>
-            <NeumorphButton size="large" className="w-full sm:w-auto">
-              Ver galeria
-            </NeumorphButton>
+            <Link href="/sign-up" className="w-full sm:w-auto">
+              <NeumorphButton intent="primary" size="large" className="w-full sm:w-auto">
+                Começar agora (5 fotos grátis)
+              </NeumorphButton>
+            </Link>
+            <a href="#gallery" className="w-full sm:w-auto">
+              <NeumorphButton size="large" className="w-full sm:w-auto">
+                Ver galeria
+              </NeumorphButton>
+            </a>
           </div>
 
-          <div className="flex flex-wrap justify-center lg:justify-start gap-6 text-sm text-slate-500 font-inter">
+          <div className="flex items-center gap-4 pt-2">
+            <div className="flex -space-x-2">
+              <div className="w-8 h-8 rounded-full border-2 border-[#020617] bg-emerald-500 flex items-center justify-center text-[10px] font-bold text-white">MC</div>
+              <div className="w-8 h-8 rounded-full border-2 border-[#020617] bg-blue-500 flex items-center justify-center text-[10px] font-bold text-white">RP</div>
+              <div className="w-8 h-8 rounded-full border-2 border-[#020617] bg-purple-500 flex items-center justify-center text-[10px] font-bold text-white">JP</div>
+              <div className="w-8 h-8 rounded-full border-2 border-[#020617] bg-slate-700 flex items-center justify-center text-[10px] font-bold text-white">+</div>
+            </div>
+            <div className="flex flex-col text-left">
+              <div className="flex text-amber-400 text-xs">
+                ★★★★★
+              </div>
+              <p className="text-xs text-slate-400 font-medium font-inter">
+                Mais de <span className="text-white">500 restaurantes</span> já usam
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap justify-center lg:justify-start gap-6 text-sm text-slate-500 font-inter pt-2">
             <div className="flex items-center gap-2">
               <CheckIcon className="w-4 h-4 text-emerald-500" />
               <span>Processamento Instantâneo</span>
