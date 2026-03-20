@@ -2,9 +2,7 @@
 
 import { useState } from "react";
 import { UserButton } from "@clerk/nextjs";
-import { UploadZone } from "@/components/dashboard/upload-zone";
-import { CategorySelector } from "@/components/dashboard/category-selector";
-import { GenerationResult } from "@/components/dashboard/generation-result";
+import { ChatInterface } from "@/components/dashboard/chat-interface";
 import { CreditBadge } from "@/components/dashboard/credit-badge";
 import { HistoryGrid } from "@/components/dashboard/history-grid";
 import { useGeneration } from "@/hooks/use-generation";
@@ -13,12 +11,8 @@ import NeumorphButton from "@/components/ui/neumorph-button";
 import { createClient } from "@/lib/supabase/client";
 
 export default function DashboardPage() {
-  const [selectedCategory, setSelectedCategory] = useState("lanches");
-  const [inputUrl, setInputUrl] = useState<string | null>(null);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const { generate, status, messages, isLoading, error: genError } = useGeneration();
   const [isUploading, setIsUploading] = useState(false);
-  
-  const { generate, reset, status, outputUrl, isLoading, error: genError } = useGeneration();
   const [uploadError, setUploadError] = useState<string | null>(null);
 
   const supabase = createClient();
@@ -52,30 +46,24 @@ export default function DashboardPage() {
     }
   };
 
-  const handleImageSelected = async (file: File, previewUrl: string) => {
-    setInputUrl(previewUrl);
-    setSelectedFile(file);
-    setUploadError(null);
-  };
-
-  const handleGenerate = async () => {
-    if (!selectedFile) return;
+  const handleSendMessage = async (text: string, file: File | null) => {
+    if (!file && !text) return;
 
     try {
-      const publicUrl = await uploadToSupabase(selectedFile);
+      let publicUrl = "";
+      if (file) {
+        publicUrl = await uploadToSupabase(file);
+      }
       
       generate({
         imageUrl: publicUrl,
-        category: selectedCategory,
-        prompt: `A professional food photography of ${selectedCategory}, highly detailed, studio lighting, 8k`,
-        style: "professional",
+        prompt: text || "Transforme esta foto em uma imagem profissional de alta qualidade.",
       });
     } catch (err) {
       // Error handled in uploadToSupabase
     }
   };
 
-  const error = genError || uploadError;
   const isActionLoading = isLoading || isUploading;
 
   return (
@@ -116,15 +104,15 @@ export default function DashboardPage() {
       </aside>
 
       {/* Main Content */}
-      <main className="lg:ml-64 min-h-screen flex flex-col">
+      <main className="lg:ml-64 h-screen flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="h-20 border-b border-white/5 flex items-center justify-between px-6 md:px-10 sticky top-0 bg-black/10 backdrop-blur-md z-30">
+        <header className="h-16 border-b border-white/5 flex items-center justify-between px-6 md:px-10 sticky top-0 bg-black/10 backdrop-blur-md z-30">
           <div className="lg:hidden flex items-center gap-2">
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-white italic">
               E
             </div>
           </div>
-          <h1 className="text-lg font-semibold text-white hidden md:block">Dashboard</h1>
+          <h1 className="text-lg font-semibold text-white hidden md:block">Workspace</h1>
 
           <div className="flex items-center gap-4">
             <CreditBadge />
@@ -134,97 +122,27 @@ export default function DashboardPage() {
           </div>
         </header>
 
-        <div className="flex-1 p-6 md:p-10 max-w-6xl mx-auto w-full space-y-12">
-          {/* Bento Grid - Top Section */}
-          <section className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            {/* Left Column: Upload & Config */}
-            <div className="lg:col-span-7 space-y-8">
-              <div className="space-y-4">
-                <div className="flex items-center gap-2 text-blue-400">
-                  <Sparkles className="w-5 h-5" />
-                  <h2 className="text-xl font-bold font-work-sans text-white">Criar Nova Foto</h2>
-                </div>
-                <p className="text-slate-400 text-sm">
-                  Selecione a categoria do seu produto e envie uma foto bem iluminada para começar.
-                </p>
-              </div>
-
-              <div className="space-y-6 bg-white/[0.02] border border-white/5 p-6 rounded-[32px] backdrop-blur-sm">
-                <div className="space-y-4">
-                  <label className="text-sm font-medium text-slate-300 ml-1">1. Qual é o produto?</label>
-                  <CategorySelector
-                    selectedId={selectedCategory}
-                    onSelect={setSelectedCategory}
-                  />
-                </div>
-
-                <div className="space-y-4">
-                  <label className="text-sm font-medium text-slate-300 ml-1">2. Envie sua foto</label>
-                  <UploadZone
-                    onImageSelected={handleImageSelected}
-                    isLoading={isActionLoading}
-                  />
-                </div>
-
-                <NeumorphButton
-                  intent="primary"
-                  size="large"
-                  fullWidth
-                  onClick={handleGenerate}
-                  disabled={!selectedFile || isActionLoading}
-                  loading={isActionLoading}
-                  className="rounded-2xl shadow-xl shadow-blue-900/40"
-                >
-                  {isUploading ? "Enviando Imagem..." : "Transformar em Profissional"}
-                </NeumorphButton>
-              </div>
+        <div className="flex-1 p-4 md:p-6 max-w-5xl mx-auto w-full flex flex-col min-h-0">
+          {/* Chat Section */}
+          <section className="flex-1 flex flex-col min-h-0 space-y-3">
+            <div className="flex items-center justify-between px-1">
+              <h2 className="text-lg font-bold font-work-sans text-white flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-blue-400" />
+                Workspace de Aprimoramento
+              </h2>
             </div>
 
-            {/* Right Column: Result Preview */}
-            <div className="lg:col-span-5 space-y-6">
-              <div className="h-full flex flex-col">
-                <div className="mb-4">
-                  <h3 className="text-sm font-medium text-slate-400 uppercase tracking-wider">Resultado</h3>
-                </div>
-
-                {status === "idle" ? (
-                  <div className="flex-1 rounded-[32px] border border-dashed border-white/10 bg-white/[0.02] flex flex-col items-center justify-center p-10 text-center space-y-4 min-h-[400px] backdrop-blur-sm">
-                    <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center">
-                      <Sparkles className="w-10 h-10 text-slate-600" />
-                    </div>
-                    <div className="space-y-2">
-                      <p className="text-slate-300 font-medium">Sua obra de arte aparecerá aqui</p>
-                      <p className="text-slate-500 text-sm max-w-[200px]">
-                        Faça o upload de uma foto ao lado para ver a mágica da IA.
-                      </p>
-                    </div>
-                  </div>
-                ) : (
-                  <GenerationResult
-                    status={status}
-                    inputUrl={inputUrl}
-                    outputUrl={outputUrl}
-                    error={error}
-                    onReset={reset}
-                  />
-                )}
+            <ChatInterface 
+              messages={messages} 
+              onSendMessage={handleSendMessage}
+              isLoading={isActionLoading}
+            />
+            
+            {(genError || uploadError) && (
+              <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-2">
+                <p className="text-red-400 text-[10px] text-center font-medium">{genError || uploadError}</p>
               </div>
-            </div>
-          </section>
-
-          {/* History Section */}
-          <section className="space-y-8 pt-8 border-t border-white/5">
-            <div className="flex items-center justify-between">
-              <div className="space-y-1">
-                <h2 className="text-2xl font-bold font-work-sans text-white">Minhas Criações</h2>
-                <p className="text-slate-500 text-sm">Suas últimas 20 gerações profissionais.</p>
-              </div>
-              <NeumorphButton size="small" className="rounded-xl border-white/10 bg-white/5">
-                Ver Todas
-              </NeumorphButton>
-            </div>
-
-            <HistoryGrid />
+            )}
           </section>
         </div>
       </main>
