@@ -4,7 +4,7 @@ import { BeforeAfterSlider } from "@/components/ui/before-after-slider";
 
 export function Hero() {
   return (
-    <section className="relative pt-4 pb-8 px-6 lg:pt-6 lg:pb-12 max-w-7xl mx-auto">
+    <section id="hero" className="relative pt-4 pb-8 px-6 lg:pt-6 lg:pb-12 max-w-7xl mx-auto">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-center">
         {/* Left Side: Text Content */}
         <div className="space-y-6 text-center lg:text-left flex flex-col items-center lg:items-start order-2 lg:order-1">

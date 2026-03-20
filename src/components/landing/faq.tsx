@@ -60,7 +60,7 @@ export function FAQ() {
   const [openIndex, setOpenIndex] = React.useState<number | null>(null);
 
   return (
-    <section className="py-24 px-6 max-w-3xl mx-auto font-poppins">
+    <section id="faq" className="py-24 px-6 max-w-3xl mx-auto font-poppins">
       <div className="text-center mb-16 space-y-4">
         <p className="text-sm font-bold tracking-widest text-blue-500 uppercase">Dúvidas Frequentes</p>
         <h2 className="text-3xl md:text-5xl font-bold font-work-sans tracking-tight text-white">

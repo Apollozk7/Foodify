@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
 import NeumorphButton from '@/components/ui/neumorph-button';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 const plans = [
   {
@@ -47,7 +48,7 @@ const plans = [
 
 export function Pricing() {
   return (
-    <section className="py-24 px-6 max-w-7xl mx-auto flex flex-col items-center font-poppins">
+    <section id="pricing" className="py-24 px-6 max-w-7xl mx-auto flex flex-col items-center font-poppins">
       <div className="text-center space-y-4 mb-16">
         <h2 className="text-4xl md:text-6xl font-bold font-work-sans tracking-tight bg-gradient-to-b from-white to-slate-400 bg-clip-text text-transparent">
           Planos flexíveis para seu negócio.<br />Escale quando precisar.
@@ -95,13 +96,15 @@ export function Pricing() {
                 ))}
               </ul>
 
-              <NeumorphButton 
-                intent={plan.popular ? "primary" : "default"}
-                fullWidth
-                className="font-bold"
-              >
-                {plan.id === 'avulso' ? 'Comprar Créditos' : 'Assinar Plano'}
-              </NeumorphButton>
+              <Link href="/sign-up" className="w-full">
+                <NeumorphButton 
+                  intent={plan.popular ? "primary" : "default"}
+                  fullWidth
+                  className="font-bold"
+                >
+                  {plan.id === 'avulso' ? 'Comprar Créditos' : 'Assinar Plano'}
+                </NeumorphButton>
+              </Link>
             </div>
           </div>
         ))}

@@ -9,6 +9,8 @@ import { FAQ } from "@/components/landing/faq";
 import NeumorphButton from "@/components/ui/neumorph-button";
 import { ArrowRight, ChevronUp } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false);
@@ -50,17 +52,21 @@ export default function LandingPage() {
                 </span>
               </div>
               <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
-                <a href="#" className="hover:text-white transition-colors">Início</a>
-                <a href="#" className="hover:text-white transition-colors">Preços</a>
-                <a href="#" className="hover:text-white transition-colors">Galeria</a>
+                <a href="#hero" className="hover:text-white transition-colors">Início</a>
+                <a href="#pricing" className="hover:text-white transition-colors">Preços</a>
+                <a href="#gallery" className="hover:text-white transition-colors">Galeria</a>
               </div>
               <div className="flex items-center gap-4">
-                <NeumorphButton intent="default" size="small" className="text-slate-400 hover:text-white font-inter">
-                  Entrar
-                </NeumorphButton>
-                <NeumorphButton intent="primary" size="small" className="font-inter">
-                  Criar conta
-                </NeumorphButton>
+                <Link href="/sign-in">
+                  <NeumorphButton intent="default" size="small" className="text-slate-400 hover:text-white font-inter">
+                    Entrar
+                  </NeumorphButton>
+                </Link>
+                <Link href="/sign-up">
+                  <NeumorphButton intent="primary" size="small" className="font-inter">
+                    Criar conta
+                  </NeumorphButton>
+                </Link>
               </div>
             </div>
           </motion.nav>
@@ -86,10 +92,12 @@ export default function LandingPage() {
               </p>
             </div>
             <div className="relative z-10 mt-8 md:mt-0">
-              <NeumorphButton intent="white" size="large" className="group/btn px-12 py-6 text-lg font-bold flex items-center gap-2">
-                Começar Agora
-                <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover/btn:translate-x-1" strokeWidth={3} />
-              </NeumorphButton>
+              <Link href="/sign-up">
+                <NeumorphButton intent="white" size="large" className="group/btn px-12 py-6 text-lg font-bold flex items-center gap-2">
+                  Começar Agora
+                  <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover/btn:translate-x-1" strokeWidth={3} />
+                </NeumorphButton>
+              </Link>
             </div>
           </div>
         </section>
@@ -114,9 +122,9 @@ export default function LandingPage() {
           <div>
             <h4 className="font-work-sans font-semibold mb-4">Produto</h4>
             <ul className="space-y-2 text-sm text-slate-500 font-inter">
-              <li><a href="#" className="hover:text-white transition-colors">Como funciona</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Funcionalidades</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Preços</a></li>
+              <li><a href="#hero" className="hover:text-white transition-colors">Como funciona</a></li>
+              <li><a href="#gallery" className="hover:text-white transition-colors">Funcionalidades</a></li>
+              <li><a href="#pricing" className="hover:text-white transition-colors">Preços</a></li>
             </ul>
           </div>
           <div>
