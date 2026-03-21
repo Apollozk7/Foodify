@@ -35,7 +35,7 @@ export async function refinePrompt({
         'X-Title': 'Estúdio IA Pro',
       },
       body: JSON.stringify({
-        model: "deepseek/deepseek-chat",
+        model: "deepseek/deepseek-v3.2",
         messages: [
           {
             role: "system",
