@@ -1,17 +1,20 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { updateSession } from "@/lib/supabase/middleware";
+import { NextResponse } from "next/server";
 
-const isPublicRoute = createRouteMatcher([
-  "/",
-  "/sign-in(.*)",
-  "/sign-up(.*)",
-  "/api/webhooks(.*)",
+const isEarlyAccessRoute = createRouteMatcher([
+  "/early-access",
+  "/api/early-access(.*)"
 ]);
 
+// Apenas quem já está autenticado pode acessar rotas não protegidas pelo Early Access
 export default clerkMiddleware(async (auth, req) => {
-  // 1. Protect all routes except public ones
-  if (!isPublicRoute(req)) {
-    await auth.protect();
+  const { userId } = await auth();
+
+  // Se o usuário não estiver logado E não estiver na rota de early access, redireciona para lá
+  if (!userId && !isEarlyAccessRoute(req)) {
+    const earlyAccessUrl = new URL("/early-access", req.url);
+    return NextResponse.redirect(earlyAccessUrl);
   }
 
   // 2. Update Supabase session
