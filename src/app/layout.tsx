@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Work_Sans, Inter, Poppins } from "next/font/google";
+import { Work_Sans, Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ptBR } from "@clerk/localizations";
 import { MeshGradientBackground } from "@/components/ui/mesh-gradient-background";
@@ -16,12 +16,6 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-  variable: "--font-poppins",
-});
-
 export const metadata: Metadata = {
   title: "Estúdio IA Pro - Transforme suas fotos de comida",
   description: "Fotos profissionais para o seu delivery em segundos usando Inteligência Artificial.",
@@ -36,7 +30,7 @@ export default function RootLayout({
     <ClerkProvider localization={ptBR}>
       <html
         lang="pt-BR"
-        className={`${workSans.variable} ${inter.variable} ${poppins.variable} h-full antialiased dark`}
+        className={`${workSans.variable} ${inter.variable} h-full antialiased dark scroll-smooth`}
       >
         <body className="min-h-full flex flex-col bg-[#020617] text-white selection:bg-white/10">
           <MeshGradientBackground />

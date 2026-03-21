@@ -4,6 +4,16 @@ import { BeforeAfterSlider } from "@/components/ui/before-after-slider";
 import Link from "next/link";
 
 export function Hero() {
+  const scrollToGallery = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const element = document.getElementById('gallery');
+    if (element) {
+      const yOffset = -80; // offset for the fixed navbar
+      const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  };
+
   return (
     <section id="hero" className="relative pt-4 pb-8 px-6 lg:pt-6 lg:pb-12 max-w-7xl mx-auto">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-center">
@@ -24,7 +34,7 @@ export function Hero() {
                 Começar agora (5 fotos grátis)
               </NeumorphButton>
             </Link>
-            <a href="#gallery" className="w-full sm:w-auto">
+            <a href="#gallery" onClick={scrollToGallery} className="w-full sm:w-auto">
               <NeumorphButton size="large" className="w-full sm:w-auto">
                 Ver galeria
               </NeumorphButton>

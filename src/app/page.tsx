@@ -29,6 +29,16 @@ export default function LandingPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const scrollToId = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      const yOffset = -80; // offset for the fixed navbar
+      const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen relative">
       <PromoBanner />
@@ -52,9 +62,9 @@ export default function LandingPage() {
                 </span>
               </div>
               <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
-                <a href="#hero" className="hover:text-white transition-colors">Início</a>
-                <a href="#pricing" className="hover:text-white transition-colors">Preços</a>
-                <a href="#gallery" className="hover:text-white transition-colors">Galeria</a>
+                <a href="#hero" onClick={(e) => scrollToId(e, 'hero')} className="hover:text-white transition-colors">Início</a>
+                <a href="#pricing" onClick={(e) => scrollToId(e, 'pricing')} className="hover:text-white transition-colors">Preços</a>
+                <a href="#gallery" onClick={(e) => scrollToId(e, 'gallery')} className="hover:text-white transition-colors">Galeria</a>
               </div>
               <div className="flex items-center gap-4">
                 <Link href="/sign-in">
@@ -80,7 +90,7 @@ export default function LandingPage() {
         <FAQ />
 
         {/* Final CTA Section */}
-        <section className="py-24 px-6 max-w-7xl mx-auto border-t border-white/5 font-poppins">
+        <section className="py-24 px-6 max-w-7xl mx-auto border-t border-white/5 font-inter">
           <div className="w-full flex flex-col md:flex-row items-center justify-between text-center md:text-left bg-gradient-to-b from-blue-600 to-indigo-900 rounded-[32px] p-10 md:p-20 text-white relative overflow-hidden group">
             <div className="absolute inset-0 bg-grid-white/[0.05] [mask-image:linear-gradient(t-b,white,transparent)]" />
             <div className="relative z-10 space-y-4">
@@ -121,10 +131,10 @@ export default function LandingPage() {
           </div>
           <div>
             <h4 className="font-work-sans font-semibold mb-4">Produto</h4>
-            <ul className="space-y-2 text-sm text-slate-500 font-inter">
-              <li><a href="#hero" className="hover:text-white transition-colors">Como funciona</a></li>
-              <li><a href="#gallery" className="hover:text-white transition-colors">Funcionalidades</a></li>
-              <li><a href="#pricing" className="hover:text-white transition-colors">Preços</a></li>
+            <ul className="space-y-3 text-sm text-slate-400">
+              <li><a href="#hero" onClick={(e) => scrollToId(e, 'hero')} className="hover:text-white transition-colors">Como funciona</a></li>
+              <li><a href="#gallery" onClick={(e) => scrollToId(e, 'gallery')} className="hover:text-white transition-colors">Funcionalidades</a></li>
+              <li><a href="#pricing" onClick={(e) => scrollToId(e, 'pricing')} className="hover:text-white transition-colors">Preços</a></li>
             </ul>
           </div>
           <div>

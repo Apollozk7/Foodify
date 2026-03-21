@@ -48,7 +48,7 @@ const plans = [
 
 export function Pricing() {
   return (
-    <section id="pricing" className="py-24 px-6 max-w-7xl mx-auto flex flex-col items-center font-poppins">
+    <section id="pricing" className="py-24 px-6 max-w-7xl mx-auto flex flex-col items-center font-inter">
       <div className="text-center space-y-4 mb-16">
         <h2 className="text-4xl md:text-6xl font-bold font-work-sans tracking-tight bg-gradient-to-b from-white to-slate-400 bg-clip-text text-transparent">
           Planos flexíveis para seu negócio.<br />Escale quando precisar.
