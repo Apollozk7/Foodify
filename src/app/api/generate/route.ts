@@ -9,8 +9,6 @@ import { z } from "zod";
 const generateSchema = z.object({
   imageUrl: z.string().url(),
   prompt: z.string().min(1),
-  category: z.string().min(1),
-  style: z.string().min(1),
 });
 
 export async function POST(req: NextRequest) {
@@ -33,9 +31,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Invalid request data", details: result.error.format() }, { status: 400 });
     }
 
-    const { imageUrl, prompt: userPrompt, category, style } = result.data;
+    const { imageUrl, prompt: userPrompt } = result.data;
 
-    // 2. Fetch user profile (to verify existence and get internal UUID)
+    // 2. Fetch user profile
     const { data: profile, error: profileError } = await supabaseAdmin
       .from("profiles")
       .select("id")
@@ -47,22 +45,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "User profile not found" }, { status: 404 });
     }
 
-    // 3. Fetch prompt template (to verify existence)
-    const { data: template, error: templateError } = await supabaseAdmin
-      .from("prompt_templates")
-      .select("base_prompt, negative_prompt")
-      .eq("category", category)
-      .eq("style", style)
-      .eq("active", true)
-      .single();
-
-    if (templateError || !template) {
-      console.error("Error fetching template:", templateError);
-      return NextResponse.json({ error: "Prompt template not found or inactive" }, { status: 404 });
-    }
-
-    // 4. Verify and consume credits
-    // Source of truth is the DB RPC for absolute concurrency safety
+    // 3. Verify and consume credits
     const { data: rpcData, error: rpcError } = await supabaseAdmin.rpc("consume_user_credits", {
       p_clerk_id: clerkId,
       p_amount: 1
@@ -73,28 +56,22 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Insufficient credits" }, { status: 403 });
     }
 
-    // Synchronize Redis after successful DB operation
     await setCredits(clerkId, rpcData[0].remaining_credits);
     creditConsumed = true;
 
-    const basePrompts = [template.base_prompt];
-
-    // 5. Refine prompt with Gemini
-    const { refined, negative } = await refinePrompt({
-      userInput: userPrompt,
-      category,
-      style,
-      templates: basePrompts
+    // 4. Refine prompt with Nano Banana 2 (DeepSeek)
+    const { refined, negative, aiMessage } = await refinePrompt({
+      userInput: userPrompt
     });
 
-    // 6. Submit to Fal.ai
+    // 5. Submit to Fal.ai
     const falRequestId = await submitGeneration({
       imageUrl,
       prompt: refined,
-      negativePrompt: negative || template.negative_prompt || undefined,
+      negativePrompt: negative || undefined,
     });
 
-    // 7. Create pending record in generations table
+    // 6. Create record
     const { data: generation, error: genError } = await supabaseAdmin
       .from("generations")
       .insert({
@@ -105,9 +82,8 @@ export async function POST(req: NextRequest) {
         user_prompt: userPrompt,
         refined_prompt: refined,
         metadata: {
-          category,
-          style,
-          negative_prompt: negative || template.negative_prompt
+          negative_prompt: negative,
+          ai_message: aiMessage
         }
       })
       .select("id")
@@ -118,7 +94,10 @@ export async function POST(req: NextRequest) {
       throw new Error("Failed to create generation record");
     }
 
-    return NextResponse.json({ generationId: generation.id });
+    return NextResponse.json({ 
+      generationId: generation.id,
+      aiMessage 
+    });
 
   } catch (error) {
     console.error("Error in /api/generate:", error);

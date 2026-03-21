@@ -3,7 +3,7 @@ import { env } from "@/env";
 
 export const createClient = () => {
   const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseKey = env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const supabaseKey = env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY;
 
   // Se as chaves não existirem, retornamos um cliente "dummy" ou lidamos com o erro graciosamente
   // para evitar que o Next.js quebre no boot.

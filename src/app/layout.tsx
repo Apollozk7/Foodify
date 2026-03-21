@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Work_Sans, Inter, Poppins } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ptBR } from "@clerk/localizations";
-import { shadesOfPurple } from "@clerk/themes";
 import { MeshGradientBackground } from "@/components/ui/mesh-gradient-background";
 import "./globals.css";
 
@@ -34,10 +33,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider 
-      localization={ptBR}
-      appearance={{ baseTheme: shadesOfPurple }}
-    >
+    <ClerkProvider localization={ptBR}>
       <html
         lang="pt-BR"
         className={`${workSans.variable} ${inter.variable} ${poppins.variable} h-full antialiased dark`}

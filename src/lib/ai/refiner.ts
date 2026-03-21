@@ -2,40 +2,28 @@ import { env } from "@/env";
 
 export interface RefinePromptOptions {
   userInput: string;
-  category: string;
-  style: string;
-  templates?: string[];
 }
 
 export interface RefinePromptResponse {
   refined: string;
   negative: string;
+  aiMessage: string;
 }
 
-const SYSTEM_PROMPT = `Você é um especialista em fotografia gastronômica e de produtos para delivery no Brasil. 
-Sua tarefa é transformar a descrição simples de um usuário em um prompt otimizado para geração de imagens I2I (Image-to-Image) profissional.
+const SYSTEM_PROMPT = `Você é o 'Aprimoramento de Imagens', um especialista em fotografia gastronômica e de produtos para delivery. 
+Sua tarefa é interagir com o usuário e transformar a descrição dele em um prompt profissional para geração de imagens I2I (Image-to-Image).
 
-Regras de Ouro:
+Regras:
 1. Gere um prompt positivo detalhado ('refined') e um prompt negativo ('negative').
-2. O prompt 'refined' deve ser rico em detalhes visuais: iluminação (ex: dramática, natural, softbox), composição (ex: close-up, macro, 45 graus), texturas (ex: suculento, crocante, fresco) e estilo de fotografia comercial de alta qualidade (estilo iFood/Rappi).
-3. O prompt 'refined' deve incluir elementos da categoria e estilo fornecidos.
-4. O prompt deve ser em Inglês para melhor compatibilidade com motores de IA, mas pode manter nomes próprios em português se necessário.
-5. A resposta DEVE ser estritamente um JSON válido no formato: { "refined": "...", "negative": "..." }.`;
+2. O prompt 'refined' deve ser em INGLÊS, rico em detalhes visuais: iluminação dramática, texturas suculentas, estilo comercial iFood/Rappi.
+3. Além dos prompts técnicos, gere uma pequena mensagem amigável em PORTUGUÊS ('aiMessage') para o usuário, confirmando o que você entendeu e o que vai gerar (ex: "Entendido! Vou transformar esse hambúrguer em uma obra de arte com iluminação quente e fundo de madeira rústica...").
+4. A resposta DEVE ser um JSON válido: { "refined": "...", "negative": "...", "aiMessage": "..." }.`;
 
 export async function refinePrompt({
-  userInput,
-  category,
-  style,
-  templates = []
+  userInput
 }: RefinePromptOptions): Promise<RefinePromptResponse> {
   const apiKey = env.OPENROUTER_API_KEY;
   const url = "https://openrouter.ai/api/v1/chat/completions";
-
-  const userPrompt = `Categoria: ${category}
-Estilo: ${style}
-Templates/Contexto: ${templates.join(', ')}
-
-Expandir o seguinte input do usuário: "${userInput}"`;
 
   try {
     const response = await fetch(url, {
@@ -43,11 +31,11 @@ Expandir o seguinte input do usuário: "${userInput}"`;
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKey}`,
-        'HTTP-Referer': 'https://estudio-ia-pro.vercel.app', // Site URL for OpenRouter ranking
+        'HTTP-Referer': 'https://estudio-ia-pro.vercel.app',
         'X-Title': 'Estúdio IA Pro',
       },
       body: JSON.stringify({
-        model: "deepseek/deepseek-chat", // DeepSeek V3/V3.2 on OpenRouter
+        model: "deepseek/deepseek-chat",
         messages: [
           {
             role: "system",
@@ -55,7 +43,7 @@ Expandir o seguinte input do usuário: "${userInput}"`;
           },
           {
             role: "user",
-            content: userPrompt
+            content: userInput
           }
         ],
         response_format: { type: "json_object" },
@@ -80,7 +68,8 @@ Expandir o seguinte input do usuário: "${userInput}"`;
       const parsed = JSON.parse(resultText);
       return {
         refined: parsed.refined || '',
-        negative: parsed.negative || ''
+        negative: parsed.negative || '',
+        aiMessage: parsed.aiMessage || 'Processando sua foto com inteligência...'
       };
     } catch (parseError) {
       console.error('Failed to parse OpenRouter response as JSON:', resultText);

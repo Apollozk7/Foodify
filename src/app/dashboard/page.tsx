@@ -9,9 +9,19 @@ import { useGeneration } from "@/hooks/use-generation";
 import { Sparkles, History, LayoutDashboard, Settings } from "lucide-react";
 import NeumorphButton from "@/components/ui/neumorph-button";
 import { createClient } from "@/lib/supabase/client";
+import { cn } from "@/lib/utils";
+import { BuyCreditsModal } from "@/components/dashboard/buy-credits-modal";
+import { Dropdown } from "@/components/ui/dropdown";
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState<'workspace' | 'history' | 'settings'>('workspace');
+  const [activeSettingsTab, setActiveSettingsTab] = useState<'account' | 'plan' | 'ai'>('account');
+  const [isBuyModalOpen, setIsBuyModalOpen] = useState(false);
+  
+  // Settings States
+  const [quality, setQuality] = useState('hd');
+  const [language, setLanguage] = useState('pt');
+
   const { generate, status, messages, isLoading, error: genError } = useGeneration();
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
@@ -189,33 +199,160 @@ export default function DashboardPage() {
           )}
 
           {activeTab === 'settings' && (
-            <section className="flex-1 flex flex-col min-h-0 space-y-6 overflow-hidden">
-              <div className="flex items-center justify-between px-1">
-                <h2 className="text-xl font-bold font-work-sans text-white">Configurações</h2>
-              </div>
-              <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-8 space-y-8">
-                <div className="space-y-4">
-                  <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Seu Plano</h3>
-                  <div className="flex items-center justify-between p-4 rounded-2xl bg-blue-600/10 border border-blue-500/20">
-                    <div>
-                      <p className="text-white font-bold">Plano Pro</p>
-                      <p className="text-xs text-blue-400">Créditos ilimitados para testes</p>
+            <section className="flex-1 flex flex-col min-h-0 overflow-hidden">
+              <div className="flex flex-col md:flex-row h-full gap-6">
+                {/* Internal Settings Sidebar */}
+                <aside className="w-full md:w-48 shrink-0 flex md:flex-col gap-1 p-1 bg-white/[0.02] border border-white/5 rounded-2xl md:bg-transparent md:border-none">
+                  {[
+                    { id: 'account', label: 'Conta', icon: UserButton },
+                    { id: 'plan', label: 'Plano', icon: CreditBadge },
+                    { id: 'ai', label: 'IA & Estúdio', icon: Sparkles },
+                  ].map((item) => (
+                    <button
+                      key={item.id}
+                      onClick={() => setActiveSettingsTab(item.id as any)}
+                      className={cn(
+                        "flex-1 md:flex-none flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all",
+                        activeSettingsTab === item.id 
+                          ? "bg-blue-600 text-white shadow-lg shadow-blue-900/20" 
+                          : "text-slate-400 hover:text-white hover:bg-white/5"
+                      )}
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </aside>
+
+                {/* Settings Content Area */}
+                <div className="flex-1 min-h-0 overflow-y-auto pr-2 scrollbar-hide space-y-6">
+                  {activeSettingsTab === 'account' && (
+                    <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
+                      <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-6 space-y-6">
+                        <h3 className="text-lg font-bold text-white">Seu Perfil</h3>
+                        <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/[0.02] border border-white/5">
+                          <UserButton />
+                          <div>
+                            <p className="text-white font-medium">Gerenciar Identidade</p>
+                            <p className="text-xs text-slate-500">Altere seu nome, email e senha através do Clerk.</p>
+                          </div>
+                        </div>
+                        <div className="pt-4 border-t border-white/5">
+                          <NeumorphButton intent="default" size="small" className="text-red-400 hover:text-red-300 border-red-500/10 hover:bg-red-500/5">
+                            Encerrar Sessão
+                          </NeumorphButton>
+                        </div>
+                      </div>
                     </div>
-                    <NeumorphButton size="small" className="bg-white text-black border-none">Gerenciar</NeumorphButton>
-                  </div>
-                </div>
-                
-                <div className="space-y-4">
-                  <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Suporte</h3>
-                  <p className="text-sm text-slate-400">
-                    Precisa de ajuda? Entre em contato com nosso time através do e-mail <span className="text-white">suporte@estudioiapro.com.br</span>
-                  </p>
+                  )}
+
+                  {activeSettingsTab === 'plan' && (
+                    <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
+                      <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-6 space-y-6">
+                        <div className="flex items-center justify-between">
+                          <h3 className="text-lg font-bold text-white">Plano e Créditos</h3>
+                          <div className="px-3 py-1 rounded-full bg-blue-600/10 border border-blue-500/20 text-[10px] font-bold text-blue-400 uppercase tracking-widest">
+                            Ativo
+                          </div>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="p-5 rounded-2xl bg-gradient-to-br from-blue-600/20 to-indigo-600/20 border border-blue-500/20">
+                            <p className="text-blue-400 text-xs font-bold uppercase tracking-wider mb-1">Saldo Atual</p>
+                            <div className="flex items-baseline gap-2">
+                              <span className="text-3xl font-bold text-white">124</span>
+                              <span className="text-slate-400 text-sm">créditos</span>
+                            </div>
+                          </div>
+                          <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5 flex flex-col justify-center">
+                            <p className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Próximo Faturamento</p>
+                            <p className="text-white font-medium">18 de Abril, 2026</p>
+                          </div>
+                        </div>
+
+                        <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/5 flex items-center justify-between">
+                          <div>
+                            <p className="text-white font-bold text-sm">Precisa de mais fotos?</p>
+                            <p className="text-xs text-slate-500">Adicione créditos avulsos a qualquer momento.</p>
+                          </div>
+                          <NeumorphButton 
+                            intent="primary" 
+                            size="small" 
+                            className="px-6"
+                            onClick={() => setIsBuyModalOpen(true)}
+                          >
+                            Adicionar Créditos
+                          </NeumorphButton>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {activeSettingsTab === 'ai' && (
+                    <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
+                      <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-6 space-y-8">
+                        <div className="space-y-4">
+                          <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider">Preferências do Estúdio</h3>
+                          <div className="space-y-4">
+                            <div className="flex items-center justify-between p-4 rounded-2xl bg-white/[0.02] border border-white/5">
+                              <div>
+                                <p className="text-white text-sm font-medium">Qualidade Padrão</p>
+                                <p className="text-[10px] text-slate-500">Resolução de saída das fotos geradas.</p>
+                              </div>
+                              <Dropdown 
+                                label="Selecionar Qualidade"
+                                value={quality}
+                                onChange={setQuality}
+                                options={[
+                                  { id: 'sd', label: 'Rápida (SD)' },
+                                  { id: 'hd', label: 'Alta (HD)' },
+                                  { id: '4k', label: 'Ultra (4K)' },
+                                ]}
+                              />
+                            </div>
+                            <div className="flex items-center justify-between p-4 rounded-2xl bg-white/[0.02] border border-white/5">
+                              <div>
+                                <p className="text-white text-sm font-medium">Auto-download</p>
+                                <p className="text-[10px] text-slate-500">Baixar imagem automaticamente após gerar.</p>
+                              </div>
+                              <div className="w-10 h-5 bg-white/10 rounded-full relative cursor-pointer group">
+                                <div className="absolute right-1 top-1 w-3 h-3 bg-blue-500 rounded-full shadow-lg shadow-blue-900/40" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="space-y-4">
+                          <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider">Nano Banana 2</h3>
+                          <div className="flex items-center justify-between p-4 rounded-2xl bg-white/[0.02] border border-white/5">
+                            <div>
+                              <p className="text-white text-sm font-medium">Idioma de Resposta</p>
+                              <p className="text-[10px] text-slate-500">Como a IA deve falar com você no chat.</p>
+                            </div>
+                            <Dropdown 
+                              label="Selecionar Idioma"
+                              value={language}
+                              onChange={setLanguage}
+                              options={[
+                                { id: 'pt', label: 'Português (Brasil)' },
+                                { id: 'en', label: 'English' },
+                              ]}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </section>
           )}
         </div>
       </main>
+
+      <BuyCreditsModal 
+        isOpen={isBuyModalOpen} 
+        onClose={() => setIsBuyModalOpen(false)} 
+      />
     </div>
   );
 }

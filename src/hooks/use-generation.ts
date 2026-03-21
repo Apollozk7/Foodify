@@ -4,11 +4,18 @@ import { useState, useCallback, useRef, useEffect } from "react";
 
 export type GenerationStatus = "idle" | "pending" | "processing" | "done" | "failed";
 
+export interface Message {
+  role: "user" | "ai";
+  content: string;
+  imageUrl?: string;
+  generatedImageUrl?: string;
+  status?: GenerationStatus;
+  timestamp: Date;
+}
+
 interface GenerateParams {
   imageUrl: string;
   prompt: string;
-  category: string;
-  style: string;
 }
 
 export function useGeneration() {
@@ -16,6 +23,7 @@ export function useGeneration() {
   const [outputUrl, setOutputUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
   
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -47,10 +55,35 @@ export function useGeneration() {
         setOutputUrl(data.outputUrl);
         setIsLoading(false);
         clearPolling();
+
+        // Update the last AI message with the result
+        setMessages(prev => {
+          const lastAi = [...prev].reverse().find(m => m.role === "ai");
+          if (lastAi) {
+            return prev.map(m => m === lastAi ? { ...m, status: "done", generatedImageUrl: data.outputUrl } : m);
+          }
+          return prev;
+        });
       } else if (data.status === "failed") {
         setError("Generation failed. Please try again.");
         setIsLoading(false);
         clearPolling();
+
+        setMessages(prev => {
+          const lastAi = [...prev].reverse().find(m => m.role === "ai");
+          if (lastAi) {
+            return prev.map(m => m === lastAi ? { ...m, status: "failed" } : m);
+          }
+          return prev;
+        });
+      } else if (data.status === "processing") {
+        setMessages(prev => {
+          const lastAi = [...prev].reverse().find(m => m.role === "ai");
+          if (lastAi) {
+            return prev.map(m => m === lastAi ? { ...m, status: "processing" } : m);
+          }
+          return prev;
+        });
       }
       
     } catch (err) {
@@ -68,6 +101,15 @@ export function useGeneration() {
     setStatus("pending");
     clearPolling();
 
+    // Add user message to history
+    const userMessage: Message = {
+      role: "user",
+      content: params.prompt,
+      imageUrl: params.imageUrl,
+      timestamp: new Date()
+    };
+    setMessages(prev => [...prev, userMessage]);
+
     try {
       const response = await fetch("/api/generate", {
         method: "POST",
@@ -82,18 +124,36 @@ export function useGeneration() {
         throw new Error(errorData.error || "Failed to start generation");
       }
 
-      const { generationId } = await response.json();
+      const { generationId, aiMessage } = await response.json();
+
+      // Add AI response to history
+      const aiResponse: Message = {
+        role: "ai",
+        content: aiMessage,
+        status: "pending",
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, aiResponse]);
       
       // Start polling
       pollingIntervalRef.current = setInterval(() => {
         pollStatus(generationId);
-      }, 2000); // Poll every 2 seconds
+      }, 2000);
 
     } catch (err) {
       console.error("Generation error:", err);
-      setError(err instanceof Error ? err.message : "An error occurred");
+      const errorMessage = err instanceof Error ? err.message : "An error occurred";
+      setError(errorMessage);
       setIsLoading(false);
       setStatus("failed");
+
+      // Add error message from AI if possible
+      setMessages(prev => [...prev, {
+        role: "ai",
+        content: `Desculpe, ocorreu um erro: ${errorMessage}`,
+        status: "failed",
+        timestamp: new Date()
+      }]);
     }
   }, [pollStatus, clearPolling]);
 
@@ -111,6 +171,7 @@ export function useGeneration() {
     status,
     outputUrl,
     isLoading,
+    messages,
     error,
   };
 }
