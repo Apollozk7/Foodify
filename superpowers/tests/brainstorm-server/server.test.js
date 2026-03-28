@@ -12,6 +12,7 @@ const { spawn } = require('child_process');
 const http = require('http');
 const WebSocket = require('ws');
 const fs = require('fs');
+const fsPromises = fs.promises;
 const path = require('path');
 const assert = require('assert');
 
@@ -19,10 +20,8 @@ const SERVER_PATH = path.join(__dirname, '../../skills/brainstorming/scripts/ser
 const TEST_PORT = 3334;
 const TEST_DIR = '/tmp/brainstorm-test';
 
-function cleanup() {
-  if (fs.existsSync(TEST_DIR)) {
-    fs.rmSync(TEST_DIR, { recursive: true });
-  }
+async function cleanup() {
+  await fsPromises.rm(TEST_DIR, { recursive: true, force: true });
 }
 
 async function sleep(ms) {
@@ -68,8 +67,12 @@ async function waitForServer(server) {
 }
 
 async function runTests() {
-  cleanup();
-  fs.mkdirSync(TEST_DIR, { recursive: true });
+  try {
+    await cleanup();
+  } catch (e) {
+    // Ignore error if directory doesn't exist
+  }
+  await fsPromises.mkdir(TEST_DIR, { recursive: true });
 
   const server = startServer();
   let stdoutAccum = '';
@@ -103,13 +106,12 @@ async function runTests() {
       return Promise.resolve();
     });
 
-    await test('writes .server-info file', () => {
+    await test('writes .server-info file', async () => {
       const infoPath = path.join(TEST_DIR, '.server-info');
       assert(fs.existsSync(infoPath), '.server-info should exist');
-      const info = JSON.parse(fs.readFileSync(infoPath, 'utf-8').trim());
+      const info = JSON.parse((await fsPromises.readFile(infoPath, 'utf-8')).trim());
       assert.strictEqual(info.type, 'server-started');
       assert.strictEqual(info.port, TEST_PORT);
-      return Promise.resolve();
     });
 
     // ========== HTTP Serving ==========
@@ -135,7 +137,7 @@ async function runTests() {
 
     await test('serves full HTML documents as-is (not wrapped)', async () => {
       const fullDoc = '<!DOCTYPE html>\n<html><head><title>Custom</title></head><body><h1>Custom Page</h1></body></html>';
-      fs.writeFileSync(path.join(TEST_DIR, 'full-doc.html'), fullDoc);
+      await fsPromises.writeFile(path.join(TEST_DIR, 'full-doc.html'), fullDoc);
       await sleep(300);
 
       const res = await fetch(`http://localhost:${TEST_PORT}/`);
@@ -146,7 +148,7 @@ async function runTests() {
 
     await test('wraps content fragments in frame template', async () => {
       const fragment = '<h2>Pick a layout</h2>\n<div class="options"><div class="option" data-choice="a"><div class="letter">A</div></div></div>';
-      fs.writeFileSync(path.join(TEST_DIR, 'fragment.html'), fragment);
+      await fsPromises.writeFile(path.join(TEST_DIR, 'fragment.html'), fragment);
       await sleep(300);
 
       const res = await fetch(`http://localhost:${TEST_PORT}/`);
@@ -157,9 +159,9 @@ async function runTests() {
     });
 
     await test('serves newest file by mtime', async () => {
-      fs.writeFileSync(path.join(TEST_DIR, 'older.html'), '<h2>Older</h2>');
+      await fsPromises.writeFile(path.join(TEST_DIR, 'older.html'), '<h2>Older</h2>');
       await sleep(100);
-      fs.writeFileSync(path.join(TEST_DIR, 'newer.html'), '<h2>Newer</h2>');
+      await fsPromises.writeFile(path.join(TEST_DIR, 'newer.html'), '<h2>Newer</h2>');
       await sleep(300);
 
       const res = await fetch(`http://localhost:${TEST_PORT}/`);
@@ -168,7 +170,7 @@ async function runTests() {
 
     await test('ignores non-html files for serving', async () => {
       // Write a newer non-HTML file — should still serve newest .html
-      fs.writeFileSync(path.join(TEST_DIR, 'data.json'), '{"not": "html"}');
+      await fsPromises.writeFile(path.join(TEST_DIR, 'data.json'), '{"not": "html"}');
       await sleep(300);
 
       const res = await fetch(`http://localhost:${TEST_PORT}/`);
@@ -209,7 +211,7 @@ async function runTests() {
     await test('writes choice events to .events file', async () => {
       // Clean up events from prior tests
       const eventsFile = path.join(TEST_DIR, '.events');
-      if (fs.existsSync(eventsFile)) fs.unlinkSync(eventsFile);
+      if (fs.existsSync(eventsFile)) await fsPromises.unlink(eventsFile);
 
       const ws = new WebSocket(`ws://localhost:${TEST_PORT}`);
       await new Promise(resolve => ws.on('open', resolve));
@@ -218,7 +220,7 @@ async function runTests() {
       await sleep(300);
 
       assert(fs.existsSync(eventsFile), '.events should exist');
-      const lines = fs.readFileSync(eventsFile, 'utf-8').trim().split('\n');
+      const lines = (await fsPromises.readFile(eventsFile, 'utf-8')).trim().split('\n');
       const event = JSON.parse(lines[lines.length - 1]);
       assert.strictEqual(event.choice, 'b');
       assert.strictEqual(event.text, 'Option B');
@@ -227,7 +229,7 @@ async function runTests() {
 
     await test('does NOT write non-choice events to .events file', async () => {
       const eventsFile = path.join(TEST_DIR, '.events');
-      if (fs.existsSync(eventsFile)) fs.unlinkSync(eventsFile);
+      if (fs.existsSync(eventsFile)) await fsPromises.unlink(eventsFile);
 
       const ws = new WebSocket(`ws://localhost:${TEST_PORT}`);
       await new Promise(resolve => ws.on('open', resolve));
@@ -257,7 +259,7 @@ async function runTests() {
         if (JSON.parse(data.toString()).type === 'reload') ws2Reload = true;
       });
 
-      fs.writeFileSync(path.join(TEST_DIR, 'multi-client.html'), '<h2>Multi</h2>');
+      await fsPromises.writeFile(path.join(TEST_DIR, 'multi-client.html'), '<h2>Multi</h2>');
       await sleep(500);
 
       assert(ws1Reload, 'Client 1 should receive reload');
@@ -273,7 +275,7 @@ async function runTests() {
       await sleep(100);
 
       // This should not throw even though ws1 is closed
-      fs.writeFileSync(path.join(TEST_DIR, 'after-close.html'), '<h2>After</h2>');
+      await fsPromises.writeFile(path.join(TEST_DIR, 'after-close.html'), '<h2>After</h2>');
       await sleep(300);
       // If we got here without error, the test passes
     });
@@ -304,7 +306,7 @@ async function runTests() {
         if (JSON.parse(data.toString()).type === 'reload') gotReload = true;
       });
 
-      fs.writeFileSync(path.join(TEST_DIR, 'watch-new.html'), '<h2>New</h2>');
+      await fsPromises.writeFile(path.join(TEST_DIR, 'watch-new.html'), '<h2>New</h2>');
       await sleep(500);
 
       assert(gotReload, 'Should send reload on new file');
@@ -313,7 +315,7 @@ async function runTests() {
 
     await test('sends reload on .html file change', async () => {
       const filePath = path.join(TEST_DIR, 'watch-change.html');
-      fs.writeFileSync(filePath, '<h2>Original</h2>');
+      await fsPromises.writeFile(filePath, '<h2>Original</h2>');
       await sleep(500);
 
       const ws = new WebSocket(`ws://localhost:${TEST_PORT}`);
@@ -324,7 +326,7 @@ async function runTests() {
         if (JSON.parse(data.toString()).type === 'reload') gotReload = true;
       });
 
-      fs.writeFileSync(filePath, '<h2>Modified</h2>');
+      await fsPromises.writeFile(filePath, '<h2>Modified</h2>');
       await sleep(500);
 
       assert(gotReload, 'Should send reload on file change');
@@ -340,7 +342,7 @@ async function runTests() {
         if (JSON.parse(data.toString()).type === 'reload') gotReload = true;
       });
 
-      fs.writeFileSync(path.join(TEST_DIR, 'data.txt'), 'not html');
+      await fsPromises.writeFile(path.join(TEST_DIR, 'data.txt'), 'not html');
       await sleep(500);
 
       assert(!gotReload, 'Should NOT reload for non-HTML files');
@@ -350,10 +352,10 @@ async function runTests() {
     await test('clears .events on new screen', async () => {
       // Create an .events file
       const eventsFile = path.join(TEST_DIR, '.events');
-      fs.writeFileSync(eventsFile, '{"choice":"a"}\n');
+      await fsPromises.writeFile(eventsFile, '{"choice":"a"}\n');
       assert(fs.existsSync(eventsFile));
 
-      fs.writeFileSync(path.join(TEST_DIR, 'clear-events.html'), '<h2>New screen</h2>');
+      await fsPromises.writeFile(path.join(TEST_DIR, 'clear-events.html'), '<h2>New screen</h2>');
       await sleep(500);
 
       assert(!fs.existsSync(eventsFile), '.events should be cleared on new screen');
@@ -361,7 +363,7 @@ async function runTests() {
 
     await test('logs screen-added on new file', async () => {
       stdoutAccum = '';
-      fs.writeFileSync(path.join(TEST_DIR, 'log-test.html'), '<h2>Log</h2>');
+      await fsPromises.writeFile(path.join(TEST_DIR, 'log-test.html'), '<h2>Log</h2>');
       await sleep(500);
 
       assert(stdoutAccum.includes('screen-added'), 'Should log screen-added');
@@ -369,11 +371,11 @@ async function runTests() {
 
     await test('logs screen-updated on file change', async () => {
       const filePath = path.join(TEST_DIR, 'log-update.html');
-      fs.writeFileSync(filePath, '<h2>V1</h2>');
+      await fsPromises.writeFile(filePath, '<h2>V1</h2>');
       await sleep(500);
 
       stdoutAccum = '';
-      fs.writeFileSync(filePath, '<h2>V2</h2>');
+      await fsPromises.writeFile(filePath, '<h2>V2</h2>');
       await sleep(500);
 
       assert(stdoutAccum.includes('screen-updated'), 'Should log screen-updated');
@@ -382,8 +384,8 @@ async function runTests() {
     // ========== Helper.js Content ==========
     console.log('\n--- Helper.js Verification ---');
 
-    await test('helper.js defines required APIs', () => {
-      const helperContent = fs.readFileSync(
+    await test('helper.js defines required APIs', async () => {
+      const helperContent = await fsPromises.readFile(
         path.join(__dirname, '../../skills/brainstorming/scripts/helper.js'), 'utf-8'
       );
       assert(helperContent.includes('toggleSelect'), 'Should define toggleSelect');
@@ -396,8 +398,8 @@ async function runTests() {
     // ========== Frame Template ==========
     console.log('\n--- Frame Template Verification ---');
 
-    await test('frame template has required structure', () => {
-      const template = fs.readFileSync(
+    await test('frame template has required structure', async () => {
+      const template = await fsPromises.readFile(
         path.join(__dirname, '../../skills/brainstorming/scripts/frame-template.html'), 'utf-8'
       );
       assert(template.includes('indicator-bar'), 'Should have indicator bar');
@@ -414,7 +416,7 @@ async function runTests() {
   } finally {
     server.kill();
     await sleep(100);
-    cleanup();
+    await cleanup();
   }
 }
 
