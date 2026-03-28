@@ -2,18 +2,18 @@ import type { Metadata } from "next";
 import { Work_Sans, Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ptBR } from "@clerk/localizations";
-import { MeshGradientBackground } from "@/components/ui/mesh-gradient-background";
 import "./globals.css";
 
 const workSans = Work_Sans({
   variable: "--font-work-sans",
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
 });
 
 export const metadata: Metadata = {
@@ -32,8 +32,7 @@ export default function RootLayout({
         lang="pt-BR"
         className={`${workSans.variable} ${inter.variable} h-full antialiased dark scroll-smooth`}
       >
-        <body className="min-h-full flex flex-col bg-[#020617] text-white selection:bg-white/10">
-          <MeshGradientBackground />
+        <body className="min-h-full flex flex-col bg-black text-white selection:bg-primary/20 selection:text-primary">
           {children}
         </body>
       </html>

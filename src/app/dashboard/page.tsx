@@ -6,7 +6,7 @@ import { ChatInterface } from "@/components/dashboard/chat-interface";
 import { CreditBadge } from "@/components/dashboard/credit-badge";
 import { HistoryGrid } from "@/components/dashboard/history-grid";
 import { useGeneration } from "@/hooks/use-generation";
-import { Sparkles, History, LayoutDashboard, Settings } from "lucide-react";
+import { Sparkles, History, LayoutDashboard, Settings, LogOut, Zap, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
@@ -79,81 +79,69 @@ export default function DashboardPage() {
   const isActionLoading = isLoading || isUploading;
 
   return (
-    <div className="min-h-screen bg-transparent text-slate-200 font-inter">
-      {/* Sidebar - Desktop */}
-      <aside className="fixed left-0 top-0 bottom-0 w-64 border-r border-white/5 bg-black/20 backdrop-blur-xl hidden lg:flex flex-col p-6 z-40">
-        <div className="flex items-center gap-2 mb-10">
-          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-white italic">
+    <div className="min-h-screen bg-black text-neutral-400 font-sans selection:bg-primary/20 selection:text-primary overflow-hidden">
+      {/* Sidebar - Reference Luxury Style */}
+      <aside className="fixed left-0 top-0 bottom-0 w-72 border-r border-white/5 bg-[#050505] hidden lg:flex flex-col p-8 z-40">
+        <div className="flex items-center gap-3 mb-12">
+          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center font-extrabold text-black italic text-lg">
             E
           </div>
-          <span className="font-work-sans font-bold text-xl tracking-tight text-white">
+          <span className="font-heading font-extrabold text-lg tracking-tighter text-white uppercase">
             Estúdio IA Pro
           </span>
         </div>
 
-        <nav className="flex-1 space-y-2">
-          <Button 
-            variant={activeTab === 'workspace' ? "neumorph-primary" : "neumorph"} 
-            size="neumorph-md" 
-            fullWidth 
-            onClick={() => setActiveTab('workspace')}
-            className={cn(
-              "justify-start gap-3 rounded-xl border-white/5",
-              activeTab !== 'workspace' && "text-slate-400 hover:text-white rounded-xl border-transparent bg-transparent shadow-none hover:bg-white/5"
-            )}
-          >
-            <LayoutDashboard className="w-4 h-4" />
-            Workspace
-          </Button>
-          <Button 
-            variant={activeTab === 'history' ? "neumorph-primary" : "neumorph"} 
-            size="neumorph-md" 
-            fullWidth 
-            onClick={() => setActiveTab('history')}
-            className={cn(
-              "justify-start gap-3 rounded-xl border-white/5",
-              activeTab !== 'history' && "text-slate-400 hover:text-white rounded-xl border-transparent bg-transparent shadow-none hover:bg-white/5"
-            )}
-          >
-            <History className="w-4 h-4" />
-            Minhas Fotos
-          </Button>
-          <Button 
-            variant={activeTab === 'settings' ? "neumorph-primary" : "neumorph"} 
-            size="neumorph-md" 
-            fullWidth 
-            onClick={() => setActiveTab('settings')}
-            className={cn(
-              "justify-start gap-3 rounded-xl border-white/5",
-              activeTab !== 'settings' && "text-slate-400 hover:text-white rounded-xl border-transparent bg-transparent shadow-none hover:bg-white/5"
-            )}
-          >
-            <Settings className="w-4 h-4" />
-            Configurações
-          </Button>
+        <nav className="flex-1 space-y-1">
+          {[
+            { id: 'workspace', label: 'Estúdio de Criação', icon: LayoutDashboard },
+            { id: 'history', label: 'Arquivo Digital', icon: History },
+            { id: 'settings', label: 'Configurações', icon: Settings },
+          ].map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setActiveTab(item.id as any)}
+              className={cn(
+                "w-full flex items-center gap-4 px-4 py-3 text-[10px] font-extrabold uppercase tracking-[0.2em] transition-all",
+                activeTab === item.id 
+                  ? "bg-white/5 text-primary border-l-2 border-primary" 
+                  : "text-neutral-600 hover:text-white hover:bg-white/[0.02] border-l-2 border-transparent"
+              )}
+            >
+              <item.icon className={cn("w-4 h-4", activeTab === item.id ? "text-primary" : "text-neutral-700")} />
+              {item.label}
+            </button>
+          ))}
         </nav>
 
-        <div className="pt-6 border-t border-white/5 flex items-center gap-3">
-          <UserButton />
-          <div className="flex flex-col">
-            <span className="text-sm font-medium text-white">Sua Conta</span>
-            <span className="text-xs text-slate-500">Premium Plan</span>
+        <div className="pt-8 border-t border-white/5 space-y-6">
+          <div className="flex items-center gap-4 px-2">
+            <UserButton appearance={{ elements: { userButtonAvatarBox: "w-10 h-10 rounded-none border border-white/10" } }} />
+            <div className="flex flex-col">
+              <span className="text-[10px] font-extrabold text-white uppercase tracking-wider">Identidade Digital</span>
+              <span className="text-[9px] text-primary font-bold uppercase tracking-widest">Premium Access</span>
+            </div>
           </div>
+          
+          <button 
+            onClick={() => signOut({ redirectUrl: '/early-access' })}
+            className="w-full flex items-center gap-3 px-4 py-3 text-[9px] font-extrabold uppercase tracking-[0.2em] text-neutral-600 hover:text-red-500 transition-colors"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            Encerrar Sessão
+          </button>
         </div>
       </aside>
 
-      {/* Main Content */}
-      <main className="lg:ml-64 h-screen flex flex-col overflow-hidden">
-        {/* Header */}
-        <header className="h-16 border-b border-white/5 flex items-center justify-between px-6 md:px-10 sticky top-0 bg-black/10 backdrop-blur-md z-30">
-          <div className="lg:hidden flex items-center gap-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-white italic">
-              E
-            </div>
-          </div>
-          <h1 className="text-lg font-semibold text-white hidden md:block capitalize">{activeTab}</h1>
-
+      {/* Main Content Area */}
+      <main className="lg:ml-72 h-screen flex flex-col relative">
+        {/* Top Header */}
+        <header className="h-20 border-b border-white/5 flex items-center justify-between px-8 md:px-12 sticky top-0 bg-black/80 backdrop-blur-xl z-30">
           <div className="flex items-center gap-4">
+            <div className="lg:hidden w-8 h-8 bg-primary rounded flex items-center justify-center font-bold text-black italic">E</div>
+            <h1 className="text-[10px] font-extrabold text-white uppercase tracking-[0.3em]">{activeTab}</h1>
+          </div>
+
+          <div className="flex items-center gap-6">
             <CreditBadge />
             <div className="lg:hidden">
               <UserButton />
@@ -161,192 +149,154 @@ export default function DashboardPage() {
           </div>
         </header>
 
-        <div className="flex-1 p-4 md:p-6 max-w-5xl mx-auto w-full flex flex-col min-h-0">
-          {activeTab === 'workspace' && (
-            <section className="flex-1 flex flex-col min-h-0 space-y-3">
-              <div className="flex items-center justify-between px-1">
-                <h2 className="text-lg font-bold font-work-sans text-white flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-blue-400" />
-                  Workspace de Aprimoramento
-                </h2>
-              </div>
-
-              <ChatInterface 
-                messages={messages} 
-                onSendMessage={handleSendMessage}
-                isLoading={isActionLoading}
-              />
-              
-              {(genError || uploadError) && (
-                <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-2">
-                  <p className="text-red-400 text-[10px] text-center font-medium">{genError || uploadError}</p>
+        {/* Scrollable Content */}
+        <div className="flex-1 overflow-y-auto p-8 md:p-12 scrollbar-hide">
+          <div className="max-w-5xl mx-auto w-full">
+            {activeTab === 'workspace' && (
+              <section className="space-y-8 animate-fade-up">
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-3 text-primary">
+                    <Zap className="w-4 h-4" />
+                    <span className="text-[10px] font-extrabold uppercase tracking-[0.3em]">IA Engine Active</span>
+                  </div>
+                  <h2 className="text-4xl md:text-5xl font-heading font-extrabold text-white tracking-tighter">
+                    Workspace de Aprimoramento.
+                  </h2>
                 </div>
-              )}
-            </section>
-          )}
 
-          {activeTab === 'history' && (
-            <section className="flex-1 flex flex-col min-h-0 space-y-6 overflow-hidden">
-              <div className="flex items-center justify-between px-1">
-                <div className="space-y-1">
-                  <h2 className="text-xl font-bold font-work-sans text-white">Minhas Criações</h2>
-                  <p className="text-slate-500 text-xs">Histórico completo de gerações profissionais.</p>
+                <div className="glass rounded-none p-1 shadow-2xl hairline">
+                  <ChatInterface 
+                    messages={messages} 
+                    onSendMessage={handleSendMessage}
+                    isLoading={isActionLoading}
+                  />
                 </div>
-              </div>
-              <div className="flex-1 overflow-y-auto pr-2 scrollbar-hide">
+                
+                {(genError || uploadError) && (
+                  <div className="border border-red-500/20 bg-red-500/5 p-4 flex items-center gap-3">
+                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                    <p className="text-red-400 text-[10px] font-extrabold uppercase tracking-widest">{genError || uploadError}</p>
+                  </div>
+                )}
+              </section>
+            )}
+
+            {activeTab === 'history' && (
+              <section className="space-y-10 animate-fade-up">
+                <div className="space-y-2">
+                  <h2 className="text-4xl md:text-5xl font-heading font-extrabold text-white tracking-tighter">Arquivo Digital.</h2>
+                  <p className="text-[10px] text-neutral-500 font-extrabold uppercase tracking-[0.2em]">Histórico completo de gerações profissionais.</p>
+                </div>
                 <HistoryGrid />
-              </div>
-            </section>
-          )}
+              </section>
+            )}
 
-          {activeTab === 'settings' && (
-            <section className="flex-1 flex flex-col min-h-0 overflow-hidden">
-              <div className="flex flex-col md:flex-row h-full gap-6">
-                {/* Internal Settings Sidebar */}
-                <aside className="w-full md:w-48 shrink-0 flex md:flex-col gap-1 p-1 bg-white/[0.02] border border-white/5 rounded-2xl md:bg-transparent md:border-none">
-                  {[
-                    { id: 'account', label: 'Conta', icon: UserButton },
-                    { id: 'plan', label: 'Plano', icon: CreditBadge },
-                    { id: 'ai', label: 'IA & Estúdio', icon: Sparkles },
-                  ].map((item) => (
-                    <button
-                      key={item.id}
-                      onClick={() => setActiveSettingsTab(item.id as any)}
-                      className={cn(
-                        "flex-1 md:flex-none flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all",
-                        activeSettingsTab === item.id 
-                          ? "bg-blue-600 text-white shadow-lg shadow-blue-900/20" 
-                          : "text-slate-400 hover:text-white hover:bg-white/5"
-                      )}
-                    >
-                      {item.label}
-                    </button>
-                  ))}
-                </aside>
+            {activeTab === 'settings' && (
+              <section className="space-y-12 animate-fade-up">
+                <div className="flex flex-col md:flex-row gap-12">
+                  {/* Internal Settings Nav */}
+                  <aside className="w-full md:w-48 flex md:flex-col gap-2">
+                    {[
+                      { id: 'account', label: 'Conta' },
+                      { id: 'plan', label: 'Plano' },
+                      { id: 'ai', label: 'IA Estúdio' },
+                    ].map((item) => (
+                      <button
+                        key={item.id}
+                        onClick={() => setActiveSettingsTab(item.id as any)}
+                        className={cn(
+                          "px-4 py-2 text-[10px] font-extrabold uppercase tracking-widest text-left transition-all",
+                          activeSettingsTab === item.id 
+                            ? "text-primary border-l border-primary" 
+                            : "text-neutral-600 hover:text-white border-l border-transparent"
+                        )}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </aside>
 
-                {/* Settings Content Area */}
-                <div className="flex-1 min-h-0 overflow-y-auto pr-2 scrollbar-hide space-y-6">
-                  {activeSettingsTab === 'account' && (
-                    <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
-                      <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-6 space-y-6">
-                        <h3 className="text-lg font-bold text-white">Seu Perfil</h3>
-                        <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/[0.02] border border-white/5">
-                          <UserButton />
-                          <div>
-                            <p className="text-white font-medium">Gerenciar Identidade</p>
-                            <p className="text-xs text-slate-500">Altere seu nome, email e senha através do Clerk.</p>
-                          </div>
-                        </div>
-                        <div className="pt-4 border-t border-white/5">
-                          <Button variant="neumorph" size="neumorph-sm" className="text-red-400 hover:text-red-300 border-red-500/10 hover:bg-red-500/5" onClick={() => signOut({ redirectUrl: '/early-access' })}>
-                            Encerrar Sessão
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {activeSettingsTab === 'plan' && (
-                    <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
-                      <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-6 space-y-6">
-                        <div className="flex items-center justify-between">
-                          <h3 className="text-lg font-bold text-white">Plano e Créditos</h3>
-                          <div className="px-3 py-1 rounded-full bg-blue-600/10 border border-blue-500/20 text-[10px] font-bold text-blue-400 uppercase tracking-widest">
-                            Ativo
-                          </div>
-                        </div>
-                        
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div className="p-5 rounded-2xl bg-gradient-to-br from-blue-600/20 to-indigo-600/20 border border-blue-500/20">
-                            <p className="text-blue-400 text-xs font-bold uppercase tracking-wider mb-1">Saldo Atual</p>
-                            <div className="flex items-baseline gap-2">
-                              <span className="text-3xl font-bold text-white">124</span>
-                              <span className="text-slate-400 text-sm">créditos</span>
+                  {/* Settings Panels */}
+                  <div className="flex-1 space-y-8">
+                    {activeSettingsTab === 'account' && (
+                      <div className="space-y-8">
+                        <div className="hairline p-8 space-y-8 bg-[#050505]">
+                          <h3 className="text-sm font-extrabold text-white uppercase tracking-[0.2em]">Perfil do Curador</h3>
+                          <div className="flex items-center gap-6 p-6 bg-white/[0.02] border border-white/5">
+                            <UserButton appearance={{ elements: { userButtonAvatarBox: "w-12 h-12 rounded-none" } }} />
+                            <div>
+                              <p className="text-white text-xs font-extrabold uppercase tracking-widest">Gerenciar Identidade</p>
+                              <p className="text-[10px] text-neutral-500 uppercase tracking-widest mt-1">Configurações de acesso e segurança.</p>
                             </div>
                           </div>
-                          <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5 flex flex-col justify-center">
-                            <p className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Próximo Faturamento</p>
-                            <p className="text-white font-medium">18 de Abril, 2026</p>
-                          </div>
                         </div>
+                      </div>
+                    )}
 
-                        <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/5 flex items-center justify-between">
-                          <div>
-                            <p className="text-white font-bold text-sm">Precisa de mais fotos?</p>
-                            <p className="text-xs text-slate-500">Adicione créditos avulsos a qualquer momento.</p>
+                    {activeSettingsTab === 'plan' && (
+                      <div className="space-y-8">
+                        <div className="hairline p-8 space-y-8 bg-[#050505]">
+                          <div className="flex items-center justify-between">
+                            <h3 className="text-sm font-extrabold text-white uppercase tracking-[0.2em]">Status do Plano</h3>
+                            <div className="flex items-center gap-2 px-3 py-1 bg-primary/10 border border-primary/20 rounded-full">
+                              <ShieldCheck className="w-3 h-3 text-primary" />
+                              <span className="text-[9px] font-extrabold text-primary uppercase tracking-widest">Ativo</span>
+                            </div>
                           </div>
+                          
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="p-8 bg-white/[0.02] border border-white/5 space-y-4">
+                              <p className="text-neutral-500 text-[10px] font-extrabold uppercase tracking-widest">Saldo de Créditos</p>
+                              <div className="flex items-baseline gap-2 text-white">
+                                <span className="text-4xl font-extrabold tracking-tighter">124</span>
+                                <span className="text-[10px] font-bold uppercase tracking-widest text-primary">Unidades</span>
+                              </div>
+                            </div>
+                            <div className="p-8 bg-white/[0.02] border border-white/5 space-y-4">
+                              <p className="text-neutral-500 text-[10px] font-extrabold uppercase tracking-widest">Renovação</p>
+                              <p className="text-sm font-extrabold text-white uppercase tracking-widest">18 ABR 2026</p>
+                            </div>
+                          </div>
+
                           <Button 
-                            variant="neumorph-primary" 
-                            size="neumorph-sm" 
-                            className="px-6"
+                            variant="neumorph-primary"
+                            className="w-full h-14 font-extrabold uppercase text-xs tracking-[0.2em] rounded-none"
                             onClick={() => setIsBuyModalOpen(true)}
                           >
                             Adicionar Créditos
                           </Button>
                         </div>
                       </div>
-                    </div>
-                  )}
+                    )}
 
-                  {activeSettingsTab === 'ai' && (
-                    <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
-                      <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-6 space-y-8">
-                        <div className="space-y-4">
-                          <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider">Preferências do Estúdio</h3>
-                          <div className="space-y-4">
-                            <div className="flex items-center justify-between p-4 rounded-2xl bg-white/[0.02] border border-white/5">
-                              <div>
-                                <p className="text-white text-sm font-medium">Qualidade Padrão</p>
-                                <p className="text-[10px] text-slate-500">Resolução de saída das fotos geradas.</p>
-                              </div>
-                              <Dropdown 
-                                label="Selecionar Qualidade"
-                                value={quality}
-                                onChange={setQuality}
-                                options={[
-                                  { id: 'sd', label: 'Rápida (SD)' },
-                                  { id: 'hd', label: 'Alta (HD)' },
-                                  { id: '4k', label: 'Ultra (4K)' },
-                                ]}
-                              />
-                            </div>
-                            <div className="flex items-center justify-between p-4 rounded-2xl bg-white/[0.02] border border-white/5">
-                              <div>
-                                <p className="text-white text-sm font-medium">Auto-download</p>
-                                <p className="text-[10px] text-slate-500">Baixar imagem automaticamente após gerar.</p>
-                              </div>
-                              <div className="w-10 h-5 bg-white/10 rounded-full relative cursor-pointer group">
-                                <div className="absolute right-1 top-1 w-3 h-3 bg-blue-500 rounded-full shadow-lg shadow-blue-900/40" />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="space-y-4">
-                          <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider">Nano Banana 2</h3>
-                          <div className="flex items-center justify-between p-4 rounded-2xl bg-white/[0.02] border border-white/5">
+                    {activeSettingsTab === 'ai' && (
+                      <div className="hairline p-8 space-y-10 bg-[#050505]">
+                        <div className="space-y-6">
+                          <h3 className="text-[10px] font-extrabold text-neutral-500 uppercase tracking-[0.3em]">Hardware de Processamento</h3>
+                          <div className="flex items-center justify-between p-6 bg-white/[0.02] border border-white/5">
                             <div>
-                              <p className="text-white text-sm font-medium">Idioma de Resposta</p>
-                              <p className="text-[10px] text-slate-500">Como a IA deve falar com você no chat.</p>
+                              <p className="text-white text-xs font-extrabold uppercase tracking-widest">Qualidade de Saída</p>
+                              <p className="text-[9px] text-neutral-600 uppercase tracking-widest mt-1">Resolução do motor de renderização.</p>
                             </div>
                             <Dropdown 
-                              label="Selecionar Idioma"
-                              value={language}
-                              onChange={setLanguage}
+                              label="HD Standard"
+                              value={quality}
+                              onChange={setQuality}
                               options={[
-                                { id: 'pt', label: 'Português (Brasil)' },
-                                { id: 'en', label: 'English' },
+                                { id: 'sd', label: 'FAST (SD)' },
+                                { id: 'hd', label: 'HIGH (HD)' },
+                                { id: '4k', label: 'ULTRA (4K)' },
                               ]}
                             />
                           </div>
                         </div>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
-              </div>
-            </section>
-          )}
+              </section>
+            )}
+          </div>
         </div>
       </main>
 

@@ -26,11 +26,11 @@ export function Dropdown({ label, options, value, onChange, className }: Dropdow
     <DropdownMenuPrimitive.Root>
       <DropdownMenuPrimitive.Trigger asChild>
         <button className={cn(
-          "inline-flex items-center gap-2 rounded-xl bg-white/5 px-4 py-2 text-sm font-semibold text-white shadow-inner border border-white/5 focus:outline-none hover:bg-white/10 transition-all data-[state=open]:bg-white/10",
+          "inline-flex items-center gap-2 bg-white/5 px-4 py-2 text-[10px] font-extrabold uppercase tracking-widest text-white border border-white/10 focus:outline-none hover:bg-white/10 transition-all data-[state=open]:bg-white/10",
           className
         )}>
           {selectedOption ? selectedOption.label : label}
-          <ChevronDown className="size-4 text-white/60" />
+          <ChevronDown className="size-3 text-white/60" />
         </button>
       </DropdownMenuPrimitive.Trigger>
 
@@ -38,18 +38,18 @@ export function Dropdown({ label, options, value, onChange, className }: Dropdow
         <DropdownMenuPrimitive.Content
           align="start"
           sideOffset={5}
-          className="w-52 origin-top-right rounded-2xl border border-white/10 bg-[#0f172a] p-1 text-sm text-white z-50 backdrop-blur-xl shadow-2xl animate-in fade-in zoom-in-95 duration-100"
+          className="w-52 bg-[#0A0A0A] border border-white/10 p-1 text-white z-50 shadow-2xl animate-in fade-in zoom-in-95 duration-100 rounded-none"
         >
           {options.map((option) => (
             <DropdownMenuPrimitive.Item
               key={option.id}
               onClick={() => onChange(option.id)}
-              className="group flex w-full items-center gap-3 rounded-xl px-3 py-2 outline-none cursor-pointer data-[highlighted]:bg-white/10 transition-colors"
+              className="group flex w-full items-center gap-3 px-3 py-2 outline-none cursor-pointer data-[highlighted]:bg-primary data-[highlighted]:text-black transition-colors"
             >
-              {option.icon && <option.icon className="size-4 text-white/30 group-data-[highlighted]:text-white/60" />}
-              <span className="flex-1">{option.label}</span>
+              {option.icon && <option.icon className="size-3 text-white/30 group-data-[highlighted]:text-black/60" />}
+              <span className="flex-1 text-[10px] font-bold uppercase tracking-wider">{option.label}</span>
               {value === option.id && (
-                <Check className="size-3.5 text-blue-500" strokeWidth={3} />
+                <Check className="size-3 text-white group-data-[highlighted]:text-black" strokeWidth={3} />
               )}
             </DropdownMenuPrimitive.Item>
           ))}
