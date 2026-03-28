@@ -29,10 +29,10 @@ describe('refinePrompt', () => {
       ]
     };
 
-    (global.fetch as any).mockResolvedValue({
+    vi.mocked(global.fetch).mockResolvedValue({
       ok: true,
       json: async () => mockResponse,
-    });
+    } as Response);
 
     const result = await refinePrompt({
       userInput: 'hambúrguer rústico',
@@ -57,12 +57,12 @@ describe('refinePrompt', () => {
   });
 
   it('should handle OpenRouter API errors gracefully', async () => {
-    (global.fetch as any).mockResolvedValue({
+    vi.mocked(global.fetch).mockResolvedValue({
       ok: false,
       status: 500,
       statusText: 'Internal Server Error',
       json: async () => ({ error: 'Internal Server Error' }),
-    });
+    } as Response);
 
     await expect(refinePrompt({
       userInput: 'hambúrguer rústico',
@@ -83,10 +83,10 @@ describe('refinePrompt', () => {
       ]
     };
 
-    (global.fetch as any).mockResolvedValue({
+    vi.mocked(global.fetch).mockResolvedValue({
       ok: true,
       json: async () => mockResponse,
-    });
+    } as Response);
 
     await expect(refinePrompt({
       userInput: 'hambúrguer rústico',
