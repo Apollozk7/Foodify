@@ -82,8 +82,6 @@ export async function POST(req: Request) {
         console.error("Error inserting user into database:", error);
         return new Response("Error: Database error", { status: 500 });
       }
-      
-      console.log(`Successfully synced user ${id} to database.`);
     } catch (error) {
       console.error("Unexpected error during database insert:", error);
       return new Response("Error: Unexpected database error", { status: 500 });
