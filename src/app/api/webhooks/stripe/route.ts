@@ -14,7 +14,7 @@ export async function POST(req: Request) {
   let event: Stripe.Event;
 
   if (!env.STRIPE_WEBHOOK_SECRET) {
-    return new NextResponse('Webhook Error: Missing Stripe Webhook Secret', { status: 500 });
+    return new NextResponse('Webhook Error', { status: 500 });
   }
 
   try {
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
     const credits = parseInt(session?.metadata?.credits || '0');
 
     if (!clerkId || !credits) {
-      return new NextResponse('Webhook Error: Missing metadata', { status: 400 });
+      return new NextResponse('Webhook Error', { status: 400 });
     }
 
     // 1. Update credits in Supabase using the atomic and idempotent RPC
