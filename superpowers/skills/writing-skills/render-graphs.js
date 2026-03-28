@@ -10,12 +10,11 @@
  * Extracts all ```dot blocks from SKILL.md and renders to SVG.
  * Useful for helping your human partner visualize the process flows.
  *
- * Requires: graphviz (dot) installed on system
  */
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const { Graphviz } = require('@hpcc-js/wasm');
 
 function extractDotBlocks(markdown) {
   const blocks = [];
@@ -67,21 +66,16 @@ ${bodies.join('\n\n')}
 }`;
 }
 
-function renderToSvg(dotContent) {
+async function renderToSvg(dotContent, graphviz) {
   try {
-    return execSync('dot -Tsvg', {
-      input: dotContent,
-      encoding: 'utf-8',
-      maxBuffer: 10 * 1024 * 1024
-    });
+    return graphviz.dot(dotContent);
   } catch (err) {
     console.error('Error running dot:', err.message);
-    if (err.stderr) console.error(err.stderr.toString());
     return null;
   }
 }
 
-function main() {
+async function main() {
   const args = process.argv.slice(2);
   const combine = args.includes('--combine');
   const skillDirArg = args.find(a => !a.startsWith('--'));
@@ -107,15 +101,7 @@ function main() {
     process.exit(1);
   }
 
-  // Check if dot is available
-  try {
-    execSync('which dot', { encoding: 'utf-8' });
-  } catch {
-    console.error('Error: graphviz (dot) not found. Install with:');
-    console.error('  brew install graphviz    # macOS');
-    console.error('  apt install graphviz     # Linux');
-    process.exit(1);
-  }
+  const graphviz = await Graphviz.load();
 
   const markdown = fs.readFileSync(skillFile, 'utf-8');
   const blocks = extractDotBlocks(markdown);
@@ -135,7 +121,7 @@ function main() {
   if (combine) {
     // Combine all graphs into one
     const combined = combineGraphs(blocks, skillName);
-    const svg = renderToSvg(combined);
+    const svg = await renderToSvg(combined, graphviz);
     if (svg) {
       const outputPath = path.join(outputDir, `${skillName}_combined.svg`);
       fs.writeFileSync(outputPath, svg);
@@ -151,7 +137,7 @@ function main() {
   } else {
     // Render each separately
     for (const block of blocks) {
-      const svg = renderToSvg(block.content);
+      const svg = await renderToSvg(block.content, graphviz);
       if (svg) {
         const outputPath = path.join(outputDir, `${block.name}.svg`);
         fs.writeFileSync(outputPath, svg);
