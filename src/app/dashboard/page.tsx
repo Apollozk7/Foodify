@@ -1,19 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, useClerk } from "@clerk/nextjs";
 import { ChatInterface } from "@/components/dashboard/chat-interface";
 import { CreditBadge } from "@/components/dashboard/credit-badge";
 import { HistoryGrid } from "@/components/dashboard/history-grid";
 import { useGeneration } from "@/hooks/use-generation";
 import { Sparkles, History, LayoutDashboard, Settings } from "lucide-react";
-import NeumorphButton from "@/components/ui/neumorph-button";
+import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import { BuyCreditsModal } from "@/components/dashboard/buy-credits-modal";
 import { Dropdown } from "@/components/ui/dropdown";
 
 export default function DashboardPage() {
+  const { signOut } = useClerk();
   const [activeTab, setActiveTab] = useState<'workspace' | 'history' | 'settings'>('workspace');
   const [activeSettingsTab, setActiveSettingsTab] = useState<'account' | 'plan' | 'ai'>('account');
   const [isBuyModalOpen, setIsBuyModalOpen] = useState(false);
@@ -91,9 +92,9 @@ export default function DashboardPage() {
         </div>
 
         <nav className="flex-1 space-y-2">
-          <NeumorphButton 
-            intent={activeTab === 'workspace' ? "primary" : "default"} 
-            size="medium" 
+          <Button 
+            variant={activeTab === 'workspace' ? "neumorph-primary" : "neumorph"} 
+            size="neumorph-md" 
             fullWidth 
             onClick={() => setActiveTab('workspace')}
             className={cn(
@@ -103,10 +104,10 @@ export default function DashboardPage() {
           >
             <LayoutDashboard className="w-4 h-4" />
             Workspace
-          </NeumorphButton>
-          <NeumorphButton 
-            intent={activeTab === 'history' ? "primary" : "default"} 
-            size="medium" 
+          </Button>
+          <Button 
+            variant={activeTab === 'history' ? "neumorph-primary" : "neumorph"} 
+            size="neumorph-md" 
             fullWidth 
             onClick={() => setActiveTab('history')}
             className={cn(
@@ -116,10 +117,10 @@ export default function DashboardPage() {
           >
             <History className="w-4 h-4" />
             Minhas Fotos
-          </NeumorphButton>
-          <NeumorphButton 
-            intent={activeTab === 'settings' ? "primary" : "default"} 
-            size="medium" 
+          </Button>
+          <Button 
+            variant={activeTab === 'settings' ? "neumorph-primary" : "neumorph"} 
+            size="neumorph-md" 
             fullWidth 
             onClick={() => setActiveTab('settings')}
             className={cn(
@@ -129,7 +130,7 @@ export default function DashboardPage() {
           >
             <Settings className="w-4 h-4" />
             Configurações
-          </NeumorphButton>
+          </Button>
         </nav>
 
         <div className="pt-6 border-t border-white/5 flex items-center gap-3">
@@ -237,9 +238,9 @@ export default function DashboardPage() {
                           </div>
                         </div>
                         <div className="pt-4 border-t border-white/5">
-                          <NeumorphButton intent="default" size="small" className="text-red-400 hover:text-red-300 border-red-500/10 hover:bg-red-500/5">
+                          <Button variant="neumorph" size="neumorph-sm" className="text-red-400 hover:text-red-300 border-red-500/10 hover:bg-red-500/5" onClick={() => signOut({ redirectUrl: '/early-access' })}>
                             Encerrar Sessão
-                          </NeumorphButton>
+                          </Button>
                         </div>
                       </div>
                     </div>
@@ -274,14 +275,14 @@ export default function DashboardPage() {
                             <p className="text-white font-bold text-sm">Precisa de mais fotos?</p>
                             <p className="text-xs text-slate-500">Adicione créditos avulsos a qualquer momento.</p>
                           </div>
-                          <NeumorphButton 
-                            intent="primary" 
-                            size="small" 
+                          <Button 
+                            variant="neumorph-primary" 
+                            size="neumorph-sm" 
                             className="px-6"
                             onClick={() => setIsBuyModalOpen(true)}
                           >
                             Adicionar Créditos
-                          </NeumorphButton>
+                          </Button>
                         </div>
                       </div>
                     </div>

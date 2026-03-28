@@ -19,7 +19,7 @@ const faqs = [
     answer: "Sim. A IA identifica o prato e aplica um fundo limpo e profissional automaticamente, sem que você precise fazer nada."
   },
   {
-    question: "Posso usar as fotos no iFood, Rappi e outros apps de delivery?",
+    question: "Posso usar as fotos no iFood e outros apps de delivery?",
     answer: "Sim, as imagens geradas são suas e podem ser usadas em qualquer plataforma — iFood, Rappi, Aiqfome, WhatsApp, Instagram e onde mais precisar."
   },
   {
@@ -60,58 +60,106 @@ export function FAQ() {
   const [openIndex, setOpenIndex] = React.useState<number | null>(null);
 
   return (
-    <section id="faq" className="py-24 px-6 max-w-3xl mx-auto font-inter">
-      <div className="text-center mb-16 space-y-4">
+    <section id="faq" className="py-10 px-4 sm:py-14 sm:px-6 max-w-7xl mx-auto font-inter">
+      <div className="text-center mb-8 sm:mb-10 space-y-3">
         <p className="text-sm font-bold tracking-widest text-blue-500 uppercase">Dúvidas Frequentes</p>
-        <h2 className="text-3xl md:text-5xl font-bold font-work-sans tracking-tight text-white">
+        <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold font-work-sans tracking-tight text-white">
           Tudo o que você precisa saber
         </h2>
       </div>
 
-      <div className="space-y-4">
-        {faqs.map((faq, index) => {
-          const isOpen = openIndex === index;
-          
-          return (
-            <div key={index} className="group">
-              <button 
-                onClick={() => setOpenIndex(isOpen ? null : index)}
-                className={cn(
-                  "w-full flex items-center justify-between p-6 text-left transition-all duration-300 rounded-[24px] border",
-                  isOpen 
-                    ? "bg-white/10 border-white/20" 
-                    : "bg-white/5 border-white/5 hover:bg-white/[0.08] hover:border-white/10"
-                )}
-              >
-                <span className="text-base md:text-lg font-semibold text-slate-200 pr-8">{faq.question}</span>
-                <div className={cn(
-                  "shrink-0 size-8 rounded-full flex items-center justify-center transition-all duration-300",
-                  isOpen ? "bg-blue-600 text-white" : "bg-white/5 text-slate-400"
-                )}>
-                  {isOpen ? <X className="size-4" /> : <Plus className="size-4" />}
-                </div>
-              </button>
+      <div className="flex flex-col md:flex-row gap-3 items-start">
+        {/* Coluna esquerda */}
+        <div className="flex-1 flex flex-col gap-3">
+          {faqs.slice(0, Math.ceil(faqs.length / 2)).map((faq, i) => {
+            const index = i;
+            const isOpen = openIndex === index;
+            return (
+              <div key={index} className="group">
+                <button
+                  onClick={() => setOpenIndex(isOpen ? null : index)}
+                  className={cn(
+                    "w-full flex items-center justify-between p-4 sm:p-6 text-left transition-all duration-300 rounded-[20px] sm:rounded-[24px] border",
+                    isOpen
+                      ? "bg-white/10 border-white/20"
+                      : "bg-white/5 border-white/5 hover:bg-white/[0.08] hover:border-white/10"
+                  )}
+                >
+                  <span className="text-base md:text-lg font-semibold text-slate-200 pr-8">{faq.question}</span>
+                  <div className={cn(
+                    "shrink-0 size-8 rounded-full flex items-center justify-center transition-all duration-300",
+                    isOpen ? "bg-blue-600 text-white" : "bg-white/5 text-slate-400"
+                  )}>
+                    {isOpen ? <X className="size-4" /> : <Plus className="size-4" />}
+                  </div>
+                </button>
+                <AnimatePresence>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-4 py-4 sm:px-8 sm:py-6">
+                        <p className="text-slate-400 leading-relaxed text-sm md:text-base font-inter">
+                          {faq.answer}
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
+        </div>
 
-              <AnimatePresence>
-                {isOpen && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: 'easeInOut' }}
-                    className="overflow-hidden"
-                  >
-                    <div className="px-8 py-6">
-                      <p className="text-slate-400 leading-relaxed text-sm md:text-base font-inter">
-                        {faq.answer}
-                      </p>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          );
-        })}
+        {/* Coluna direita */}
+        <div className="flex-1 flex flex-col gap-3">
+          {faqs.slice(Math.ceil(faqs.length / 2)).map((faq, i) => {
+            const index = Math.ceil(faqs.length / 2) + i;
+            const isOpen = openIndex === index;
+            return (
+              <div key={index} className="group">
+                <button
+                  onClick={() => setOpenIndex(isOpen ? null : index)}
+                  className={cn(
+                    "w-full flex items-center justify-between p-6 text-left transition-all duration-300 rounded-[24px] border",
+                    isOpen
+                      ? "bg-white/10 border-white/20"
+                      : "bg-white/5 border-white/5 hover:bg-white/[0.08] hover:border-white/10"
+                  )}
+                >
+                  <span className="text-base md:text-lg font-semibold text-slate-200 pr-8">{faq.question}</span>
+                  <div className={cn(
+                    "shrink-0 size-8 rounded-full flex items-center justify-center transition-all duration-300",
+                    isOpen ? "bg-blue-600 text-white" : "bg-white/5 text-slate-400"
+                  )}>
+                    {isOpen ? <X className="size-4" /> : <Plus className="size-4" />}
+                  </div>
+                </button>
+                <AnimatePresence>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-8 py-6">
+                        <p className="text-slate-400 leading-relaxed text-sm md:text-base font-inter">
+                          {faq.answer}
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

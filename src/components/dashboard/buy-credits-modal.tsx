@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, CreditCard, Sparkles, ArrowRight, Check } from "lucide-react";
-import NeumorphButton from "@/components/ui/neumorph-button";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface BuyCreditsModalProps {
@@ -144,19 +144,18 @@ export function BuyCreditsModal({ isOpen, onClose }: BuyCreditsModalProps) {
 
             {/* Action */}
             <div className="pt-2">
-              <NeumorphButton 
-                intent="primary" 
-                size="large" 
-                fullWidth 
+              <Button 
+                variant="neumorph-primary" 
+                size="neumorph-lg" 
+                className="w-full rounded-2xl py-6"
                 onClick={handleContinue}
                 disabled={isRedirecting}
                 loading={isRedirecting}
-                className="rounded-2xl py-6"
               >
                 {!isRedirecting && <CreditCard className="w-5 h-5 mr-2" />}
                 {isRedirecting ? "Processando..." : `Pagar R$ ${selectedPlan.price}`}
                 {!isRedirecting && <ArrowRight className="w-4 h-4 ml-auto" />}
-              </NeumorphButton>
+              </Button>
 
               <p className="text-[10px] text-center text-slate-600 mt-4">
                 Pagamento 100% seguro. Créditos caem na conta instantaneamente.

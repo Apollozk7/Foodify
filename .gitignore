@@ -42,3 +42,20 @@ next-env.d.ts
 
 # clerk configuration (can include secrets)
 /.clerk/
+
+# ai agents & orchestration
+.agents/
+.metaswarm/
+superpowers/
+.superpowers/
+.gemini/
+.gemini_security/
+.claude/
+
+# agents
+.agents
+.claude
+.gemini
+.gemini_security
+.superpowers
+.metaswarm

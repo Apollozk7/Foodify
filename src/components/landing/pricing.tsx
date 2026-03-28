@@ -1,11 +1,10 @@
 'use client';
 
 import * as React from 'react';
-import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
-import NeumorphButton from '@/components/ui/neumorph-button';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const plans = [
   {
@@ -47,13 +46,14 @@ const plans = [
 ];
 
 export function Pricing() {
+  const router = useRouter();
   return (
-    <section id="pricing" className="py-24 px-6 max-w-7xl mx-auto flex flex-col items-center font-inter">
-      <div className="text-center space-y-4 mb-16">
-        <h2 className="text-4xl md:text-6xl font-bold font-work-sans tracking-tight bg-gradient-to-b from-white to-slate-400 bg-clip-text text-transparent">
-          Planos flexíveis para seu negócio.<br />Escale quando precisar.
+    <section id="pricing" className="py-10 px-4 sm:py-14 sm:px-6 max-w-7xl mx-auto flex flex-col items-center font-inter">
+      <div className="text-center space-y-3 mb-8 sm:mb-10">
+        <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold font-work-sans tracking-tight bg-gradient-to-b from-white to-slate-400 bg-clip-text text-transparent">
+          Planos flexíveis para seu negócio.<br className="hidden sm:block" />Escale quando precisar.
         </h2>
-        <p className="text-slate-400 font-inter text-lg max-w-2xl mx-auto">
+        <p className="text-slate-300 font-inter text-base sm:text-lg max-w-2xl mx-auto font-medium">
           Escolha o pacote ideal para o tamanho do seu delivery. <br className="hidden md:block" />
           Pague apenas pelo que usar, sem taxas ocultas.
         </p>
@@ -68,8 +68,8 @@ export function Pricing() {
             )}
             <div className={cn(
               "relative flex-1 rounded-[32px] p-6 flex flex-col border transition-all duration-300",
-              plan.popular 
-                ? "bg-[#020617] border-white/10 backdrop-blur-xl" 
+              plan.popular
+                ? "bg-[#020617] border-white/10 backdrop-blur-xl"
                 : "bg-white/5 border-white/10 hover:border-white/20 hover:bg-white/[0.07] backdrop-blur-sm"
             )}>
               {plan.popular && (
@@ -88,7 +88,7 @@ export function Pricing() {
                 <div className="text-blue-400 font-semibold mt-1">{plan.credits}</div>
               </div>
 
-              <p className="text-slate-500 text-xs mb-6 font-inter h-8">{plan.description}</p>
+              <p className="text-slate-300 text-xs mb-6 font-inter h-8 font-medium">{plan.description}</p>
 
               <ul className="space-y-3 mb-8 flex-1">
                 {plan.features.map((feature, idx) => (
@@ -96,15 +96,13 @@ export function Pricing() {
                 ))}
               </ul>
 
-              <Link href="/sign-up" className="w-full">
-                <NeumorphButton 
-                  intent={plan.popular ? "primary" : "default"}
-                  fullWidth
-                  className="font-bold"
-                >
-                  {plan.id === 'avulso' ? 'Comprar Créditos' : 'Assinar Plano'}
-                </NeumorphButton>
-              </Link>
+              <Button
+                variant={plan.popular ? "neumorph-primary" : "neumorph"}
+                className="w-full font-bold shadow-md"
+                onClick={() => window.location.href = '/sign-up'}
+              >
+                {plan.id === 'avulso' ? 'Comprar Créditos' : 'Assinar Plano'}
+              </Button>
             </div>
           </div>
         ))}
@@ -117,9 +115,9 @@ function PricingFeature({ text }: { text: string }) {
   return (
     <li className="flex items-center gap-3 text-[13px] text-slate-300">
       <div className="flex-shrink-0 w-4 h-4 rounded-full bg-blue-600/10 flex items-center justify-center">
-        <Check className="w-2.5 h-2.5 text-blue-500" />
+        <Check className="w-2.5 h-2.5 text-blue-500" strokeWidth={3} />
       </div>
-      <span className="leading-tight">{text}</span>
+      <span className="leading-tight font-medium">{text}</span>
     </li>
   );
 }
