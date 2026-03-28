@@ -63,7 +63,13 @@ export function ChatInterface({ messages, onSendMessage, isLoading }: ChatInterf
   };
 
   // Find the last user image to show in the before/after slider
-  const lastUserImage = [...messages].reverse().find(m => m.role === "user" && m.imageUrl)?.imageUrl;
+  let lastUserImage: string | undefined;
+  for (let i = messages.length - 1; i >= 0; i--) {
+    if (messages[i].role === "user" && messages[i].imageUrl) {
+      lastUserImage = messages[i].imageUrl;
+      break;
+    }
+  }
 
   return (
     <div className="flex flex-col h-full flex-1 bg-white/[0.01] border border-white/5 rounded-[32px] overflow-hidden backdrop-blur-sm min-h-0">
