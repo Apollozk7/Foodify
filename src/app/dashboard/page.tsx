@@ -210,7 +210,7 @@ export default function DashboardPage() {
                   ].map((item) => (
                     <button
                       key={item.id}
-                      onClick={() => setActiveSettingsTab(item.id as any)}
+                      onClick={() => setActiveSettingsTab(item.id as 'account' | 'plan' | 'ai')}
                       className={cn(
                         "flex-1 md:flex-none flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all",
                         activeSettingsTab === item.id 

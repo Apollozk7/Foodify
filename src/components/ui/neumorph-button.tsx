@@ -43,7 +43,7 @@ const NeumorphButton = React.forwardRef<HTMLButtonElement, NeumorphButtonProps>(
           fullWidth ? "w-full" : "w-auto",
           className
         )}
-        {...(props as any)}
+        {...(props as React.ComponentPropsWithoutRef<typeof motion.button>)}
       >
         {/* Glossy Overlay */}
         <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />

@@ -43,16 +43,16 @@ export async function GET(
     }
 
     // 3. Call Fal.ai to check status
-    const status = (await getGenerationStatus(generation.fal_request_id)) as any;
+    const status = (await getGenerationStatus(generation.fal_request_id));
 
     let currentStatus = generation.status;
     let outputUrl = generation.output_image_url;
 
     if (status.status === "COMPLETED") {
       // 4. Fetch the result if completed
-      const result: any = await fal.queue.result("fal-ai/nano-banana", {
+      const result = (await fal.queue.result("fal-ai/nano-banana", {
         requestId: generation.fal_request_id,
-      });
+      })) as { images?: { url: string }[], image?: { url: string } };
 
       // Assuming the result has images[0].url
       outputUrl = result.images?.[0]?.url || result.image?.url;
@@ -67,7 +67,7 @@ export async function GET(
         })
         .eq("id", generationId);
 
-    } else if (status.status === "FAILED") {
+    } else if ((status as { status: string }).status === "FAILED") {
       // Use the new atomic RPC to handle failure and refund
       const { data: rpcData, error: rpcError } = await supabaseAdmin.rpc("handle_generation_failure", {
         p_generation_id: generationId,
