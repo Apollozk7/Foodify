@@ -17,6 +17,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 // Reference standard images for the luxury food feel
 const HERO_IMAGES = [
@@ -120,6 +121,7 @@ export default function LandingPage() {
         {/* Hero Section - Reference Visuals */}
         <section id="inicio" className="relative min-h-screen flex items-center justify-center pt-20">
           {/* Floating Grid Background */}
+          {/* ⚡ Bolt: Replaced standard <img> with next/image <Image> for automatic formatting, lazy loading and better LCP */}
           <div className="absolute inset-0 z-0 opacity-20 grid grid-cols-2 md:grid-cols-6 gap-4 p-4 pointer-events-none">
             {HERO_IMAGES.map((img, idx) => (
               <motion.div 
@@ -132,7 +134,7 @@ export default function LandingPage() {
                   idx % 2 === 0 ? "translate-y-12" : "-translate-y-8"
                 )}
               >
-                <img src={img} className="object-cover w-full h-full" alt="Luxury Food" />
+                <Image src={img} fill sizes="(max-width: 768px) 50vw, 16vw" className="object-cover w-full h-full" alt="Luxury Food" />
               </motion.div>
             ))}
           </div>
@@ -182,10 +184,13 @@ export default function LandingPage() {
 
         {/* Feature Visual Showcase - The "Editorial" Section */}
         <section className="py-32 px-8 max-w-7xl mx-auto">
-          <div className="relative group rounded-3xl overflow-hidden hairline shadow-2xl bg-[#050505]">
-            <img 
+          {/* ⚡ Bolt: Replaced standard <img> with next/image <Image> for automatic formatting, lazy loading and better LCP */}
+          <div className="relative group rounded-3xl overflow-hidden hairline shadow-2xl bg-[#050505] aspect-[21/9]">
+            <Image
               src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&q=80&w=1600" 
-              className="w-full aspect-[21/9] object-cover opacity-60 transition-transform duration-[2s] group-hover:scale-110"
+              fill
+              sizes="(max-width: 1280px) 100vw, 1280px"
+              className="w-full h-full object-cover opacity-60 transition-transform duration-[2s] group-hover:scale-110"
               alt="Professional Output"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/40 to-transparent flex items-center p-12 md:p-20">
@@ -231,29 +236,30 @@ export default function LandingPage() {
           </div>
 
           {/* Editorial Grid Gallery */}
+          {/* ⚡ Bolt: Replaced standard <img> with next/image <Image> for automatic formatting, lazy loading and better LCP */}
           <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="space-y-8">
-              <div className="hairline rounded-2xl overflow-hidden aspect-[3/4] bg-neutral-900 group">
-                <img src={HERO_IMAGES[0]} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="Result" />
+              <div className="relative hairline rounded-2xl overflow-hidden aspect-[3/4] bg-neutral-900 group">
+                <Image src={HERO_IMAGES[0]} fill sizes="(max-width: 768px) 100vw, 33vw" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="Result" />
               </div>
-              <div className="hairline rounded-2xl overflow-hidden aspect-square bg-neutral-900 group">
-                <img src={HERO_IMAGES[1]} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="Result" />
+              <div className="relative hairline rounded-2xl overflow-hidden aspect-square bg-neutral-900 group">
+                <Image src={HERO_IMAGES[1]} fill sizes="(max-width: 768px) 100vw, 33vw" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="Result" />
               </div>
             </div>
             <div className="space-y-8 md:-translate-y-12">
-              <div className="hairline rounded-2xl overflow-hidden aspect-[4/5] bg-neutral-900 group shadow-2xl shadow-primary/10">
-                <img src={HERO_IMAGES[2]} className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700" alt="Result" />
+              <div className="relative hairline rounded-2xl overflow-hidden aspect-[4/5] bg-neutral-900 group shadow-2xl shadow-primary/10">
+                <Image src={HERO_IMAGES[2]} fill sizes="(max-width: 768px) 100vw, 33vw" className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700" alt="Result" />
               </div>
-              <div className="hairline rounded-2xl overflow-hidden aspect-[3/4] bg-neutral-900 group">
-                <img src={HERO_IMAGES[3]} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="Result" />
+              <div className="relative hairline rounded-2xl overflow-hidden aspect-[3/4] bg-neutral-900 group">
+                <Image src={HERO_IMAGES[3]} fill sizes="(max-width: 768px) 100vw, 33vw" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="Result" />
               </div>
             </div>
             <div className="space-y-8">
-              <div className="hairline rounded-2xl overflow-hidden aspect-square bg-neutral-900 group">
-                <img src={HERO_IMAGES[4]} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="Result" />
+              <div className="relative hairline rounded-2xl overflow-hidden aspect-square bg-neutral-900 group">
+                <Image src={HERO_IMAGES[4]} fill sizes="(max-width: 768px) 100vw, 33vw" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="Result" />
               </div>
-              <div className="hairline rounded-2xl overflow-hidden aspect-[3/4] bg-neutral-900 group">
-                <img src={HERO_IMAGES[5]} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="Result" />
+              <div className="relative hairline rounded-2xl overflow-hidden aspect-[3/4] bg-neutral-900 group">
+                <Image src={HERO_IMAGES[5]} fill sizes="(max-width: 768px) 100vw, 33vw" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="Result" />
               </div>
             </div>
           </div>
