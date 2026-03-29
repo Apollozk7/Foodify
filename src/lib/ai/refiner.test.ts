@@ -94,6 +94,14 @@ describe('refinePrompt', () => {
       category: 'Alimentos',
       style: 'Fotografia de Produto',
       templates: ['delivery']
-    })).rejects.toThrow('Failed to parse refined prompt');
+    }) as any).rejects.toThrow('Failed to parse refined prompt');
+  });
+
+  it('should handle network or general fetch errors', async () => {
+    vi.mocked(global.fetch).mockRejectedValue(new Error('Network failure'));
+
+    await expect(refinePrompt({
+      userInput: 'hambúrguer rústico',
+    } as any)).rejects.toThrow('Network failure');
   });
 });
