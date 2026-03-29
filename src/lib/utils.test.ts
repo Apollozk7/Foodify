@@ -11,7 +11,7 @@ describe('cn utility', () => {
   });
 
   it('should handle object inputs', () => {
-    expect(cn({ 'class1': true, 'class2': false, 'class3': true })).toBe('class1 class3');
+    expect(cn({ class1: true, class2: false, class3: true })).toBe('class1 class3');
   });
 
   it('should handle nested array inputs', () => {
@@ -34,7 +34,14 @@ describe('cn utility', () => {
   });
 
   it('should handle mixed inputs', () => {
-    expect(cn('base-class', { 'conditional-true': true, 'conditional-false': false }, ['array-class', 'another-array-class'], 'last-class')).toBe('base-class conditional-true array-class another-array-class last-class');
+    expect(
+      cn(
+        'base-class',
+        { 'conditional-true': true, 'conditional-false': false },
+        ['array-class', 'another-array-class'],
+        'last-class'
+      )
+    ).toBe('base-class conditional-true array-class another-array-class last-class');
   });
 
   it('should return empty string for no inputs', () => {

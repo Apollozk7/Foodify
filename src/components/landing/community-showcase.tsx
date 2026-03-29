@@ -6,7 +6,7 @@ import { EmblaOptionsType } from 'embla-carousel';
 import { Sparkles } from 'lucide-react';
 
 export function CommunityShowcase() {
-  const OPTIONS: EmblaOptionsType = { 
+  const OPTIONS: EmblaOptionsType = {
     loop: true,
     align: 'start',
     dragFree: true,
@@ -24,7 +24,8 @@ export function CommunityShowcase() {
               <span>Galeria da Comunidade</span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold font-work-sans tracking-tight">
-              Resultados Reais.<br />
+              Resultados Reais.
+              <br />
               <span className="text-slate-500">Pessoas Reais.</span>
             </h2>
           </div>

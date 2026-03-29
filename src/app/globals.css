@@ -1,16 +1,18 @@
-@import "tailwindcss";
-@import "shadcn/tailwind.css";
+@import 'tailwindcss';
+@import 'shadcn/tailwind.css';
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  
+
   /* Font Mapping - Luxury Editorial */
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-work-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Roboto Mono, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-mono:
+    var(--font-geist-mono), ui-monospace, SFMono-Regular, Roboto Mono, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
 
   --color-ring: var(--ring);
   --color-input: var(--input);
@@ -28,7 +30,7 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  
+
   /* Refined Radius for Luxury Feel */
   --radius-sm: 4px;
   --radius-md: 8px;
@@ -41,44 +43,54 @@
   /* Pure Black & High Contrast Palette */
   --background: oklch(0% 0 0); /* #000000 */
   --foreground: oklch(98% 0 0); /* #FAFAFA */
-  
+
   --card: oklch(12% 0 0); /* #131313 - Deep surface */
   --card-foreground: oklch(98% 0 0);
-  
+
   --popover: oklch(12% 0 0);
   --popover-foreground: oklch(98% 0 0);
-  
+
   --primary: oklch(75% 0.15 270); /* #9281f7 - Brand Violet */
   --primary-foreground: oklch(10% 0.05 270);
-  
+
   --secondary: oklch(20% 0 0); /* #27272A */
   --secondary-foreground: oklch(98% 0 0);
-  
+
   --muted: oklch(15% 0 0); /* #1F1F1F */
   --muted-foreground: oklch(65% 0 0); /* Soft gray */
-  
+
   --accent: oklch(20% 0 0);
   --accent-foreground: oklch(98% 0 0);
-  
+
   --destructive: oklch(60% 0.2 25);
   --destructive-foreground: oklch(98% 0 0);
-  
+
   --border: oklch(100% 0 0 / 5%); /* Hairline effect */
   --input: oklch(100% 0 0 / 10%);
   --ring: oklch(75% 0.15 270 / 50%);
-  
+
   --radius: 0.75rem;
 }
 
 /* Animations for Luxury Feel */
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes glass-shimmer {
-  from { background-position: -200% 0; }
-  to { background-position: 200% 0; }
+  from {
+    background-position: -200% 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
 }
 
 .animate-fade-up {
@@ -91,10 +103,16 @@
   }
   body {
     @apply bg-background text-foreground font-sans selection:bg-primary/20 selection:text-primary;
-    background-image: radial-gradient(circle at top right, rgba(146, 129, 247, 0.03), transparent 40%),
-                      radial-gradient(circle at bottom left, rgba(146, 129, 247, 0.02), transparent 40%);
+    background-image:
+      radial-gradient(circle at top right, rgba(146, 129, 247, 0.03), transparent 40%),
+      radial-gradient(circle at bottom left, rgba(146, 129, 247, 0.02), transparent 40%);
   }
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-heading tracking-tighter;
   }
 }

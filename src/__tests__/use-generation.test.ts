@@ -1,6 +1,6 @@
-import { renderHook, act } from "@testing-library/react";
-import { useGeneration } from "../hooks/use-generation";
-import { expect, test, vi, beforeEach, afterEach } from "vitest";
+import { renderHook, act } from '@testing-library/react';
+import { useGeneration } from '../hooks/use-generation';
+import { expect, test, vi, beforeEach, afterEach } from 'vitest';
 
 // Mock fetch
 const fetchMock = vi.fn();
@@ -16,17 +16,17 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
-test("useGeneration exponential backoff", async () => {
+test('useGeneration exponential backoff', async () => {
   // Mock POST to /api/generate
   fetchMock.mockResolvedValueOnce({
     ok: true,
-    json: () => Promise.resolve({ generationId: "gen-123", aiMessage: "Generating..." }),
+    json: () => Promise.resolve({ generationId: 'gen-123', aiMessage: 'Generating...' }),
   });
 
   // Setup multiple polling responses, all pending
   const pendingResponse = {
     ok: true,
-    json: () => Promise.resolve({ status: "pending" })
+    json: () => Promise.resolve({ status: 'pending' }),
   };
 
   fetchMock.mockResolvedValue(pendingResponse); // all subsequent calls
@@ -35,7 +35,7 @@ test("useGeneration exponential backoff", async () => {
 
   // Call generate
   await act(async () => {
-    await result.current.generate({ prompt: "Test prompt", imageUrl: "test.jpg" });
+    await result.current.generate({ prompt: 'Test prompt', imageUrl: 'test.jpg' });
   });
 
   expect(fetchMock).toHaveBeenCalledTimes(1);

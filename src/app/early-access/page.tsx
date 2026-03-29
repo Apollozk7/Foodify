@@ -1,37 +1,37 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, ArrowRight, Loader2, CheckCircle2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { redirect } from "next/navigation";
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Sparkles, ArrowRight, Loader2, CheckCircle2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
 // ⚠️ ROTA TEMPORARIAMENTE DESATIVADA — remover esta linha para restaurar
 export default function EarlyAccessPage() {
-  redirect("/");
-  const [email, setEmail] = useState("");
+  redirect('/');
+  const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
 
     setLoading(true);
-    setError("");
+    setError('');
 
     try {
-      const res = await fetch("/api/early-access", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/early-access', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
       });
 
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || "Erro ao inscrever. Tente novamente.");
+        throw new Error(data.error || 'Erro ao inscrever. Tente novamente.');
       }
 
       setSuccess(true);
@@ -39,7 +39,7 @@ export default function EarlyAccessPage() {
       if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError("Erro ao inscrever. Tente novamente.");
+        setError('Erro ao inscrever. Tente novamente.');
       }
     } finally {
       setLoading(false);
@@ -78,7 +78,8 @@ export default function EarlyAccessPage() {
           </h1>
 
           <p className="text-slate-400 font-inter text-base mb-8">
-            Inscreva-se para garantir acesso antecipado ao Estúdio IA Pro. Receba o convite em primeira mão e destaque seu delivery.
+            Inscreva-se para garantir acesso antecipado ao Estúdio IA Pro. Receba o convite em
+            primeira mão e destaque seu delivery.
           </p>
 
           <AnimatePresence mode="wait">
@@ -92,7 +93,9 @@ export default function EarlyAccessPage() {
                 <CheckCircle2 className="w-12 h-12 text-emerald-500" />
                 <div>
                   <h3 className="text-white font-bold text-lg">Inscrição confirmada!</h3>
-                  <p className="text-slate-400 text-sm mt-1">Fique de olho na sua caixa de entrada.</p>
+                  <p className="text-slate-400 text-sm mt-1">
+                    Fique de olho na sua caixa de entrada.
+                  </p>
                 </div>
               </motion.div>
             ) : (
@@ -110,14 +113,12 @@ export default function EarlyAccessPage() {
                     required
                     placeholder="Seu melhor e-mail"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={e => setEmail(e.target.value)}
                     className="w-full bg-[#020617] border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-inter"
                   />
                 </div>
 
-                {error && (
-                  <p className="text-red-400 text-sm text-center">{error}</p>
-                )}
+                {error && <p className="text-red-400 text-sm text-center">{error}</p>}
 
                 <Button
                   variant="default"

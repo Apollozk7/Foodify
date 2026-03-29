@@ -1,4 +1,4 @@
-import { env } from "@/env";
+import { env } from '@/env';
 
 export interface RefinePromptOptions {
   userInput: string;
@@ -39,35 +39,35 @@ You MUST return ONLY a valid JSON object. Do not include markdown blocks.
 }`;
 
 export async function refinePrompt({
-  userInput
+  userInput,
 }: RefinePromptOptions): Promise<RefinePromptResponse> {
   const apiKey = env.OPENROUTER_API_KEY;
-  const url = "https://openrouter.ai/api/v1/chat/completions";
+  const url = 'https://openrouter.ai/api/v1/chat/completions';
 
   try {
     const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
+        Authorization: `Bearer ${apiKey}`,
         'HTTP-Referer': 'https://estudio-ia-pro.vercel.app',
         'X-Title': 'Estúdio IA Pro',
       },
       body: JSON.stringify({
-        model: "deepseek/deepseek-v3.2",
+        model: 'deepseek/deepseek-v3.2',
         messages: [
           {
-            role: "system",
-            content: SYSTEM_PROMPT
+            role: 'system',
+            content: SYSTEM_PROMPT,
           },
           {
-            role: "user",
-            content: userInput
-          }
+            role: 'user',
+            content: userInput,
+          },
         ],
-        response_format: { type: "json_object" },
+        response_format: { type: 'json_object' },
         temperature: 0.7,
-      })
+      }),
     });
 
     if (!response.ok) {
@@ -88,7 +88,7 @@ export async function refinePrompt({
       return {
         refined: parsed.refined || '',
         negative: parsed.negative || '',
-        aiMessage: parsed.aiMessage || 'Processando sua foto com inteligência...'
+        aiMessage: parsed.aiMessage || 'Processando sua foto com inteligência...',
       };
     } catch (parseError) {
       console.error('Failed to parse OpenRouter response as JSON:', resultText);

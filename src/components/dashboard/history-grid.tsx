@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import { Loader2, ImageIcon, Calendar } from "lucide-react";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
-import { createClient } from "@/lib/supabase/client";
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
+import { Loader2, ImageIcon, Calendar } from 'lucide-react';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import { createClient } from '@/lib/supabase/client';
 
 interface Generation {
   id: string;
@@ -25,9 +25,9 @@ export function HistoryGrid() {
     async function fetchHistory() {
       try {
         const { data, error } = await supabase
-          .from("generations")
-          .select("*")
-          .order("created_at", { ascending: false })
+          .from('generations')
+          .select('*')
+          .order('created_at', { ascending: false })
           .limit(20);
 
         if (error) throw error;
@@ -36,7 +36,7 @@ export function HistoryGrid() {
           setGenerations(data as Generation[]);
         }
       } catch (err) {
-        console.error("Failed to fetch history:", err);
+        console.error('Failed to fetch history:', err);
       } finally {
         setLoading(false);
       }
@@ -70,7 +70,7 @@ export function HistoryGrid() {
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {generations.map((gen) => (
+      {generations.map(gen => (
         <div
           key={gen.id}
           className="group relative aspect-square rounded-2xl overflow-hidden bg-white/5 border border-white/10 transition-all hover:border-blue-500/50 hover:ring-1 hover:ring-blue-500/50 backdrop-blur-sm"
@@ -88,7 +88,7 @@ export function HistoryGrid() {
               {format(new Date(gen.created_at), "dd 'de' MMM", { locale: ptBR })}
             </div>
           </div>
-          {gen.status === "processing" && (
+          {gen.status === 'processing' && (
             <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
               <Loader2 className="w-6 h-6 text-blue-500 animate-spin" />
             </div>

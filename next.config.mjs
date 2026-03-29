@@ -2,12 +2,12 @@
 const nextConfig = {
   /* config options here */
   reactCompiler: true,
-  output: "standalone",
+  output: 'standalone',
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "images.unsplash.com",
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
       },
     ],
   },

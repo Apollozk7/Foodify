@@ -22,7 +22,13 @@ const plans = [
     price: '49,90',
     credits: '40 créditos',
     description: 'Ideal para pequenos cardápios.',
-    features: ['40 fotos profissionais', 'Qualidade HD+', 'Processamento rápido', 'Download ilimitado', 'Suporte via chat'],
+    features: [
+      '40 fotos profissionais',
+      'Qualidade HD+',
+      'Processamento rápido',
+      'Download ilimitado',
+      'Suporte via chat',
+    ],
     popular: false,
   },
   {
@@ -31,7 +37,13 @@ const plans = [
     price: '99,90',
     credits: '120 créditos',
     description: 'O melhor custo-benefício (R$ 0,83/foto).',
-    features: ['120 fotos profissionais', 'Qualidade 4K Ultra HD', 'Processamento prioritário', 'Estilos premium inclusos', 'Suporte prioritário'],
+    features: [
+      '120 fotos profissionais',
+      'Qualidade 4K Ultra HD',
+      'Processamento prioritário',
+      'Estilos premium inclusos',
+      'Suporte prioritário',
+    ],
     popular: true,
   },
   {
@@ -40,7 +52,13 @@ const plans = [
     price: '189,90',
     credits: '300 créditos',
     description: 'Para quem precisa de volume e performance.',
-    features: ['300 fotos profissionais', 'Tudo do plano Pro', 'Acesso antecipado a modelos', 'Gerente de conta exclusivo', 'API de integração'],
+    features: [
+      '300 fotos profissionais',
+      'Tudo do plano Pro',
+      'Acesso antecipado a modelos',
+      'Gerente de conta exclusivo',
+      'API de integração',
+    ],
     popular: false,
   },
 ];
@@ -48,10 +66,15 @@ const plans = [
 export function Pricing() {
   const router = useRouter();
   return (
-    <section id="pricing" className="py-10 px-4 sm:py-14 sm:px-6 max-w-7xl mx-auto flex flex-col items-center font-inter">
+    <section
+      id="pricing"
+      className="py-10 px-4 sm:py-14 sm:px-6 max-w-7xl mx-auto flex flex-col items-center font-inter"
+    >
       <div className="text-center space-y-3 mb-8 sm:mb-10">
         <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold font-work-sans tracking-tight bg-gradient-to-b from-white to-slate-400 bg-clip-text text-transparent">
-          Planos flexíveis para seu negócio.<br className="hidden sm:block" />Escale quando precisar.
+          Planos flexíveis para seu negócio.
+          <br className="hidden sm:block" />
+          Escale quando precisar.
         </h2>
         <p className="text-slate-300 font-inter text-base sm:text-lg max-w-2xl mx-auto font-medium">
           Escolha o pacote ideal para o tamanho do seu delivery. <br className="hidden md:block" />
@@ -61,25 +84,29 @@ export function Pricing() {
 
       {/* Pricing Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full items-stretch">
-        {plans.map((plan) => (
+        {plans.map(plan => (
           <div key={plan.id} className="relative group flex flex-col">
             {plan.popular && (
               <div className="absolute -inset-[2px] bg-gradient-to-r from-blue-500 to-indigo-500 rounded-[34px] blur-sm opacity-50 group-hover:opacity-100 transition-opacity" />
             )}
-            <div className={cn(
-              "relative flex-1 rounded-[32px] p-6 flex flex-col border transition-all duration-300",
-              plan.popular
-                ? "bg-[#020617] border-white/10 backdrop-blur-xl"
-                : "bg-white/5 border-white/10 hover:border-white/20 hover:bg-white/[0.07] backdrop-blur-sm"
-            )}>
+            <div
+              className={cn(
+                'relative flex-1 rounded-[32px] p-6 flex flex-col border transition-all duration-300',
+                plan.popular
+                  ? 'bg-[#020617] border-white/10 backdrop-blur-xl'
+                  : 'bg-white/5 border-white/10 hover:border-white/20 hover:bg-white/[0.07] backdrop-blur-sm'
+              )}
+            >
               {plan.popular && (
                 <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest absolute -top-3 left-1/2 -translate-x-1/2 shadow-lg">
                   Mais Popular
                 </div>
               )}
-              
-              <h3 className="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-4">{plan.name}</h3>
-              
+
+              <h3 className="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-4">
+                {plan.name}
+              </h3>
+
               <div className="flex flex-col mb-6">
                 <div className="flex items-baseline gap-1">
                   <span className="text-3xl font-bold text-white">R$ {plan.price}</span>
@@ -88,7 +115,9 @@ export function Pricing() {
                 <div className="text-blue-400 font-semibold mt-1">{plan.credits}</div>
               </div>
 
-              <p className="text-slate-300 text-xs mb-6 font-inter h-8 font-medium">{plan.description}</p>
+              <p className="text-slate-300 text-xs mb-6 font-inter h-8 font-medium">
+                {plan.description}
+              </p>
 
               <ul className="space-y-3 mb-8 flex-1">
                 {plan.features.map((feature, idx) => (
@@ -97,9 +126,9 @@ export function Pricing() {
               </ul>
 
               <Button
-                variant={plan.popular ? "neumorph-primary" : "neumorph"}
+                variant={plan.popular ? 'neumorph-primary' : 'neumorph'}
                 className="w-full font-bold shadow-md"
-                onClick={() => window.location.href = '/sign-up'}
+                onClick={() => (window.location.href = '/sign-up')}
               >
                 {plan.id === 'avulso' ? 'Comprar Créditos' : 'Assinar Plano'}
               </Button>

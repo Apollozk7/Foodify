@@ -1,57 +1,69 @@
 <re-html>
-<re-head>
-    <re-title>
-        Você foi selecionado para o {{{app.name}}}! 🎉
-    </re-title>
-</re-head>
-<re-body background-color="#020617" padding="48px 32px 48px 32px">
-    <re-preheader>
-        Seu bilhete dourado para a elite do delivery chegou.
-    </re-preheader>
-    
-    <re-header padding="16px 32px 32px 32px" align="center">
-        {{> app_logo}}
-    </re-header>
+  <re-head>
+    <re-title> Você foi selecionado para o {{{app.name}}}! 🎉 </re-title>
+  </re-head>
+  <re-body background-color="#020617" padding="48px 32px 48px 32px">
+    <re-preheader> Seu bilhete dourado para a elite do delivery chegou. </re-preheader>
+
+    <re-header padding="16px 32px 32px 32px" align="center"> {{> app_logo}} </re-header>
 
     <re-main background-color="#0f172a" border-radius="24px" padding="48px 40px">
-        <re-heading font-size="26px" font-weight="800" line-height="34px" color="#ffffff" margin="0px 0px 24px 0px" align="center">
-            Você foi selecionado! 🎉
-        </re-heading>
+      <re-heading
+        font-size="26px"
+        font-weight="800"
+        line-height="34px"
+        color="#ffffff"
+        margin="0px 0px 24px 0px"
+        align="center"
+      >
+        Você foi selecionado! 🎉
+      </re-heading>
 
-        <re-text font-size="16px" line-height="26px" color="#94a3b8" margin="0px 0px 20px 0px">
-            Olá! Temos o prazer de confirmar que você é um dos <strong>5 proprietários selecionados</strong> para o acesso antecipado ao <strong>{{{app.name}}}</strong>.
-        </re-text>
+      <re-text font-size="16px" line-height="26px" color="#94a3b8" margin="0px 0px 20px 0px">
+        Olá! Temos o prazer de confirmar que você é um dos
+        <strong>5 proprietários selecionados</strong> para o acesso antecipado ao
+        <strong>{{{app.name}}}</strong>.
+      </re-text>
 
-        <re-text font-size="16px" line-height="26px" color="#94a3b8" margin="0px 0px 40px 0px">
-            A partir de agora, você tem acesso exclusivo para transformar as fotos do seu cardápio em imagens de estúdio em segundos, saindo na frente da concorrência.
-        </re-text>
+      <re-text font-size="16px" line-height="26px" color="#94a3b8" margin="0px 0px 40px 0px">
+        A partir de agora, você tem acesso exclusivo para transformar as fotos do seu cardápio em
+        imagens de estúdio em segundos, saindo na frente da concorrência.
+      </re-text>
 
-        <re-block align="center" margin="0px 0px 50px 0px">
-            <re-button background-color="#2563eb" color="#ffffff" font-size="16px" font-weight="bold" padding="18px 36px" border-radius="12px" href="{{action_url}}">
-                Aceitar Convite e Começar Agora
-            </re-button>
-        </re-block>
+      <re-block align="center" margin="0px 0px 50px 0px">
+        <re-button
+          background-color="#2563eb"
+          color="#ffffff"
+          font-size="16px"
+          font-weight="bold"
+          padding="18px 36px"
+          border-radius="12px"
+          href="{{action_url}}"
+        >
+          Aceitar Convite e Começar Agora
+        </re-button>
+      </re-block>
 
-        <re-text font-size="15px" font-weight="bold" color="#ffffff" margin="0px 0px 16px 0px">
-            Próximos passos para o sucesso:
-        </re-text>
-        <re-text font-size="15px" line-height="24px" color="#94a3b8" margin="0px 0px 32px 0px">
-            • Clique no botão acima para criar sua conta oficial.<br/>
-            • Seus créditos iniciais já estarão liberados.<br/>
-            • Suba sua foto mais icônica e veja a mágica da IA.
-        </re-text>
+      <re-text font-size="15px" font-weight="bold" color="#ffffff" margin="0px 0px 16px 0px">
+        Próximos passos para o sucesso:
+      </re-text>
+      <re-text font-size="15px" line-height="24px" color="#94a3b8" margin="0px 0px 32px 0px">
+        • Clique no botão acima para criar sua conta oficial.<br />
+        • Seus créditos iniciais já estarão liberados.<br />
+        • Suba sua foto mais icônica e veja a mágica da IA.
+      </re-text>
 
-        <re-divider background-color="#1e293b" height="1px" margin="32px 0px"></re-divider>
+      <re-divider background-color="#1e293b" height="1px" margin="32px 0px"></re-divider>
 
-        <re-text font-size="12px" color="#64748b" font-style="italic" align="center">
-            Atenção: Este convite é único e expira em {{invitation.expires_in_days}} dias.
-        </re-text>
+      <re-text font-size="12px" color="#64748b" font-style="italic" align="center">
+        Atenção: Este convite é único e expira em {{invitation.expires_in_days}} dias.
+      </re-text>
     </re-main>
 
     <re-footer padding="40px 32px 48px">
-        <re-text margin="16px 0px 0px 0px" font-size="12px" color="#475569" align="center">
-            © {{current_year}} {{{app.name}}} | O futuro visual do seu delivery.
-        </re-text>
+      <re-text margin="16px 0px 0px 0px" font-size="12px" color="#475569" align="center">
+        © {{current_year}} {{{app.name}}} | O futuro visual do seu delivery.
+      </re-text>
     </re-footer>
-</re-body>
+  </re-body>
 </re-html>

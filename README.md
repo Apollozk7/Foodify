@@ -107,6 +107,7 @@ RESEND_API_KEY=re_...
 ## 📱 Funcionalidades
 
 ### Landing Page
+
 - Hero section com galeria visual
 - Showcase de transformações antes/depois
 - Seção de preços (Avulso, Starter, Pro, Scale)
@@ -114,6 +115,7 @@ RESEND_API_KEY=re_...
 - Call-to-action para cadastro
 
 ### Dashboard
+
 - **Estúdio de Criação:** Interface de chat para upload de imagens e geração IA
 - **Arquivo Digital:** Histórico completo de gerações
 - **Configurações:**
@@ -122,6 +124,7 @@ RESEND_API_KEY=re_...
   - Configurações de qualidade IA (SD/HD/4K)
 
 ### Sistema de Créditos
+
 - Créditos funcionam como moeda virtual
 - Cada geração consome 1 crédito
 - Planos: Avulso (R$19,90/10 fotos), Starter (R$49,90/40 fotos), Pro (R$99,90/120 fotos), Scale (R$189,90/300 fotos)
@@ -146,6 +149,7 @@ O schema do banco está em `supabase/migrations/`:
 ## 🎨 UI/UX
 
 O projeto utiliza:
+
 - **shadcn/ui** para componentes base
 - **Tailwind CSS** para estilização
 - **Framer Motion** para animações

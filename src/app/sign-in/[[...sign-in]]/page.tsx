@@ -1,6 +1,6 @@
-import { SignIn } from "@clerk/nextjs";
-import Image from "next/image";
-import Link from "next/link";
+import { SignIn } from '@clerk/nextjs';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function SignInPage() {
   return (
@@ -9,10 +9,10 @@ export default function SignInPage() {
       <div className="relative hidden lg:flex flex-col justify-between p-12 overflow-hidden border-r border-white/5 bg-[#020617]">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
-          <Image 
-            src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop" 
-            alt="Food Photography" 
-            fill 
+          <Image
+            src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop"
+            alt="Food Photography"
+            fill
             className="object-cover opacity-40 mix-blend-luminosity"
           />
           <div className="absolute inset-0 bg-gradient-to-tr from-[#020617] via-[#020617]/80 to-transparent z-10" />
@@ -35,7 +35,8 @@ export default function SignInPage() {
             <span className="text-blue-500">em segundos.</span>
           </h1>
           <p className="text-slate-400 text-lg">
-            Acesse sua conta e continue transformando seu cardápio com inteligência artificial de ponta.
+            Acesse sua conta e continue transformando seu cardápio com inteligência artificial de
+            ponta.
           </p>
         </div>
 
@@ -56,10 +57,7 @@ export default function SignInPage() {
           </div>
         </div>
 
-        <SignIn 
-          signUpUrl="/sign-up"
-          forceRedirectUrl="/dashboard"
-        />
+        <SignIn signUpUrl="/sign-up" forceRedirectUrl="/dashboard" />
       </div>
     </main>
   );
