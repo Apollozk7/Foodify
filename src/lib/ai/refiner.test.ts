@@ -42,6 +42,7 @@ describe('refinePrompt', () => {
     });
 
     expect(result).toEqual({
+      aiMessage: "Processando sua foto com inteligência...",
       refined: "Professional photography of a rustic hamburger on a wooden plate, dramatic lighting, blurred restaurant background, high resolution.",
       negative: "blurry, low quality, noisy"
     });

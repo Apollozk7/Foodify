@@ -25,12 +25,12 @@ export function useGeneration() {
   const [error, setError] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   
-  const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const pollingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const clearPolling = useCallback(() => {
-    if (pollingIntervalRef.current) {
-      clearInterval(pollingIntervalRef.current);
-      pollingIntervalRef.current = null;
+    if (pollingTimeoutRef.current) {
+      clearTimeout(pollingTimeoutRef.current);
+      pollingTimeoutRef.current = null;
     }
   }, []);
 
@@ -39,7 +39,7 @@ export function useGeneration() {
     return () => clearPolling();
   }, [clearPolling]);
 
-  const pollStatus = useCallback(async (generationId: string) => {
+  const pollStatus = useCallback(async (generationId: string, currentDelay: number = 2000) => {
     try {
       const response = await fetch(`/api/generate/${generationId}`);
       
@@ -76,14 +76,22 @@ export function useGeneration() {
           }
           return prev;
         });
-      } else if (data.status === "processing") {
-        setMessages(prev => {
-          const lastAi = [...prev].reverse().find(m => m.role === "ai");
-          if (lastAi) {
-            return prev.map(m => m === lastAi ? { ...m, status: "processing" } : m);
-          }
-          return prev;
-        });
+      } else if (data.status === "processing" || data.status === "pending") {
+        if (data.status === "processing") {
+          setMessages(prev => {
+            const lastAi = [...prev].reverse().find(m => m.role === "ai");
+            if (lastAi) {
+              return prev.map(m => m === lastAi ? { ...m, status: "processing" } : m);
+            }
+            return prev;
+          });
+        }
+
+        // Schedule next poll with exponential backoff (max 10s)
+        const nextDelay = Math.min(currentDelay * 2, 10000);
+        pollingTimeoutRef.current = setTimeout(() => {
+          pollStatus(generationId, nextDelay);
+        }, currentDelay);
       }
       
     } catch (err) {
@@ -136,8 +144,8 @@ export function useGeneration() {
       setMessages(prev => [...prev, aiResponse]);
       
       // Start polling
-      pollingIntervalRef.current = setInterval(() => {
-        pollStatus(generationId);
+      pollingTimeoutRef.current = setTimeout(() => {
+        pollStatus(generationId, 2000);
       }, 2000);
 
     } catch (err) {
