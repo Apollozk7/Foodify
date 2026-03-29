@@ -71,9 +71,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           whileHover={!disabled && !loading ? { scale: 1.01, y: -1 } : {}}
           whileTap={!disabled && !loading ? { scale: 0.98, y: 0 } : {}}
           className={cn(buttonVariants({ variant, size, className }))}
-          ref={ref as any}
+          ref={ref as React.Ref<HTMLButtonElement>}
           disabled={disabled || loading}
-          {...props}
+          {...(props as React.ComponentProps<typeof motion.button>)}
         >
           <div className="relative flex items-center justify-center gap-2 z-10">
             {content}

@@ -42,6 +42,7 @@ describe('refinePrompt', () => {
     });
 
     expect(result).toEqual({
+      aiMessage: "Processando sua foto com inteligência...",
       refined: "Professional photography of a rustic hamburger on a wooden plate, dramatic lighting, blurred restaurant background, high resolution.",
       negative: "blurry, low quality, noisy",
       aiMessage: "Processando sua foto com inteligência..."
@@ -94,6 +95,14 @@ describe('refinePrompt', () => {
       category: 'Alimentos',
       style: 'Fotografia de Produto',
       templates: ['delivery']
-    })).rejects.toThrow('Failed to parse refined prompt');
+    }) as any).rejects.toThrow('Failed to parse refined prompt');
+  });
+
+  it('should handle network or general fetch errors', async () => {
+    vi.mocked(global.fetch).mockRejectedValue(new Error('Network failure'));
+
+    await expect(refinePrompt({
+      userInput: 'hambúrguer rústico',
+    } as any)).rejects.toThrow('Network failure');
   });
 });
