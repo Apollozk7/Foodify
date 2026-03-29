@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { useState, useRef, useEffect } from 'react';
-import Image from 'next/image';
-import { cn } from '@/lib/utils';
+import React, { useState, useRef, useEffect } from "react";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 interface BeforeAfterSliderProps {
   beforeImage: string;
@@ -10,7 +10,11 @@ interface BeforeAfterSliderProps {
   className?: string;
 }
 
-export function BeforeAfterSlider({ beforeImage, afterImage, className }: BeforeAfterSliderProps) {
+export function BeforeAfterSlider({
+  beforeImage,
+  afterImage,
+  className,
+}: BeforeAfterSliderProps) {
   const [sliderPosition, setSliderPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -31,17 +35,16 @@ export function BeforeAfterSlider({ beforeImage, afterImage, className }: Before
   };
 
   const onTouchMove = (e: React.TouchEvent) => {
-    e.preventDefault(); // evita scroll da página interceptar o drag
     if (isDragging) handleMove(e.touches[0].clientX);
   };
 
   useEffect(() => {
     const handleMouseUpGlobal = () => setIsDragging(false);
-    window.addEventListener('mouseup', handleMouseUpGlobal);
-    window.addEventListener('touchend', handleMouseUpGlobal);
+    window.addEventListener("mouseup", handleMouseUpGlobal);
+    window.addEventListener("touchend", handleMouseUpGlobal);
     return () => {
-      window.removeEventListener('mouseup', handleMouseUpGlobal);
-      window.removeEventListener('touchend', handleMouseUpGlobal);
+      window.removeEventListener("mouseup", handleMouseUpGlobal);
+      window.removeEventListener("touchend", handleMouseUpGlobal);
     };
   }, []);
 
@@ -49,10 +52,9 @@ export function BeforeAfterSlider({ beforeImage, afterImage, className }: Before
     <div
       ref={containerRef}
       className={cn(
-        'relative w-full aspect-video overflow-hidden rounded-2xl cursor-col-resize select-none border border-white/10',
+        "relative w-full aspect-video overflow-hidden rounded-2xl cursor-col-resize select-none border border-white/10 touch-none",
         className
       )}
-      style={{ touchAction: 'none' }} // fix: impede browser de interceptar touch pra scroll
       onMouseMove={onMouseMove}
       onTouchMove={onTouchMove}
       onMouseDown={onMouseDown}
@@ -60,7 +62,13 @@ export function BeforeAfterSlider({ beforeImage, afterImage, className }: Before
     >
       {/* After image (fundo) */}
       <div className="absolute inset-0">
-        <Image src={afterImage} alt="After IA Pro" fill className="object-cover" priority />
+        <Image
+          src={afterImage}
+          alt="After IA Pro"
+          fill
+          className="object-cover"
+          priority
+        />
       </div>
 
       {/* Before image (recortada via clipPath — sem distorção) */}
@@ -68,7 +76,13 @@ export function BeforeAfterSlider({ beforeImage, afterImage, className }: Before
         className="absolute inset-0"
         style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
       >
-        <Image src={beforeImage} alt="Before" fill className="object-cover" priority />
+        <Image
+          src={beforeImage}
+          alt="Before"
+          fill
+          className="object-cover"
+          priority
+        />
       </div>
 
       {/* Slider Handle */}
@@ -76,7 +90,7 @@ export function BeforeAfterSlider({ beforeImage, afterImage, className }: Before
         className="absolute inset-y-0 w-1 bg-white shadow-[0_0_10px_rgba(0,0,0,0.5)] flex items-center justify-center"
         style={{
           left: `${sliderPosition}%`,
-          transform: 'translateX(-50%)', // fix: centraliza o handle na linha
+          transform: "translateX(-50%)", // fix: centraliza o handle na linha
         }}
       >
         <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg border border-black/10">
