@@ -18,6 +18,8 @@
  */
 
 import { parseArgs } from "util";
+import * as fs from "fs/promises";
+import * as path from "path";
 
 // =============================================================================
 // CLI Arguments
@@ -149,6 +151,82 @@ function formatSlackBlocks(knowledgeStats: {
 }
 
 // =============================================================================
+// Knowledge Service Implementation
+// =============================================================================
+
+interface KnowledgeStats {
+  total: number;
+  recentlyAdded: number;
+  stale: number;
+  byType: Record<string, number>;
+  byConfidence: Record<string, number>;
+}
+
+async function getKnowledgeStats(): Promise<KnowledgeStats> {
+  const stats: KnowledgeStats = {
+    total: 0,
+    recentlyAdded: 0,
+    stale: 0,
+    byType: {},
+    byConfidence: {},
+  };
+
+  const knowledgeDir = path.join(process.cwd(), ".metaswarm/knowledge");
+
+  try {
+    const files = await fs.readdir(knowledgeDir);
+    const jsonlFiles = files.filter(f => f.endsWith('.jsonl'));
+
+    const now = new Date();
+    const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+    const ninetyDaysAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+
+    for (const file of jsonlFiles) {
+      const filePath = path.join(knowledgeDir, file);
+      const content = await fs.readFile(filePath, 'utf-8');
+      const lines = content.split('\n');
+
+      for (const line of lines) {
+        if (!line.trim() || line.startsWith('#')) continue;
+
+        try {
+          const fact = JSON.parse(line);
+          stats.total++;
+
+          if (fact.type) {
+            stats.byType[fact.type] = (stats.byType[fact.type] || 0) + 1;
+          }
+
+          if (fact.confidence) {
+            stats.byConfidence[fact.confidence] = (stats.byConfidence[fact.confidence] || 0) + 1;
+          }
+
+          if (fact.createdAt) {
+            const createdAt = new Date(fact.createdAt);
+            if (createdAt >= thirtyDaysAgo) {
+              stats.recentlyAdded++;
+            }
+          }
+
+          if (fact.updatedAt) {
+            const updatedAt = new Date(fact.updatedAt);
+            if (updatedAt <= ninetyDaysAgo && (fact.usageCount === undefined || fact.usageCount === 0)) {
+              stats.stale++;
+            }
+          }
+        } catch (e) {
+          // Ignore parse errors for individual lines
+        }
+      }
+    }
+  } catch (error) {
+    console.error("Failed to read knowledge base:", error);
+  }
+
+  return stats;
+}
+
+// =============================================================================
 // Main
 // =============================================================================
 
@@ -163,16 +241,7 @@ async function main() {
   // -------------------------------------------------------------------------
   console.log("Step 1: Analyzing knowledge base...\n");
 
-  // TODO: Replace with your own knowledge service implementation
-  // Example: const knowledgeService = getKnowledgeCaptureService();
-  // const stats = await knowledgeService.getStats();
-  const stats = {
-    total: 0,
-    recentlyAdded: 0,
-    stale: 0,
-    byType: {} as Record<string, number>,
-    byConfidence: {} as Record<string, number>,
-  };
+  const stats = await getKnowledgeStats();
 
   console.log("Knowledge Base Statistics:");
   console.log(`  Total facts: ${stats.total}`);
