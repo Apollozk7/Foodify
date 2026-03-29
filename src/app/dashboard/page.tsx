@@ -92,14 +92,14 @@ export default function DashboardPage() {
         </div>
 
         <nav className="flex-1 space-y-1">
-          {[
+          {([
             { id: 'workspace', label: 'Estúdio de Criação', icon: LayoutDashboard },
             { id: 'history', label: 'Arquivo Digital', icon: History },
             { id: 'settings', label: 'Configurações', icon: Settings },
-          ].map((item) => (
+          ] as const).map((item) => (
             <button
               key={item.id}
-              onClick={() => setActiveTab(item.id as any)}
+              onClick={() => setActiveTab(item.id)}
               className={cn(
                 "w-full flex items-center gap-4 px-4 py-3 text-[10px] font-extrabold uppercase tracking-[0.2em] transition-all",
                 activeTab === item.id 
@@ -196,14 +196,14 @@ export default function DashboardPage() {
                 <div className="flex flex-col md:flex-row gap-12">
                   {/* Internal Settings Nav */}
                   <aside className="w-full md:w-48 flex md:flex-col gap-2">
-                    {[
+                    {([
                       { id: 'account', label: 'Conta' },
                       { id: 'plan', label: 'Plano' },
                       { id: 'ai', label: 'IA Estúdio' },
-                    ].map((item) => (
+                    ] as const).map((item) => (
                       <button
                         key={item.id}
-                        onClick={() => setActiveSettingsTab(item.id as any)}
+                        onClick={() => setActiveSettingsTab(item.id)}
                         className={cn(
                           "px-4 py-2 text-[10px] font-extrabold uppercase tracking-widest text-left transition-all",
                           activeSettingsTab === item.id 
