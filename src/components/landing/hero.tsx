@@ -1,9 +1,9 @@
-import React from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { BeforeAfterSlider } from "@/components/ui/before-after-slider";
-import { Check } from "lucide-react";
+import React from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { BeforeAfterSlider } from '@/components/ui/before-after-slider';
+import { Check } from 'lucide-react';
 
 export function Hero() {
   const router = useRouter();
@@ -24,7 +24,10 @@ export function Hero() {
   };
 
   return (
-    <section id="hero" className="relative pt-4 pb-8 px-4 sm:px-6 lg:pt-6 lg:pb-12 max-w-7xl mx-auto">
+    <section
+      id="hero"
+      className="relative pt-4 pb-8 px-4 sm:px-6 lg:pt-6 lg:pb-12 max-w-7xl mx-auto"
+    >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-center">
         {/* Left Side: Text Content */}
         <div className="space-y-6 text-center lg:text-left flex flex-col items-center lg:items-start order-2 lg:order-1">
@@ -33,10 +36,11 @@ export function Hero() {
               Fotos de estúdio para o seu delivery, em segundos.
             </h1>
             <p className="text-lg md:text-xl text-slate-300 font-inter max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-              Transforme fotos amadoras tiradas com o celular em imagens profissionais de alta qualidade. Aumente seu faturamento com visual de elite.
+              Transforme fotos amadoras tiradas com o celular em imagens profissionais de alta
+              qualidade. Aumente seu faturamento com visual de elite.
             </p>
           </div>
-          
+
           <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 w-full sm:w-auto pt-1">
             <Button
               variant="neumorph-primary"
@@ -58,15 +62,21 @@ export function Hero() {
 
           <div className="flex items-center gap-4 pt-2">
             <div className="flex -space-x-2">
-              <div className="w-8 h-8 rounded-full border-2 border-[#020617] bg-emerald-500 flex items-center justify-center text-[10px] font-bold text-white shadow-md">MC</div>
-              <div className="w-8 h-8 rounded-full border-2 border-[#020617] bg-blue-500 flex items-center justify-center text-[10px] font-bold text-white shadow-md">RP</div>
-              <div className="w-8 h-8 rounded-full border-2 border-[#020617] bg-purple-500 flex items-center justify-center text-[10px] font-bold text-white shadow-md">JP</div>
-              <div className="w-8 h-8 rounded-full border-2 border-[#020617] bg-slate-700 flex items-center justify-center text-[10px] font-bold text-white shadow-md">+</div>
+              <div className="w-8 h-8 rounded-full border-2 border-[#020617] bg-emerald-500 flex items-center justify-center text-[10px] font-bold text-white shadow-md">
+                MC
+              </div>
+              <div className="w-8 h-8 rounded-full border-2 border-[#020617] bg-blue-500 flex items-center justify-center text-[10px] font-bold text-white shadow-md">
+                RP
+              </div>
+              <div className="w-8 h-8 rounded-full border-2 border-[#020617] bg-purple-500 flex items-center justify-center text-[10px] font-bold text-white shadow-md">
+                JP
+              </div>
+              <div className="w-8 h-8 rounded-full border-2 border-[#020617] bg-slate-700 flex items-center justify-center text-[10px] font-bold text-white shadow-md">
+                +
+              </div>
             </div>
             <div className="flex flex-col text-left">
-              <div className="flex text-amber-400 text-xs">
-                ★★★★★
-              </div>
+              <div className="flex text-amber-400 text-xs">★★★★★</div>
               <p className="text-xs text-slate-400 font-bold font-inter">
                 Mais de <span className="text-white">500 restaurantes</span> já usam
               </p>

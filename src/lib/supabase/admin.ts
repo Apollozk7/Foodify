@@ -1,5 +1,5 @@
-import { createClient } from "@supabase/supabase-js";
-import { env } from "@/env";
+import { createClient } from '@supabase/supabase-js';
+import { env } from '@/env';
 
 /**
  * Supabase client with administrative permissions using the new secret key.

@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useState, useCallback } from "react";
-import { useDropzone } from "react-dropzone";
-import { Upload, X, Loader2, Image as ImageIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { compressImage } from "@/lib/utils/compress-image";
-import Image from "next/image";
+import { useState, useCallback } from 'react';
+import { useDropzone } from 'react-dropzone';
+import { Upload, X, Loader2, Image as ImageIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { compressImage } from '@/lib/utils/compress-image';
+import Image from 'next/image';
 
 interface UploadZoneProps {
   onImageSelected: (file: File, previewUrl: string) => void;
@@ -16,27 +16,30 @@ export function UploadZone({ onImageSelected, isLoading }: UploadZoneProps) {
   const [preview, setPreview] = useState<string | null>(null);
   const [isCompressing, setIsCompressing] = useState(false);
 
-  const onDrop = useCallback(async (acceptedFiles: File[]) => {
-    const file = acceptedFiles[0];
-    if (!file) return;
+  const onDrop = useCallback(
+    async (acceptedFiles: File[]) => {
+      const file = acceptedFiles[0];
+      if (!file) return;
 
-    setIsCompressing(true);
-    try {
-      const compressed = await compressImage(file);
-      const previewUrl = URL.createObjectURL(compressed);
-      setPreview(previewUrl);
-      onImageSelected(compressed, previewUrl);
-    } catch (err) {
-      console.error("Compression error:", err);
-    } finally {
-      setIsCompressing(false);
-    }
-  }, [onImageSelected]);
+      setIsCompressing(true);
+      try {
+        const compressed = await compressImage(file);
+        const previewUrl = URL.createObjectURL(compressed);
+        setPreview(previewUrl);
+        onImageSelected(compressed, previewUrl);
+      } catch (err) {
+        console.error('Compression error:', err);
+      } finally {
+        setIsCompressing(false);
+      }
+    },
+    [onImageSelected]
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
-      "image/*": [".jpeg", ".jpg", ".png", ".webp"],
+      'image/*': ['.jpeg', '.jpg', '.png', '.webp'],
     },
     maxFiles: 1,
     disabled: isLoading || isCompressing,
@@ -51,24 +54,19 @@ export function UploadZone({ onImageSelected, isLoading }: UploadZoneProps) {
     <div
       {...getRootProps()}
       className={cn(
-        "relative w-full aspect-video rounded-3xl border-2 border-dashed transition-all flex flex-col items-center justify-center overflow-hidden cursor-pointer",
-        isDragActive 
-          ? "border-blue-500 bg-blue-500/5" 
-          : "border-white/10 bg-white/5 hover:bg-white/[0.07] hover:border-white/20",
-        preview && "border-solid",
-        (isLoading || isCompressing) && "opacity-60 cursor-not-allowed"
+        'relative w-full aspect-video rounded-3xl border-2 border-dashed transition-all flex flex-col items-center justify-center overflow-hidden cursor-pointer',
+        isDragActive
+          ? 'border-blue-500 bg-blue-500/5'
+          : 'border-white/10 bg-white/5 hover:bg-white/[0.07] hover:border-white/20',
+        preview && 'border-solid',
+        (isLoading || isCompressing) && 'opacity-60 cursor-not-allowed'
       )}
     >
       <input {...getInputProps()} />
 
       {preview ? (
         <div className="relative w-full h-full group">
-          <Image
-            src={preview}
-            alt="Preview"
-            fill
-            className="object-cover"
-          />
+          <Image src={preview} alt="Preview" fill className="object-cover" />
           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
             <p className="text-white text-sm font-medium">Trocar imagem</p>
           </div>
@@ -90,11 +88,9 @@ export function UploadZone({ onImageSelected, isLoading }: UploadZoneProps) {
           </div>
           <div className="space-y-1">
             <h3 className="text-lg font-semibold text-white">
-              {isCompressing ? "Otimizando imagem..." : "Arraste sua foto aqui"}
+              {isCompressing ? 'Otimizando imagem...' : 'Arraste sua foto aqui'}
             </h3>
-            <p className="text-sm text-slate-500">
-              Ou clique para selecionar (JPEG, PNG, WebP)
-            </p>
+            <p className="text-sm text-slate-500">Ou clique para selecionar (JPEG, PNG, WebP)</p>
           </div>
           <div className="flex items-center gap-4 pt-2">
             <div className="flex items-center gap-1.5 text-xs text-slate-400">

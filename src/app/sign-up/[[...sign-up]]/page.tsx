@@ -1,6 +1,6 @@
-import { SignUp } from "@clerk/nextjs";
-import Image from "next/image";
-import Link from "next/link";
+import { SignUp } from '@clerk/nextjs';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function SignUpPage() {
   return (
@@ -9,10 +9,10 @@ export default function SignUpPage() {
       <div className="relative hidden lg:flex flex-col justify-between p-12 overflow-hidden border-r border-white/5 bg-[#020617]">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
-          <Image 
-            src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=1981&auto=format&fit=crop" 
-            alt="Product Photography" 
-            fill 
+          <Image
+            src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=1981&auto=format&fit=crop"
+            alt="Product Photography"
+            fill
             className="object-cover opacity-40 mix-blend-luminosity"
           />
           <div className="absolute inset-0 bg-gradient-to-tr from-[#020617] via-[#020617]/80 to-transparent z-10" />
@@ -56,10 +56,7 @@ export default function SignUpPage() {
           </div>
         </div>
 
-        <SignUp 
-          signInUrl="/sign-in"
-          forceRedirectUrl="/dashboard"
-        />
+        <SignUp signInUrl="/sign-in" forceRedirectUrl="/dashboard" />
       </div>
     </main>
   );

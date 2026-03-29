@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, Image as ImageIcon, X, Sparkles, Loader2, User, Bot, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Message, GenerationStatus } from "@/hooks/use-generation";
+import { Message } from "@/hooks/use-generation";
 import Image from "next/image";
 import { compressImage } from "@/lib/utils/compress-image";
 import { BeforeAfterSlider } from "@/components/ui/before-after-slider";
@@ -63,13 +63,14 @@ export function ChatInterface({ messages, onSendMessage, isLoading }: ChatInterf
   };
 
   // Find the last user image to show in the before/after slider
-  let lastUserImage: string | undefined;
-  for (let i = messages.length - 1; i >= 0; i--) {
-    if (messages[i].role === "user" && messages[i].imageUrl) {
-      lastUserImage = messages[i].imageUrl;
-      break;
+  const lastUserImage = useMemo(() => {
+    for (let i = messages.length - 1; i >= 0; i--) {
+      if (messages[i].role === "user" && messages[i].imageUrl) {
+        return messages[i].imageUrl;
+      }
     }
-  }
+    return undefined;
+  }, [messages]);
 
   return (
     <div className="flex flex-col h-full flex-1 bg-white/[0.01] border border-white/5 rounded-[32px] overflow-hidden backdrop-blur-sm min-h-0">

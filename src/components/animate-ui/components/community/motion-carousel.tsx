@@ -15,12 +15,12 @@ type PropType = {
 };
 
 const communityImages = [
-  "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=1000",
-  "https://images.unsplash.com/photo-1567620905732-2d1ec7bb7445?auto=format&fit=crop&q=80&w=1000",
-  "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&q=80&w=1000",
-  "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?auto=format&fit=crop&q=80&w=1000",
-  "https://images.unsplash.com/photo-1484723088339-fe7a7702450c?auto=format&fit=crop&q=80&w=1000",
-  "https://images.unsplash.com/photo-1473093226795-af9932fe5856?auto=format&fit=crop&q=80&w=1000",
+  'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=1000',
+  'https://images.unsplash.com/photo-1567620905732-2d1ec7bb7445?auto=format&fit=crop&q=80&w=1000',
+  'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&q=80&w=1000',
+  'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?auto=format&fit=crop&q=80&w=1000',
+  'https://images.unsplash.com/photo-1484723088339-fe7a7702450c?auto=format&fit=crop&q=80&w=1000',
+  'https://images.unsplash.com/photo-1473093226795-af9932fe5856?auto=format&fit=crop&q=80&w=1000',
 ];
 
 type EmblaControls = {
@@ -46,18 +46,13 @@ const transition: Transition = {
   mass: 1,
 };
 
-const useEmblaControls = (
-  emblaApi: EmblaCarouselType | undefined,
-): EmblaControls => {
+const useEmblaControls = (emblaApi: EmblaCarouselType | undefined): EmblaControls => {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [scrollSnaps, setScrollSnaps] = React.useState<number[]>([]);
   const [prevDisabled, setPrevDisabled] = React.useState(true);
   const [nextDisabled, setNextDisabled] = React.useState(true);
 
-  const onDotClick = React.useCallback(
-    (index: number) => emblaApi?.scrollTo(index),
-    [emblaApi],
-  );
+  const onDotClick = React.useCallback((index: number) => emblaApi?.scrollTo(index), [emblaApi]);
 
   const onPrev = React.useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const onNext = React.useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
@@ -102,21 +97,14 @@ const useEmblaControls = (
 function MotionCarousel(props: PropType) {
   const { slides, options } = props;
   const [emblaRef, emblaApi] = useEmblaCarousel(options);
-  const {
-    selectedIndex,
-    scrollSnaps,
-    prevDisabled,
-    nextDisabled,
-    onDotClick,
-    onPrev,
-    onNext,
-  } = useEmblaControls(emblaApi);
+  const { selectedIndex, scrollSnaps, prevDisabled, nextDisabled, onDotClick, onPrev, onNext } =
+    useEmblaControls(emblaApi);
 
   return (
     <div className="w-full space-y-8 [--slide-height:22rem] sm:[--slide-height:28rem] md:[--slide-height:32rem] [--slide-spacing:2rem] [--slide-size:85%] md:[--slide-size:45%] lg:[--slide-size:35%]">
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex touch-pan-y touch-pinch-zoom ml-[calc(var(--slide-spacing)*-1)]">
-          {slides.map((index) => {
+          {slides.map(index => {
             const isActive = index === selectedIndex;
             const imageUrl = communityImages[index % communityImages.length];
 
@@ -149,19 +137,19 @@ function MotionCarousel(props: PropType) {
 
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         <div className="flex gap-3">
-          <Button 
+          <Button
             variant="outline"
-            size="icon" 
-            onClick={onPrev} 
+            size="icon"
+            onClick={onPrev}
             disabled={prevDisabled}
             className="rounded-full border-white/10 bg-white/5 hover:bg-white/10 text-white"
           >
             <ChevronLeft className="size-5" />
           </Button>
-          <Button 
+          <Button
             variant="outline"
-            size="icon" 
-            onClick={onNext} 
+            size="icon"
+            onClick={onNext}
             disabled={nextDisabled}
             className="rounded-full border-white/10 bg-white/5 hover:bg-white/10 text-white"
           >
@@ -195,7 +183,7 @@ function DotButton({ selected = false, label, onClick }: DotButtonProps) {
       animate={{
         width: selected ? 80 : 10,
         height: selected ? 24 : 10,
-        backgroundColor: selected ? "#2563eb" : "#ffffff20",
+        backgroundColor: selected ? '#2563eb' : '#ffffff20',
       }}
       transition={transition}
     >

@@ -7,17 +7,17 @@ const CREDIT_PACKAGES = {
   starter: {
     name: 'Pacote Starter - 20 Créditos',
     credits: 20,
-    price: 19.90,
+    price: 19.9,
   },
   pro: {
     name: 'Pacote Pro - 60 Créditos',
     credits: 60,
-    price: 49.90,
+    price: 49.9,
   },
   growth: {
     name: 'Pacote Growth - 150 Créditos',
     credits: 150,
-    price: 99.90,
+    price: 99.9,
   },
 } as const;
 

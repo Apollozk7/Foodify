@@ -42,10 +42,7 @@ describe('Supabase Client - createClient', () => {
     createClient();
 
     // Assert
-    expect(createBrowserClient).toHaveBeenCalledWith(
-      'https://real.supabase.co',
-      'real-key'
-    );
+    expect(createBrowserClient).toHaveBeenCalledWith('https://real.supabase.co', 'real-key');
     expect(mockConsoleWarn).not.toHaveBeenCalled();
   });
 
@@ -61,10 +58,7 @@ describe('Supabase Client - createClient', () => {
     expect(mockConsoleWarn).toHaveBeenCalledWith(
       'Supabase credentials missing. Some features will be disabled.'
     );
-    expect(createBrowserClient).toHaveBeenCalledWith(
-      'https://placeholder.supabase.co',
-      'real-key'
-    );
+    expect(createBrowserClient).toHaveBeenCalledWith('https://placeholder.supabase.co', 'real-key');
   });
 
   it('should fallback to placeholder and warn if key is missing', () => {
@@ -79,10 +73,7 @@ describe('Supabase Client - createClient', () => {
     expect(mockConsoleWarn).toHaveBeenCalledWith(
       'Supabase credentials missing. Some features will be disabled.'
     );
-    expect(createBrowserClient).toHaveBeenCalledWith(
-      'https://real.supabase.co',
-      'placeholder'
-    );
+    expect(createBrowserClient).toHaveBeenCalledWith('https://real.supabase.co', 'placeholder');
   });
 
   it('should fallback to placeholders and warn if both are missing', () => {

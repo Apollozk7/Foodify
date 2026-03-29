@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { env } from "@/env";
 import { z } from "zod";
+import { redis } from "@/lib/redis";
 
 const resend = new Resend(env.RESEND_API_KEY);
 
@@ -11,6 +12,22 @@ const schema = z.object({
 
 export async function POST(request: Request) {
   try {
+    const forwardedFor = request.headers.get("x-forwarded-for");
+    const ip = forwardedFor ? forwardedFor.split(",")[0].trim() : "127.0.0.1";
+    const ipKey = `rate_limit:early_access:${ip}`;
+
+    const requestCount = await redis.incr(ipKey);
+
+    // Set expiry on the first request (1 hour = 3600 seconds)
+    if (requestCount === 1) {
+      await redis.expire(ipKey, 3600);
+    }
+
+    // Limit to 3 requests per hour per IP
+    if (requestCount > 3) {
+      return NextResponse.json({ error: "Muitas requisições. Tente novamente mais tarde." }, { status: 429 });
+    }
+
     const body = await request.json();
     const { email } = schema.parse(body);
 
