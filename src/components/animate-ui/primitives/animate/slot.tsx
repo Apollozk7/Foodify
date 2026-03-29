@@ -58,33 +58,60 @@ function mergeProps<T extends HTMLElement>(
   return merged;
 }
 
+// Map to cache dynamically created motion components and avoid memory leaks
+// We use a WeakMap because React component types (functions/classes) are objects
+// and we don't want to prevent them from being garbage collected.
+// For string primitives (like 'div'), we use a regular Map.
+const motionComponentObjectCache = new WeakMap<object, React.ElementType>();
+const motionComponentStringCache = new Map<string, React.ElementType>();
+
+function getMotionComponent(elementType: React.ElementType) {
+  if (
+    typeof elementType === 'object' &&
+    elementType !== null &&
+    isMotionComponent(elementType)
+  ) {
+    return elementType;
+  }
+
+  if (typeof elementType === 'string' && isMotionComponent(elementType)) {
+     return elementType;
+  }
+
+  if (typeof elementType === 'string') {
+    if (!motionComponentStringCache.has(elementType)) {
+      motionComponentStringCache.set(elementType, motion.create(elementType));
+    }
+    return motionComponentStringCache.get(elementType)!;
+  } else {
+    const objectType = elementType as object;
+    if (!motionComponentObjectCache.has(objectType)) {
+      motionComponentObjectCache.set(objectType, motion.create(elementType));
+    }
+    return motionComponentObjectCache.get(objectType)!;
+  }
+}
+
 function Slot<T extends HTMLElement = HTMLElement>({
   children,
   ref,
   ...props
 }: SlotProps<T>) {
-  const isAlreadyMotion =
-    typeof children.type === 'object' &&
-    children.type !== null &&
-    isMotionComponent(children.type);
+  const isValid = React.isValidElement(children);
+  const childType = isValid ? children.type : null;
 
-  const Base = React.useMemo(
-    () =>
-      isAlreadyMotion
-        ? (children.type as React.ElementType)
-        : motion.create(children.type as React.ElementType),
-    [isAlreadyMotion, children.type],
-  );
+  if (!isValid || !childType) return null;
 
-  if (!React.isValidElement(children)) return null;
+  const Base = getMotionComponent(childType as React.ElementType);
 
   const { ref: childRef, ...childProps } = children.props as AnyProps;
 
   const mergedProps = mergeProps(childProps, props);
 
-  return (
-    <Base {...mergedProps} ref={mergeRefs(childRef as React.Ref<T>, ref)} />
-  );
+  return React.createElement(Base, {
+    ...mergedProps,
+    ref: mergeRefs(childRef as React.Ref<T>, ref)
+  });
 }
 
 export {

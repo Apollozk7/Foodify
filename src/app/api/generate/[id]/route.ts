@@ -5,6 +5,9 @@ import { getGenerationStatus } from "@/lib/fal/client";
 import { setCredits } from "@/lib/redis";
 import { fal } from "@fal-ai/client";
 
+// Define a safe fallback queue status since the client type might be incomplete for FAILED
+type QueueStatus = { status: "IN_QUEUE" | "IN_PROGRESS" | "COMPLETED" | "FAILED" };
+
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -43,19 +46,23 @@ export async function GET(
     }
 
     // 3. Call Fal.ai to check status
-    const status = (await getGenerationStatus(generation.fal_request_id)) as any;
+    type FalStatusResponse = QueueStatus | { status: "FAILED"; error?: unknown };
+    const status = (await getGenerationStatus(generation.fal_request_id)) as FalStatusResponse;
 
     let currentStatus = generation.status;
     let outputUrl = generation.output_image_url;
 
     if (status.status === "COMPLETED") {
       // 4. Fetch the result if completed
-      const result: any = await fal.queue.result("fal-ai/nano-banana", {
+      const result = await fal.queue.result("fal-ai/nano-banana", {
         requestId: generation.fal_request_id,
       });
 
-      // Assuming the result has images[0].url
-      outputUrl = result.images?.[0]?.url || result.image?.url;
+      // Safely access the image URL. The type definition provides `.data.images`,
+      // but in case the actual client payload is flatter or matches previous behavior,
+      // we check both structures to prevent regressions.
+      const responseData = result.data;
+      outputUrl = responseData.images?.[0]?.url || (responseData as { image?: { url: string } }).image?.url;
       currentStatus = "done";
 
       // Update Supabase
@@ -67,7 +74,7 @@ export async function GET(
         })
         .eq("id", generationId);
 
-    } else if (status.status === "FAILED") {
+    } else if (status.status === "FAILED" || "error" in status) {
       // Use the new atomic RPC to handle failure and refund
       const { data: rpcData, error: rpcError } = await supabaseAdmin.rpc("handle_generation_failure", {
         p_generation_id: generationId,
