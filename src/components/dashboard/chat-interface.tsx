@@ -175,8 +175,8 @@ export function ChatInterface({ messages, onSendMessage, isLoading }: ChatInterf
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                placeholder="Descreva o que quer gerar..."
-                disabled={isLoading}
+                placeholder={isCompressing ? "Otimizando imagem..." : "Descreva o que quer gerar..."}
+                disabled={isLoading || isCompressing}
                 className="w-full bg-transparent px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:outline-none transition-all disabled:opacity-50"
               />
             </div>
