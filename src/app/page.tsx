@@ -44,7 +44,7 @@ export default function LandingPage() {
     window.location.href = path;
   };
 
-  const scrollToId = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+  const scrollToId = (e: React.MouseEvent<HTMLElement>, id: string) => {
     e.preventDefault();
     setMobileMenuOpen(false);
     const element = document.getElementById(id);
@@ -168,7 +168,7 @@ export default function LandingPage() {
                 <ArrowRight className="ml-3 group-hover:translate-x-2 transition-transform" />
               </Button>
               <button 
-                onClick={(e) => scrollToId(e as any, 'galeria')}
+                onClick={(e) => scrollToId(e, 'galeria')}
                 className="text-xs font-bold uppercase tracking-widest text-white border-b border-white/20 pb-1 hover:border-primary transition-colors"
               >
                 VER GALERIA
