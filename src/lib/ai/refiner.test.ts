@@ -43,7 +43,8 @@ describe('refinePrompt', () => {
 
     expect(result).toEqual({
       refined: "Professional photography of a rustic hamburger on a wooden plate, dramatic lighting, blurred restaurant background, high resolution.",
-      negative: "blurry, low quality, noisy"
+      negative: "blurry, low quality, noisy",
+      aiMessage: "Processando sua foto com inteligência..."
     });
 
     expect(global.fetch).toHaveBeenCalledWith(
