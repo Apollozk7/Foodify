@@ -1,6 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { redis, getUserCredits, consumeCredit, setCredits, refundCredit } from './redis';
 
+vi.mock('@/env', () => ({
+  env: {
+    UPSTASH_REDIS_REST_URL: 'https://test.upstash.io',
+    UPSTASH_REDIS_REST_TOKEN: 'test-token',
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: 'pk_test',
+    NEXT_PUBLIC_SUPABASE_URL: 'https://test.supabase.co',
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY: 'key',
+  },
+}));
+
 vi.mock('@upstash/redis', () => {
   const MockRedis = class {
     get = vi.fn();
