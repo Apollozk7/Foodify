@@ -35,7 +35,6 @@ export function BeforeAfterSlider({
   };
 
   const onTouchMove = (e: React.TouchEvent) => {
-    e.preventDefault(); // evita scroll da página interceptar o drag
     if (isDragging) handleMove(e.touches[0].clientX);
   };
 
@@ -53,10 +52,9 @@ export function BeforeAfterSlider({
     <div
       ref={containerRef}
       className={cn(
-        "relative w-full aspect-video overflow-hidden rounded-2xl cursor-col-resize select-none border border-white/10",
+        "relative w-full aspect-video overflow-hidden rounded-2xl cursor-col-resize select-none border border-white/10 touch-none",
         className
       )}
-      style={{ touchAction: "none" }} // fix: impede browser de interceptar touch pra scroll
       onMouseMove={onMouseMove}
       onTouchMove={onTouchMove}
       onMouseDown={onMouseDown}
