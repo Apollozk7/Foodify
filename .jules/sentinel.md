@@ -1,0 +1,4 @@
+## 2024-05-09 - [HIGH] Fix rate limit bypass via IP spoofing
+**Vulnerability:** The early-access endpoint extracted the client IP for rate limiting using the first value of the `x-forwarded-for` header. This is easily spoofable by attackers sending custom headers, allowing them to bypass the rate limit and exhaust Resend API quotas or send spam.
+**Learning:** In environments with reverse proxies or load balancers (like Vercel), the first value of `x-forwarded-for` is determined by the client and cannot be trusted. The real IP is often appended at the end of the `x-forwarded-for` chain or provided in a trusted header like `x-real-ip`.
+**Prevention:** Always prioritize trusted headers like `x-real-ip`, or if using `x-forwarded-for`, extract the last IP in the comma-separated list, as this is the one appended by the closest trusted proxy.

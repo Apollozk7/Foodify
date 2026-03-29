@@ -13,7 +13,9 @@ const schema = z.object({
 export async function POST(request: Request) {
   try {
     const forwardedFor = request.headers.get("x-forwarded-for");
-    const ip = forwardedFor ? forwardedFor.split(",")[0].trim() : "127.0.0.1";
+    // Secure IP extraction: prefer x-real-ip or take the last appended IP in x-forwarded-for
+    // taking the first IP is vulnerable to spoofing (users passing arbitrary X-Forwarded-For values)
+    const ip = request.headers.get("x-real-ip") || (forwardedFor ? forwardedFor.split(",").pop()?.trim() : "127.0.0.1") || "127.0.0.1";
     const ipKey = `rate_limit:early_access:${ip}`;
 
     const requestCount = await redis.incr(ipKey);
