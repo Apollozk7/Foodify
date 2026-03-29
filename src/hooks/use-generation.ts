@@ -59,13 +59,7 @@ export function useGeneration() {
 
           // Update the last AI message with the result
           setMessages(prev => {
-            let lastAiIndex = -1;
-            for (let i = prev.length - 1; i >= 0; i--) {
-              if (prev[i].role === 'ai') {
-                lastAiIndex = i;
-                break;
-              }
-            }
+            const lastAiIndex = prev.findLastIndex(m => m.role === 'ai');
             if (lastAiIndex !== -1) {
               const newPrev = [...prev];
               newPrev[lastAiIndex] = {
@@ -83,13 +77,7 @@ export function useGeneration() {
           clearPolling();
 
           setMessages(prev => {
-            let lastAiIndex = -1;
-            for (let i = prev.length - 1; i >= 0; i--) {
-              if (prev[i].role === 'ai') {
-                lastAiIndex = i;
-                break;
-              }
-            }
+            const lastAiIndex = prev.findLastIndex(m => m.role === 'ai');
             if (lastAiIndex !== -1) {
               const newPrev = [...prev];
               newPrev[lastAiIndex] = { ...newPrev[lastAiIndex], status: 'failed' };
@@ -100,13 +88,7 @@ export function useGeneration() {
         } else if (data.status === 'processing' || data.status === 'pending') {
           if (data.status === 'processing') {
             setMessages(prev => {
-              let lastAiIndex = -1;
-              for (let i = prev.length - 1; i >= 0; i--) {
-                if (prev[i].role === 'ai') {
-                  lastAiIndex = i;
-                  break;
-                }
-              }
+              const lastAiIndex = prev.findLastIndex(m => m.role === 'ai');
               if (lastAiIndex !== -1) {
                 const newPrev = [...prev];
                 newPrev[lastAiIndex] = { ...newPrev[lastAiIndex], status: 'processing' };
