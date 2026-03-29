@@ -1,12 +1,12 @@
-import { Redis } from "@upstash/redis";
-import { env } from "@/env";
+import { Redis } from '@upstash/redis';
+import { env } from '@/env';
 
 /**
  * Upstash Redis client for credit management and state caching.
  */
 export const redis = new Redis({
-  url: env.UPSTASH_REDIS_REST_URL || "https://placeholder.upstash.io",
-  token: env.UPSTASH_REDIS_REST_TOKEN || "placeholder",
+  url: env.UPSTASH_REDIS_REST_URL || 'https://placeholder.upstash.io',
+  token: env.UPSTASH_REDIS_REST_TOKEN || 'placeholder',
 });
 
 /**
@@ -24,7 +24,7 @@ export async function getUserCredits(userId: string): Promise<number> {
  */
 export async function consumeCredit(userId: string): Promise<number | null> {
   const key = `user:${userId}:credits`;
-  
+
   // LUA script to check and decrement atomically
   // Returns -1 if insufficient credits
   // Returns -2 if key does not exist (so we can sync from DB)
@@ -40,17 +40,17 @@ export async function consumeCredit(userId: string): Promise<number | null> {
       return -1
     end
   `;
-  
-  const result = await redis.eval(script, [key], []) as number;
-  
+
+  const result = (await redis.eval(script, [key], [])) as number;
+
   if (result === -1) {
     return null; // Insufficient
   }
-  
+
   if (result === -2) {
     return -2; // Needs sync
   }
-  
+
   return result;
 }
 

@@ -21,12 +21,13 @@ describe('refinePrompt', () => {
         {
           message: {
             content: JSON.stringify({
-              refined: "Professional photography of a rustic hamburger on a wooden plate, dramatic lighting, blurred restaurant background, high resolution.",
-              negative: "blurry, low quality, noisy"
-            })
-          }
-        }
-      ]
+              refined:
+                'Professional photography of a rustic hamburger on a wooden plate, dramatic lighting, blurred restaurant background, high resolution.',
+              negative: 'blurry, low quality, noisy',
+            }),
+          },
+        },
+      ],
     };
 
     vi.mocked(global.fetch).mockResolvedValue({
@@ -38,22 +39,23 @@ describe('refinePrompt', () => {
       userInput: 'hambúrguer rústico',
       category: 'Alimentos',
       style: 'Fotografia de Produto',
-      templates: ['delivery']
+      templates: ['delivery'],
     });
 
     expect(result).toEqual({
-      aiMessage: "Processando sua foto com inteligência...",
-      refined: "Professional photography of a rustic hamburger on a wooden plate, dramatic lighting, blurred restaurant background, high resolution.",
-      negative: "blurry, low quality, noisy",
-      aiMessage: "Processando sua foto com inteligência..."
+      aiMessage: 'Processando sua foto com inteligência...',
+      refined:
+        'Professional photography of a rustic hamburger on a wooden plate, dramatic lighting, blurred restaurant background, high resolution.',
+      negative: 'blurry, low quality, noisy',
+      aiMessage: 'Processando sua foto com inteligência...',
     });
 
     expect(global.fetch).toHaveBeenCalledWith(
       expect.stringContaining('openrouter.ai'),
       expect.objectContaining({
         headers: expect.objectContaining({
-          'Authorization': 'Bearer test-api-key'
-        })
+          Authorization: 'Bearer test-api-key',
+        }),
       })
     );
   });
@@ -66,12 +68,14 @@ describe('refinePrompt', () => {
       json: async () => ({ error: 'Internal Server Error' }),
     } as Response);
 
-    await expect(refinePrompt({
-      userInput: 'hambúrguer rústico',
-      category: 'Alimentos',
-      style: 'Fotografia de Produto',
-      templates: ['delivery']
-    })).rejects.toThrow('Failed to refine prompt');
+    await expect(
+      refinePrompt({
+        userInput: 'hambúrguer rústico',
+        category: 'Alimentos',
+        style: 'Fotografia de Produto',
+        templates: ['delivery'],
+      })
+    ).rejects.toThrow('Failed to refine prompt');
   });
 
   it('should handle invalid JSON responses from OpenRouter', async () => {
@@ -79,10 +83,10 @@ describe('refinePrompt', () => {
       choices: [
         {
           message: {
-            content: "Not a JSON string"
-          }
-        }
-      ]
+            content: 'Not a JSON string',
+          },
+        },
+      ],
     };
 
     vi.mocked(global.fetch).mockResolvedValue({
@@ -90,19 +94,23 @@ describe('refinePrompt', () => {
       json: async () => mockResponse,
     } as Response);
 
-    await expect(refinePrompt({
-      userInput: 'hambúrguer rústico',
-      category: 'Alimentos',
-      style: 'Fotografia de Produto',
-      templates: ['delivery']
-    }) as any).rejects.toThrow('Failed to parse refined prompt');
+    await expect(
+      refinePrompt({
+        userInput: 'hambúrguer rústico',
+        category: 'Alimentos',
+        style: 'Fotografia de Produto',
+        templates: ['delivery'],
+      }) as any
+    ).rejects.toThrow('Failed to parse refined prompt');
   });
 
   it('should handle network or general fetch errors', async () => {
     vi.mocked(global.fetch).mockRejectedValue(new Error('Network failure'));
 
-    await expect(refinePrompt({
-      userInput: 'hambúrguer rústico',
-    } as any)).rejects.toThrow('Network failure');
+    await expect(
+      refinePrompt({
+        userInput: 'hambúrguer rústico',
+      } as any)
+    ).rejects.toThrow('Network failure');
   });
 });

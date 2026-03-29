@@ -1,12 +1,12 @@
-import { NextResponse } from "next/server";
-import { Resend } from "resend";
-import { env } from "@/env";
-import { z } from "zod";
+import { NextResponse } from 'next/server';
+import { Resend } from 'resend';
+import { env } from '@/env';
+import { z } from 'zod';
 
 const resend = new Resend(env.RESEND_API_KEY);
 
 const schema = z.object({
-  email: z.string().email("E-mail inválido"),
+  email: z.string().email('E-mail inválido'),
 });
 
 export async function POST(request: Request) {
@@ -16,9 +16,9 @@ export async function POST(request: Request) {
 
     // Enviar notificação de que o usuário entrou na lista de espera
     const data = await resend.emails.send({
-      from: "Estúdio IA Pro <onboarding@resend.dev>",
+      from: 'Estúdio IA Pro <onboarding@resend.dev>',
       to: [email],
-      subject: "Você está na lista! Mas as vagas são limitadas... 🎉",
+      subject: 'Você está na lista! Mas as vagas são limitadas... 🎉',
       html: `
         <div style="font-family: 'Inter', sans-serif; max-width: 600px; margin: 0 auto; background-color: #020617; color: #f8fafc; padding: 40px 30px; border-radius: 24px;">
           <div style="text-align: center; margin-bottom: 30px;">
@@ -62,6 +62,9 @@ export async function POST(request: Request) {
     if (error instanceof z.ZodError) {
       return NextResponse.json({ error: error.issues[0].message }, { status: 400 });
     }
-    return NextResponse.json({ error: "Erro ao processar e-mail. Tente novamente." }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Erro ao processar e-mail. Tente novamente.' },
+      { status: 500 }
+    );
   }
 }

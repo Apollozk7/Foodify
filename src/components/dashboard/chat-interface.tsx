@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import React, { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Send, Image as ImageIcon, X, Sparkles, Loader2, User, Bot, Download } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Message, GenerationStatus } from "@/hooks/use-generation";
-import Image from "next/image";
-import { compressImage } from "@/lib/utils/compress-image";
-import { BeforeAfterSlider } from "@/components/ui/before-after-slider";
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Send, Image as ImageIcon, X, Sparkles, Loader2, User, Bot, Download } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Message, GenerationStatus } from '@/hooks/use-generation';
+import Image from 'next/image';
+import { compressImage } from '@/lib/utils/compress-image';
+import { BeforeAfterSlider } from '@/components/ui/before-after-slider';
 
 interface ChatInterfaceProps {
   messages: Message[];
@@ -16,11 +16,11 @@ interface ChatInterfaceProps {
 }
 
 export function ChatInterface({ messages, onSendMessage, isLoading }: ChatInterfaceProps) {
-  const [inputText, setInputText] = useState("");
+  const [inputText, setInputText] = useState('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isCompressing, setIsCompressing] = useState(false);
-  
+
   const scrollRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -41,7 +41,7 @@ export function ChatInterface({ messages, onSendMessage, isLoading }: ChatInterf
       setSelectedFile(compressed);
       setPreviewUrl(URL.createObjectURL(compressed));
     } catch (err) {
-      console.error("Compression error:", err);
+      console.error('Compression error:', err);
     } finally {
       setIsCompressing(false);
     }
@@ -49,9 +49,9 @@ export function ChatInterface({ messages, onSendMessage, isLoading }: ChatInterf
 
   const handleSend = () => {
     if ((!inputText.trim() && !selectedFile) || isLoading || isCompressing) return;
-    
+
     onSendMessage(inputText, selectedFile);
-    setInputText("");
+    setInputText('');
     setSelectedFile(null);
     setPreviewUrl(null);
   };
@@ -59,13 +59,13 @@ export function ChatInterface({ messages, onSendMessage, isLoading }: ChatInterf
   const removeImage = () => {
     setSelectedFile(null);
     setPreviewUrl(null);
-    if (fileInputRef.current) fileInputRef.current.value = "";
+    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   // Find the last user image to show in the before/after slider
   let lastUserImage: string | undefined;
   for (let i = messages.length - 1; i >= 0; i--) {
-    if (messages[i].role === "user" && messages[i].imageUrl) {
+    if (messages[i].role === 'user' && messages[i].imageUrl) {
       lastUserImage = messages[i].imageUrl;
       break;
     }
@@ -90,7 +90,7 @@ export function ChatInterface({ messages, onSendMessage, isLoading }: ChatInterf
       </div>
 
       {/* Messages Area */}
-      <div 
+      <div
         ref={scrollRef}
         className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 scrollbar-hide min-h-0"
       >
@@ -111,9 +111,9 @@ export function ChatInterface({ messages, onSendMessage, isLoading }: ChatInterf
             <ChatMessage key={idx} message={msg} beforeImageUrl={lastUserImage} />
           ))
         )}
-        
+
         {isLoading && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             className="flex items-start gap-3"
@@ -133,7 +133,7 @@ export function ChatInterface({ messages, onSendMessage, isLoading }: ChatInterf
         <div className="bg-white/[0.03] border border-white/10 rounded-[24px] p-2 backdrop-blur-xl shadow-2xl">
           <AnimatePresence>
             {previewUrl && (
-              <motion.div 
+              <motion.div
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 80, opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
@@ -141,7 +141,7 @@ export function ChatInterface({ messages, onSendMessage, isLoading }: ChatInterf
               >
                 <div className="relative w-16 h-16 rounded-xl overflow-hidden border border-white/10 shadow-2xl">
                   <Image src={previewUrl} alt="Preview" fill className="object-cover" />
-                  <button 
+                  <button
                     onClick={removeImage}
                     className="absolute top-1 right-1 p-1 rounded-full bg-black/60 text-white hover:bg-black/80 transition-colors"
                   >
@@ -153,34 +153,38 @@ export function ChatInterface({ messages, onSendMessage, isLoading }: ChatInterf
           </AnimatePresence>
 
           <div className="flex items-center gap-2">
-            <button 
+            <button
               onClick={() => fileInputRef.current?.click()}
               disabled={isLoading || isCompressing}
               className="p-2.5 rounded-xl bg-white/5 border border-white/5 text-slate-400 hover:text-white hover:bg-white/10 transition-all disabled:opacity-50"
             >
-              {isCompressing ? <Loader2 className="w-4 h-4 animate-spin" /> : <ImageIcon className="w-4 h-4" />}
+              {isCompressing ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <ImageIcon className="w-4 h-4" />
+              )}
             </button>
-            <input 
-              type="file" 
-              ref={fileInputRef} 
-              onChange={handleFileChange} 
-              className="hidden" 
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              className="hidden"
               accept="image/*"
             />
-            
+
             <div className="flex-1 relative">
-              <input 
+              <input
                 type="text"
                 value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSend()}
+                onChange={e => setInputText(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleSend()}
                 placeholder="Descreva o que quer gerar..."
                 disabled={isLoading}
                 className="w-full bg-transparent px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:outline-none transition-all disabled:opacity-50"
               />
             </div>
 
-            <button 
+            <button
               onClick={handleSend}
               disabled={(!inputText.trim() && !selectedFile) || isLoading || isCompressing}
               className="p-2.5 rounded-xl bg-blue-600 text-white hover:bg-blue-500 shadow-lg shadow-blue-900/20 transition-all disabled:opacity-50 disabled:bg-slate-800"
@@ -194,52 +198,54 @@ export function ChatInterface({ messages, onSendMessage, isLoading }: ChatInterf
   );
 }
 
-function ChatMessage({ message, beforeImageUrl }: { message: Message, beforeImageUrl?: string }) {
-  const isAi = message.role === "ai";
-  
+function ChatMessage({ message, beforeImageUrl }: { message: Message; beforeImageUrl?: string }) {
+  const isAi = message.role === 'ai';
+
   const handleDownload = async (url: string) => {
     try {
       const response = await fetch(url);
       const blob = await response.blob();
       const downloadUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
+      const link = document.createElement('a');
       link.href = downloadUrl;
       link.download = `estudio-ia-pro-${Date.now()}.png`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     } catch (err) {
-      console.error("Download failed:", err);
+      console.error('Download failed:', err);
     }
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 10, scale: 0.98 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      className={cn(
-        "flex items-start gap-3",
-        !isAi && "flex-row-reverse"
-      )}
+      className={cn('flex items-start gap-3', !isAi && 'flex-row-reverse')}
     >
-      <div className={cn(
-        "w-7 h-7 rounded-full flex items-center justify-center shrink-0 border",
-        isAi ? "bg-blue-600/20 border-blue-500/20" : "bg-white/10 border-white/10"
-      )}>
-        {isAi ? <Bot className="w-3.5 h-3.5 text-blue-400" /> : <User className="w-3.5 h-3.5 text-slate-300" />}
+      <div
+        className={cn(
+          'w-7 h-7 rounded-full flex items-center justify-center shrink-0 border',
+          isAi ? 'bg-blue-600/20 border-blue-500/20' : 'bg-white/10 border-white/10'
+        )}
+      >
+        {isAi ? (
+          <Bot className="w-3.5 h-3.5 text-blue-400" />
+        ) : (
+          <User className="w-3.5 h-3.5 text-slate-300" />
+        )}
       </div>
 
-      <div className={cn(
-        "max-w-[85%] space-y-2",
-        !isAi && "flex flex-col items-end"
-      )}>
+      <div className={cn('max-w-[85%] space-y-2', !isAi && 'flex flex-col items-end')}>
         {/* Content Bubble */}
-        <div className={cn(
-          "p-3.5 rounded-2xl text-xs md:text-sm leading-relaxed",
-          isAi 
-            ? "bg-white/5 border border-white/5 rounded-tl-none text-slate-200" 
-            : "bg-blue-600 text-white rounded-tr-none shadow-lg shadow-blue-900/20"
-        )}>
+        <div
+          className={cn(
+            'p-3.5 rounded-2xl text-xs md:text-sm leading-relaxed',
+            isAi
+              ? 'bg-white/5 border border-white/5 rounded-tl-none text-slate-200'
+              : 'bg-blue-600 text-white rounded-tr-none shadow-lg shadow-blue-900/20'
+          )}
+        >
           {message.content}
         </div>
 
@@ -254,51 +260,54 @@ function ChatMessage({ message, beforeImageUrl }: { message: Message, beforeImag
         )}
 
         {/* AI Result */}
-        {isAi && (message.generatedImageUrl || message.status === "pending" || message.status === "processing") && (
-          <div className="relative w-full max-w-sm rounded-[20px] overflow-hidden border border-white/5 bg-white/[0.02] shadow-2xl mt-1 group">
-            {message.generatedImageUrl && beforeImageUrl ? (
-              <div className="aspect-square md:aspect-video">
-                <BeforeAfterSlider 
-                  beforeImage={beforeImageUrl}
-                  afterImage={message.generatedImageUrl}
-                />
-              </div>
-            ) : message.generatedImageUrl ? (
-              <div className="relative aspect-square md:aspect-video">
-                <Image 
-                  src={message.generatedImageUrl} 
-                  alt="Generated result" 
-                  fill 
-                  className="object-cover" 
-                />
-              </div>
-            ) : (
-              <div className="aspect-square md:aspect-video flex flex-col items-center justify-center space-y-3">
-                <div className="relative">
-                  <div className="w-10 h-10 rounded-full border-2 border-blue-500/20 border-t-blue-500 animate-spin" />
-                  <Sparkles className="w-4 h-4 text-blue-400 absolute inset-0 m-auto animate-pulse" />
+        {isAi &&
+          (message.generatedImageUrl ||
+            message.status === 'pending' ||
+            message.status === 'processing') && (
+            <div className="relative w-full max-w-sm rounded-[20px] overflow-hidden border border-white/5 bg-white/[0.02] shadow-2xl mt-1 group">
+              {message.generatedImageUrl && beforeImageUrl ? (
+                <div className="aspect-square md:aspect-video">
+                  <BeforeAfterSlider
+                    beforeImage={beforeImageUrl}
+                    afterImage={message.generatedImageUrl}
+                  />
                 </div>
-                <div className="text-center">
-                  <p className="text-[9px] font-bold text-blue-400 uppercase tracking-widest">
-                    {message.status === "processing" ? "Renderizando..." : "Analisando..."}
-                  </p>
+              ) : message.generatedImageUrl ? (
+                <div className="relative aspect-square md:aspect-video">
+                  <Image
+                    src={message.generatedImageUrl}
+                    alt="Generated result"
+                    fill
+                    className="object-cover"
+                  />
                 </div>
-              </div>
-            )}
-            
-            {message.generatedImageUrl && (
-              <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity z-20">
-                <button 
-                  onClick={() => handleDownload(message.generatedImageUrl!)}
-                  className="px-3 py-1.5 rounded-lg bg-white text-black text-[10px] font-bold shadow-xl hover:bg-blue-50 transition-colors flex items-center gap-2"
-                >
-                  <Download className="w-3 h-3" />
-                  Download
-                </button>
-              </div>
-            )}
-          </div>
-        )}
+              ) : (
+                <div className="aspect-square md:aspect-video flex flex-col items-center justify-center space-y-3">
+                  <div className="relative">
+                    <div className="w-10 h-10 rounded-full border-2 border-blue-500/20 border-t-blue-500 animate-spin" />
+                    <Sparkles className="w-4 h-4 text-blue-400 absolute inset-0 m-auto animate-pulse" />
+                  </div>
+                  <div className="text-center">
+                    <p className="text-[9px] font-bold text-blue-400 uppercase tracking-widest">
+                      {message.status === 'processing' ? 'Renderizando...' : 'Analisando...'}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {message.generatedImageUrl && (
+                <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                  <button
+                    onClick={() => handleDownload(message.generatedImageUrl!)}
+                    className="px-3 py-1.5 rounded-lg bg-white text-black text-[10px] font-bold shadow-xl hover:bg-blue-50 transition-colors flex items-center gap-2"
+                  >
+                    <Download className="w-3 h-3" />
+                    Download
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
       </div>
     </motion.div>
   );

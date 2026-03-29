@@ -7,7 +7,13 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    exclude: ['**/node_modules/**', '**/dist/**', '**/cypress/**', '**/.{idea,git,cache,output,temp}/**', '**/superpowers/tests/**'],
+    exclude: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/cypress/**',
+      '**/.{idea,git,cache,output,temp}/**',
+      '**/superpowers/tests/**',
+    ],
   },
   resolve: {
     alias: {

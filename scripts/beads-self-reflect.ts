@@ -17,9 +17,9 @@
  * The imports below are placeholders - replace with your actual service paths.
  */
 
-import { parseArgs } from "util";
-import * as fs from "fs/promises";
-import * as path from "path";
+import { parseArgs } from 'util';
+import * as fs from 'fs/promises';
+import * as path from 'path';
 
 // =============================================================================
 // CLI Arguments
@@ -27,10 +27,10 @@ import * as path from "path";
 
 const { values: args } = parseArgs({
   options: {
-    days: { type: "string", default: "7" },
-    "no-slack": { type: "boolean", default: false },
-    verbose: { type: "boolean", short: "v", default: false },
-    help: { type: "boolean", short: "h", default: false },
+    days: { type: 'string', default: '7' },
+    'no-slack': { type: 'boolean', default: false },
+    verbose: { type: 'boolean', short: 'v', default: false },
+    help: { type: 'boolean', short: 'h', default: false },
   },
 });
 
@@ -63,10 +63,10 @@ Environment Variables:
 // =============================================================================
 
 const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN;
-const SLACK_CHANNEL = process.env.SLACK_CHANNEL_AGENTS || "#dev-agents";
+const SLACK_CHANNEL = process.env.SLACK_CHANNEL_AGENTS || '#dev-agents';
 
-const DAYS = parseInt(args.days || "7", 10);
-const NO_SLACK = args["no-slack"] || false;
+const DAYS = parseInt(args.days || '7', 10);
+const NO_SLACK = args['no-slack'] || false;
 const VERBOSE = args.verbose || false;
 
 // =============================================================================
@@ -75,15 +75,15 @@ const VERBOSE = args.verbose || false;
 
 async function postToSlack(message: string, blocks?: unknown[]): Promise<void> {
   if (!SLACK_BOT_TOKEN) {
-    console.log("No SLACK_BOT_TOKEN set, skipping Slack post");
+    console.log('No SLACK_BOT_TOKEN set, skipping Slack post');
     return;
   }
 
   try {
-    const response = await fetch("https://slack.com/api/chat.postMessage", {
-      method: "POST",
+    const response = await fetch('https://slack.com/api/chat.postMessage', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${SLACK_BOT_TOKEN}`,
       },
       body: JSON.stringify({
@@ -96,10 +96,10 @@ async function postToSlack(message: string, blocks?: unknown[]): Promise<void> {
 
     const data = await response.json();
     if (!data.ok) {
-      console.error("Slack API error:", data.error);
+      console.error('Slack API error:', data.error);
     }
   } catch (error) {
-    console.error("Failed to post to Slack:", error);
+    console.error('Failed to post to Slack:', error);
   }
 }
 
@@ -110,40 +110,40 @@ function formatSlackBlocks(knowledgeStats: {
 }): unknown[] {
   return [
     {
-      type: "header",
+      type: 'header',
       text: {
-        type: "plain_text",
-        text: "BEADS Knowledge Base Report",
+        type: 'plain_text',
+        text: 'BEADS Knowledge Base Report',
       },
     },
     {
-      type: "section",
+      type: 'section',
       text: {
-        type: "mrkdwn",
+        type: 'mrkdwn',
         text: `*Period*: Last ${DAYS} days\n*Generated*: ${new Date().toISOString()}`,
       },
     },
-    { type: "divider" },
+    { type: 'divider' },
     {
-      type: "section",
+      type: 'section',
       text: {
-        type: "mrkdwn",
+        type: 'mrkdwn',
         text:
           `*Knowledge Base Status*\n` +
           `Total facts: ${knowledgeStats.total}\n` +
           `Added recently: ${knowledgeStats.recentlyAdded}\n` +
           `By type: ${Object.entries(knowledgeStats.byType)
             .map(([t, c]) => `${t} (${c})`)
-            .join(", ")}`,
+            .join(', ')}`,
       },
     },
-    { type: "divider" },
+    { type: 'divider' },
     {
-      type: "context",
+      type: 'context',
       elements: [
         {
-          type: "mrkdwn",
-          text: "_For AI analysis of PR comments, use `/self-reflect` in Claude Code_",
+          type: 'mrkdwn',
+          text: '_For AI analysis of PR comments, use `/self-reflect` in Claude Code_',
         },
       ],
     },
@@ -171,7 +171,7 @@ async function getKnowledgeStats(): Promise<KnowledgeStats> {
     byConfidence: {},
   };
 
-  const knowledgeDir = path.join(process.cwd(), ".metaswarm/knowledge");
+  const knowledgeDir = path.join(process.cwd(), '.metaswarm/knowledge');
 
   try {
     const files = await fs.readdir(knowledgeDir);
@@ -210,7 +210,10 @@ async function getKnowledgeStats(): Promise<KnowledgeStats> {
 
           if (fact.updatedAt) {
             const updatedAt = new Date(fact.updatedAt);
-            if (updatedAt <= ninetyDaysAgo && (fact.usageCount === undefined || fact.usageCount === 0)) {
+            if (
+              updatedAt <= ninetyDaysAgo &&
+              (fact.usageCount === undefined || fact.usageCount === 0)
+            ) {
               stats.stale++;
             }
           }
@@ -220,7 +223,7 @@ async function getKnowledgeStats(): Promise<KnowledgeStats> {
       }
     }
   } catch (error) {
-    console.error("Failed to read knowledge base:", error);
+    console.error('Failed to read knowledge base:', error);
   }
 
   return stats;
@@ -231,69 +234,69 @@ async function getKnowledgeStats(): Promise<KnowledgeStats> {
 // =============================================================================
 
 async function main() {
-  console.log("\n=== BEADS Self-Reflect ===\n");
+  console.log('\n=== BEADS Self-Reflect ===\n');
   console.log(`Report period: ${DAYS} days`);
   console.log(`Skip Slack: ${NO_SLACK}`);
-  console.log("");
+  console.log('');
 
   // -------------------------------------------------------------------------
   // Step 1: Get knowledge base statistics
   // -------------------------------------------------------------------------
-  console.log("Step 1: Analyzing knowledge base...\n");
+  console.log('Step 1: Analyzing knowledge base...\n');
 
   const stats = await getKnowledgeStats();
 
-  console.log("Knowledge Base Statistics:");
+  console.log('Knowledge Base Statistics:');
   console.log(`  Total facts: ${stats.total}`);
   console.log(`  Recently added (30 days): ${stats.recentlyAdded}`);
   console.log(`  Stale (90 days, unused): ${stats.stale}`);
-  console.log("");
-  console.log("  By type:");
+  console.log('');
+  console.log('  By type:');
   for (const [type, count] of Object.entries(stats.byType)) {
     console.log(`    ${type}: ${count}`);
   }
-  console.log("");
-  console.log("  By confidence:");
+  console.log('');
+  console.log('  By confidence:');
   for (const [level, count] of Object.entries(stats.byConfidence)) {
     console.log(`    ${level}: ${count}`);
   }
-  console.log("");
+  console.log('');
 
   // -------------------------------------------------------------------------
   // Step 2: Generate weekly report
   // -------------------------------------------------------------------------
-  console.log("Step 2: Generating weekly report...\n");
+  console.log('Step 2: Generating weekly report...\n');
 
   // TODO: Replace with your own weekly report service implementation
   if (VERBOSE) {
-    console.log("--- Weekly Report ---\n");
-    console.log("(No report service configured yet)");
-    console.log("--- End Report ---\n");
+    console.log('--- Weekly Report ---\n');
+    console.log('(No report service configured yet)');
+    console.log('--- End Report ---\n');
   }
 
   // -------------------------------------------------------------------------
   // Step 3: Post to Slack
   // -------------------------------------------------------------------------
   if (!NO_SLACK) {
-    console.log("Step 3: Posting summary to Slack...\n");
+    console.log('Step 3: Posting summary to Slack...\n');
 
     const blocks = formatSlackBlocks(stats);
-    await postToSlack("Weekly knowledge base report", blocks);
+    await postToSlack('Weekly knowledge base report', blocks);
     console.log(`Posted to ${SLACK_CHANNEL}\n`);
   } else {
-    console.log("Step 3: Skipping Slack post\n");
+    console.log('Step 3: Skipping Slack post\n');
   }
 
   // -------------------------------------------------------------------------
   // Done
   // -------------------------------------------------------------------------
-  console.log("=== Report Complete ===\n");
-  console.log("To extract learnings from PR comments:");
-  console.log("  1. Run: npx tsx scripts/beads-fetch-pr-comments.ts");
-  console.log("  2. Use Claude Code: /self-reflect");
+  console.log('=== Report Complete ===\n');
+  console.log('To extract learnings from PR comments:');
+  console.log('  1. Run: npx tsx scripts/beads-fetch-pr-comments.ts');
+  console.log('  2. Use Claude Code: /self-reflect');
 }
 
 main().catch(error => {
-  console.error("Fatal error:", error);
+  console.error('Fatal error:', error);
   process.exit(1);
 });
