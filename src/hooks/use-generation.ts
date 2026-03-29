@@ -39,6 +39,16 @@ export function useGeneration() {
     return () => clearPolling();
   }, [clearPolling]);
 
+  const updateLastAiMessage = useCallback((updates: Partial<Message>) => {
+    setMessages(prev => {
+      const lastAi = [...prev].reverse().find(m => m.role === "ai");
+      if (lastAi) {
+        return prev.map(m => m === lastAi ? { ...m, ...updates } : m);
+      }
+      return prev;
+    });
+  }, []);
+
   const pollStatus = useCallback(async (generationId: string, currentDelay: number = 2000) => {
     try {
       const response = await fetch(`/api/generate/${generationId}`);
@@ -57,34 +67,16 @@ export function useGeneration() {
         clearPolling();
 
         // Update the last AI message with the result
-        setMessages(prev => {
-          const lastAi = [...prev].reverse().find(m => m.role === "ai");
-          if (lastAi) {
-            return prev.map(m => m === lastAi ? { ...m, status: "done", generatedImageUrl: data.outputUrl } : m);
-          }
-          return prev;
-        });
+        updateLastAiMessage({ status: "done", generatedImageUrl: data.outputUrl });
       } else if (data.status === "failed") {
         setError("Generation failed. Please try again.");
         setIsLoading(false);
         clearPolling();
 
-        setMessages(prev => {
-          const lastAi = [...prev].reverse().find(m => m.role === "ai");
-          if (lastAi) {
-            return prev.map(m => m === lastAi ? { ...m, status: "failed" } : m);
-          }
-          return prev;
-        });
+        updateLastAiMessage({ status: "failed" });
       } else if (data.status === "processing" || data.status === "pending") {
         if (data.status === "processing") {
-          setMessages(prev => {
-            const lastAi = [...prev].reverse().find(m => m.role === "ai");
-            if (lastAi) {
-              return prev.map(m => m === lastAi ? { ...m, status: "processing" } : m);
-            }
-            return prev;
-          });
+          updateLastAiMessage({ status: "processing" });
         }
 
         // Schedule next poll with exponential backoff (max 10s)
@@ -100,7 +92,7 @@ export function useGeneration() {
       setIsLoading(false);
       clearPolling();
     }
-  }, [clearPolling]);
+  }, [clearPolling, updateLastAiMessage]);
 
   const generate = useCallback(async (params: GenerateParams) => {
     setIsLoading(true);
