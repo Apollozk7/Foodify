@@ -114,7 +114,6 @@ export async function POST(req: NextRequest) {
         if (refundData && refundData.length > 0 && refundData[0].success) {
           // Synchronize Redis with the DB result as truth
           await setCredits(clerkId, refundData[0].remaining_credits);
-          console.log(`Successfully refunded and synced credit for user ${clerkId}`);
         }
       } catch (refundError) {
         console.error("Failed to refund credit:", refundError);
