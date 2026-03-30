@@ -195,7 +195,10 @@ export function ChatInterface({ messages, onSendMessage, isLoading }: ChatInterf
   );
 }
 
-function ChatMessage({ message, beforeImageUrl }: { message: Message, beforeImageUrl?: string }) {
+// ⚡ Bolt: Wrapped ChatMessage with React.memo to prevent unnecessary re-renders of older
+// messages when the parent ChatInterface state changes (e.g. during generation polling).
+// This improves UI responsiveness as the chat history grows.
+const ChatMessage = React.memo(function ChatMessage({ message, beforeImageUrl }: { message: Message, beforeImageUrl?: string }) {
   const isAi = message.role === "ai";
   
   const handleDownload = async (url: string) => {
@@ -303,4 +306,4 @@ function ChatMessage({ message, beforeImageUrl }: { message: Message, beforeImag
       </div>
     </motion.div>
   );
-}
+});
