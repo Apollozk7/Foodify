@@ -1,3 +1,6 @@
 ## 2024-05-24 - Visibility of System Status
 **Learning:** When a file is being compressed or processed in the background before a form can be submitted, users might feel stuck or confused if the primary action (like sending a message) is simply disabled without clear context. A small spinner on a secondary button (like the attachment icon) is often not enough feedback.
 **Action:** Always provide explicit, prominent feedback during async preparation steps. For chat inputs, update the main text input placeholder to indicate the background task (e.g., "Otimizando imagem...") and disable the input to prevent confusion.
+## 2024-05-25 - Async Feedback on Actions Outside the Main Flow
+**Learning:** Actions that are visually secondary or outside the primary interaction flow (like downloading an AI-generated result from within a chat bubble) are easily clicked multiple times if they lack immediate async feedback, leading to confusing browser behavior or multiple downloads.
+**Action:** Even for secondary actions, always provide a clear, disabled loading state when an async operation (like fetching a blob for download) is triggered. This ensures predictability and prevents unintended duplicate actions.
