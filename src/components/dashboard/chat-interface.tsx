@@ -197,8 +197,11 @@ export function ChatInterface({ messages, onSendMessage, isLoading }: ChatInterf
 
 function ChatMessage({ message, beforeImageUrl }: { message: Message, beforeImageUrl?: string }) {
   const isAi = message.role === "ai";
+  const [isDownloading, setIsDownloading] = useState(false);
   
   const handleDownload = async (url: string) => {
+    if (isDownloading) return;
+    setIsDownloading(true);
     try {
       const response = await fetch(url);
       const blob = await response.blob();
@@ -211,6 +214,8 @@ function ChatMessage({ message, beforeImageUrl }: { message: Message, beforeImag
       document.body.removeChild(link);
     } catch (err) {
       console.error("Download failed:", err);
+    } finally {
+      setIsDownloading(false);
     }
   };
 
@@ -291,10 +296,20 @@ function ChatMessage({ message, beforeImageUrl }: { message: Message, beforeImag
               <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity z-20">
                 <button 
                   onClick={() => handleDownload(message.generatedImageUrl!)}
-                  className="px-3 py-1.5 rounded-lg bg-white text-black text-[10px] font-bold shadow-xl hover:bg-blue-50 transition-colors flex items-center gap-2"
+                  disabled={isDownloading}
+                  className="px-3 py-1.5 rounded-lg bg-white text-black text-[10px] font-bold shadow-xl hover:bg-blue-50 transition-colors flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  <Download className="w-3 h-3" />
-                  Download
+                  {isDownloading ? (
+                    <>
+                      <Loader2 className="w-3 h-3 animate-spin" />
+                      Baixando...
+                    </>
+                  ) : (
+                    <>
+                      <Download className="w-3 h-3" />
+                      Download
+                    </>
+                  )}
                 </button>
               </div>
             )}
