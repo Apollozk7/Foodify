@@ -64,12 +64,8 @@ export function ChatInterface({ messages, onSendMessage, isLoading }: ChatInterf
 
   // Find the last user image to show in the before/after slider
   const lastUserImage = useMemo(() => {
-    for (let i = messages.length - 1; i >= 0; i--) {
-      if (messages[i].role === "user" && messages[i].imageUrl) {
-        return messages[i].imageUrl;
-      }
-    }
-    return undefined;
+    // ⚡ Bolt: Use findLast for more efficient and cleaner native array traversal
+    return messages.findLast(m => m.role === "user" && m.imageUrl)?.imageUrl;
   }, [messages]);
 
   return (
@@ -195,7 +191,8 @@ export function ChatInterface({ messages, onSendMessage, isLoading }: ChatInterf
   );
 }
 
-function ChatMessage({ message, beforeImageUrl }: { message: Message, beforeImageUrl?: string }) {
+// ⚡ Bolt: Memoize ChatMessage to prevent unnecessary re-renders of the entire message history on every keystroke
+const ChatMessage = React.memo(function ChatMessage({ message, beforeImageUrl }: { message: Message, beforeImageUrl?: string }) {
   const isAi = message.role === "ai";
   
   const handleDownload = async (url: string) => {
@@ -303,4 +300,4 @@ function ChatMessage({ message, beforeImageUrl }: { message: Message, beforeImag
       </div>
     </motion.div>
   );
-}
+});
