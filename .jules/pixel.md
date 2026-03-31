@@ -1,3 +1,5 @@
 ## 2024-05-24 - Visibility of System Status
 **Learning:** When a file is being compressed or processed in the background before a form can be submitted, users might feel stuck or confused if the primary action (like sending a message) is simply disabled without clear context. A small spinner on a secondary button (like the attachment icon) is often not enough feedback.
-**Action:** Always provide explicit, prominent feedback during async preparation steps. For chat inputs, update the main text input placeholder to indicate the background task (e.g., "Otimizando imagem...") and disable the input to prevent confusion.
+**Action:** Always provide explicit, prominent feedback during async preparation steps. For chat inputs, update the main text input placeholder to indicate the background task (e.g., "Otimizando imagem...") and disable the input to prevent confusion.## 2026-03-31 - Missing Loading States on Async Downloads
+**Learning:** Blob creation and image downloading from URLs can be slow and feel unresponsive, causing users to double-click and fire multiple downloads. The app lacks disabled and loading states on such async actions.
+**Action:** Always add explicit 'isDownloading' boolean states and disable the button with visual feedback (spinners/text) during blob fetching and URL creation.
