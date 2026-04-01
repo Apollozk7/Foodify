@@ -10,20 +10,11 @@ export async function GET() {
   }
 
   try {
-    const { data: profile } = await supabaseAdmin
-      .from('profiles')
-      .select('id')
-      .eq('clerk_id', clerkId)
-      .single();
-
-    if (!profile) {
-      return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
-    }
-
+    // ⚡ Bolt: Reduced N+1-like query by using an inner join to fetch generations directly by clerk_id
     const { data: generations, error } = await supabaseAdmin
       .from('generations')
-      .select('*')
-      .eq('user_id', profile.id)
+      .select('*, profiles!inner(id)')
+      .eq('profiles.clerk_id', clerkId)
       .order('created_at', { ascending: false })
       .limit(20);
 
