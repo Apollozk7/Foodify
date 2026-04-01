@@ -175,7 +175,7 @@ export function ChatInterface({ messages, onSendMessage, isLoading }: ChatInterf
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                placeholder={isCompressing ? "Otimizando imagem..." : "Descreva o que quer gerar..."}
+                placeholder={isCompressing ? "Otimizando imagem..." : isLoading ? "Processando..." : "Descreva o que quer gerar..."}
                 disabled={isLoading || isCompressing}
                 className="w-full bg-transparent px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:outline-none transition-all disabled:opacity-50"
               />
@@ -186,7 +186,7 @@ export function ChatInterface({ messages, onSendMessage, isLoading }: ChatInterf
               disabled={(!inputText.trim() && !selectedFile) || isLoading || isCompressing}
               className="p-2.5 rounded-xl bg-blue-600 text-white hover:bg-blue-500 shadow-lg shadow-blue-900/20 transition-all disabled:opacity-50 disabled:bg-slate-800"
             >
-              <Send className="w-4 h-4" />
+              {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
             </button>
           </div>
         </div>
