@@ -87,13 +87,13 @@ export default function DashboardPage() {
             setIsMobileSidebarOpen(false);
           }}
           className={cn(
-            "w-full flex items-center gap-3 px-4 py-2.5 text-[9px] font-extrabold tracking-label rounded-full text-left transition-colors",
+            "w-full flex items-center gap-3 px-4 py-3 text-[11px] font-extrabold tracking-label rounded-full text-left transition-colors",
             activeTab === item.id 
               ? "bg-white/5 text-primary" 
               : "text-neutral-600 hover:text-white"
           )}
         >
-          <item.icon className={cn("w-3.5 h-3.5", activeTab === item.id ? "text-primary" : "text-neutral-700")} />
+          <item.icon className={cn("w-4 h-4", activeTab === item.id ? "text-primary" : "text-neutral-700")} />
           {item.label}
         </button>
       ))}
@@ -117,16 +117,16 @@ export default function DashboardPage() {
           <div className="flex items-center gap-3 px-2">
             <UserButton appearance={{ elements: { userButtonAvatarBox: "w-8 h-8 rounded-full border border-white/10" } }} />
             <div className="flex flex-col">
-              <span className="text-[9px] font-extrabold text-white tracking-wide font-sans">Identidade</span>
-              <span className="text-[8px] text-primary font-bold tracking-wide leading-none mt-0.5 font-sans">Premium</span>
+              <span className="text-[11px] font-extrabold text-white tracking-wide font-sans">Identidade</span>
+              <span className="text-[10px] text-primary font-bold tracking-wide leading-none mt-0.5 font-sans">Premium</span>
             </div>
           </div>
 
           <button
             onClick={() => signOut({ redirectUrl: '/early-access' })}
-            className="w-full flex items-center gap-2 px-4 py-2 text-[8px] font-extrabold tracking-label text-neutral-700 transition-colors font-sans"
+            className="w-full flex items-center gap-2 px-4 py-2 text-[10px] font-extrabold tracking-label text-neutral-700 transition-colors font-sans"
           >
-            <LogOut className="w-3 h-3" />
+            <LogOut className="w-3.5 h-3.5" />
             Encerrar Sessão
           </button>
         </div>
@@ -168,8 +168,8 @@ export default function DashboardPage() {
                 <div className="flex items-center gap-3 px-2">
                   <UserButton appearance={{ elements: { userButtonAvatarBox: "w-10 h-10 rounded-full border border-white/10" } }} />
                   <div className="flex flex-col text-left">
-                    <span className="text-[10px] font-extrabold text-white tracking-wide font-sans">Identidade</span>
-                    <span className="text-[9px] text-primary font-bold tracking-wide leading-none mt-0.5 font-sans">Premium Plan</span>
+                    <span className="text-[12px] font-extrabold text-white tracking-wide font-sans">Identidade</span>
+                    <span className="text-[11px] text-primary font-bold tracking-wide leading-none mt-0.5 font-sans">Premium Plan</span>
                   </div>
                 </div>
                 <Button 
@@ -177,8 +177,8 @@ export default function DashboardPage() {
                   onClick={() => signOut({ redirectUrl: '/early-access' })}
                   className="w-full flex items-center justify-start gap-2 text-neutral-700 bg-transparent border-none px-4 font-sans"
                 >
-                  <LogOut className="w-4 h-4" />
-                  <span className="text-[9px] font-black tracking-wide">Encerrar Sessão</span>
+                  <LogOut className="w-[18px] h-[18px]" />
+                  <span className="text-[11px] font-black tracking-wide">Encerrar Sessão</span>
                 </Button>
               </div>
             </motion.aside>
