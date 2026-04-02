@@ -24,6 +24,7 @@ describe('refinePrompt', () => {
               refined:
                 'Professional photography of a rustic hamburger on a wooden plate, dramatic lighting, blurred restaurant background, high resolution.',
               negative: 'blurry, low quality, noisy',
+              aiMessage: 'Processando sua foto com inteligência...',
             }),
           },
         },
@@ -37,9 +38,6 @@ describe('refinePrompt', () => {
 
     const result = await refinePrompt({
       userInput: 'hambúrguer rústico',
-      category: 'Alimentos',
-      style: 'Fotografia de Produto',
-      templates: ['delivery'],
     });
 
     expect(result).toEqual({
@@ -47,7 +45,6 @@ describe('refinePrompt', () => {
       refined:
         'Professional photography of a rustic hamburger on a wooden plate, dramatic lighting, blurred restaurant background, high resolution.',
       negative: 'blurry, low quality, noisy',
-      aiMessage: 'Processando sua foto com inteligência...',
     });
 
     expect(global.fetch).toHaveBeenCalledWith(
@@ -71,9 +68,6 @@ describe('refinePrompt', () => {
     await expect(
       refinePrompt({
         userInput: 'hambúrguer rústico',
-        category: 'Alimentos',
-        style: 'Fotografia de Produto',
-        templates: ['delivery'],
       })
     ).rejects.toThrow('Failed to refine prompt');
   });
@@ -97,10 +91,7 @@ describe('refinePrompt', () => {
     await expect(
       refinePrompt({
         userInput: 'hambúrguer rústico',
-        category: 'Alimentos',
-        style: 'Fotografia de Produto',
-        templates: ['delivery'],
-      }) as any
+      })
     ).rejects.toThrow('Failed to parse refined prompt');
   });
 
@@ -110,7 +101,7 @@ describe('refinePrompt', () => {
     await expect(
       refinePrompt({
         userInput: 'hambúrguer rústico',
-      } as any)
+      })
     ).rejects.toThrow('Network failure');
   });
 });

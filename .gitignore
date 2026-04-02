@@ -59,3 +59,5 @@ superpowers/
 .gemini_security
 .superpowers
 .metaswarm
+
+gha-creds-*.json

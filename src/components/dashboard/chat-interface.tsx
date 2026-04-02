@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, Image as ImageIcon, X, Sparkles, Loader2, User, Bot, Download } from "lucide-react";
+import { ArrowUp, Paperclip, Image as ImageIcon, X, Sparkles, Loader2, User, Bot, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Message } from "@/hooks/use-generation";
 import Image from "next/image";
@@ -24,7 +24,6 @@ export function ChatInterface({ messages, onSendMessage, isLoading }: ChatInterf
   const scrollRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Auto-scroll to bottom
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -62,53 +61,42 @@ export function ChatInterface({ messages, onSendMessage, isLoading }: ChatInterf
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  // Find the last user image to show in the before/after slider
-  const lastUserImage = useMemo(() => {
-    for (let i = messages.length - 1; i >= 0; i--) {
-      if (messages[i].role === "user" && messages[i].imageUrl) {
-        return messages[i].imageUrl;
-      }
-    }
-    return undefined;
-  }, [messages]);
+  const lastUserImage = [...messages].reverse().find(m => m.role === "user" && m.imageUrl)?.imageUrl;
 
   return (
-    <div className="flex flex-col h-full flex-1 bg-white/[0.01] border border-white/5 rounded-[32px] overflow-hidden backdrop-blur-sm min-h-0">
-      {/* Chat Header - Simplified */}
-      <div className="px-6 py-3 border-b border-white/5 flex items-center justify-between bg-white/[0.02]">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-blue-600/20 flex items-center justify-center border border-blue-500/20">
-            <Bot className="w-5 h-5 text-blue-400" />
-          </div>
-          <div>
-            <h3 className="text-xs font-bold text-white leading-none">Aprimoramento de Imagens</h3>
-            <p className="text-[9px] text-emerald-400 font-medium mt-1 flex items-center gap-1">
-              <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
-              Nano Banana 2
-            </p>
-          </div>
-        </div>
-      </div>
-
+    <div className="flex flex-col h-full flex-1 bg-black overflow-hidden min-h-0">
       {/* Messages Area */}
       <div 
         ref={scrollRef}
-        className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 scrollbar-hide min-h-0"
+        className="flex-1 overflow-y-auto p-4 md:p-8 space-y-8 scrollbar-hide min-h-0"
       >
         {messages.length === 0 ? (
-          <div className="h-full flex flex-col items-center justify-center text-center space-y-4 opacity-40">
-            <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center">
-              <Sparkles className="w-6 h-6 text-slate-400" />
-            </div>
-            <div className="space-y-1">
-              <p className="text-sm text-white font-medium">Pronto para começar</p>
-              <p className="text-[10px] text-slate-400 max-w-[180px]">
-                Envie uma foto e diga como quer o resultado.
-              </p>
-            </div>
+          <div className="h-full flex flex-col items-center justify-center text-center px-4 space-y-3">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center mb-2"
+            >
+              <Sparkles className="w-6 h-6 text-primary" />
+            </motion.div>
+            <motion.h1
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-3xl md:text-5xl font-heading font-extrabold text-white tracking-tighter leading-tight"
+            >
+              Sua foto simples com <br/>
+              <span className="text-primary">cara de profissional.</span>
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="text-neutral-500 text-sm md:text-base font-medium max-w-sm mx-auto leading-relaxed"
+            >
+              Mande uma foto do seu celular e deixe nossa IA criar o cenário perfeito para você vender muito mais.
+            </motion.p>
           </div>
-        ) : (
-          messages.map((msg, idx) => (
+        ) : (          messages.map((msg, idx) => (
             <ChatMessage key={idx} message={msg} beforeImageUrl={lastUserImage} />
           ))
         )}
@@ -117,78 +105,78 @@ export function ChatInterface({ messages, onSendMessage, isLoading }: ChatInterf
           <motion.div 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex items-start gap-3"
+            className="flex items-start gap-4"
           >
-            <div className="w-7 h-7 rounded-full bg-blue-600/20 flex items-center justify-center shrink-0 border border-blue-500/20">
-              <Bot className="w-3.5 h-3.5 text-blue-400" />
+            <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center shrink-0 border border-primary/20">
+              <Bot className="w-3.5 h-3.5 text-primary" />
             </div>
-            <div className="bg-white/5 border border-white/5 rounded-2xl rounded-tl-none p-3">
-              <Loader2 className="w-3.5 h-3.5 text-blue-400 animate-spin" />
+            <div className="bg-[#111111] border border-white/5 rounded-2xl rounded-tl-none p-3">
+              <Loader2 className="w-3.5 h-3.5 text-primary animate-spin" />
             </div>
           </motion.div>
         )}
       </div>
 
-      {/* Input Area - Floating Glass style */}
-      <div className="p-4 bg-gradient-to-t from-black/20 to-transparent">
-        <div className="bg-white/[0.03] border border-white/10 rounded-[24px] p-2 backdrop-blur-xl shadow-2xl">
-          <AnimatePresence>
-            {previewUrl && (
-              <motion.div 
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 80, opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                className="px-2 pt-2 mb-2 relative group"
-              >
-                <div className="relative w-16 h-16 rounded-xl overflow-hidden border border-white/10 shadow-2xl">
-                  <Image src={previewUrl} alt="Preview" fill className="object-cover" />
-                  <button 
-                    onClick={removeImage}
-                    className="absolute top-1 right-1 p-1 rounded-full bg-black/60 text-white hover:bg-black/80 transition-colors"
-                  >
-                    <X className="w-2.5 h-2.5" />
-                  </button>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+      {/* Input Area */}
+      <div className="px-4 pb-8 md:px-10 max-w-4xl mx-auto w-full">
+        <AnimatePresence>
+          {previewUrl && (
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              className="flex justify-start px-2 mb-3"
+            >
+              <div className="relative w-16 h-16 rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-[#111111]">
+                <Image src={previewUrl} alt="Preview" fill className="object-cover" />
+                <button 
+                  onClick={removeImage}
+                  className="absolute top-1 right-1 p-1 rounded-full bg-black/60 text-white hover:bg-black/80 transition-colors"
+                >
+                  <X className="w-2.5 h-2.5" />
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-          <div className="flex items-center gap-2">
+        <div className="relative flex items-center bg-[#111111] border border-white/[0.03] rounded-[32px] pl-6 pr-1.5 py-1.5 shadow-2xl">
+          <input 
+            type="text"
+            value={inputText}
+            onChange={(e) => setInputText(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSend()}
+            placeholder="Diga algo ou descreva um visual..."
+            disabled={isLoading}
+            className="flex-1 bg-transparent text-white placeholder:text-neutral-600 text-base focus:outline-none disabled:opacity-50 h-10"
+          />
+          
+          <div className="flex items-center gap-1">
             <button 
               onClick={() => fileInputRef.current?.click()}
               disabled={isLoading || isCompressing}
-              className="p-2.5 rounded-xl bg-white/5 border border-white/5 text-slate-400 hover:text-white hover:bg-white/10 transition-all disabled:opacity-50"
+              className="p-2.5 text-neutral-600 hover:text-white transition-colors disabled:opacity-50"
             >
-              {isCompressing ? <Loader2 className="w-4 h-4 animate-spin" /> : <ImageIcon className="w-4 h-4" />}
+              {isCompressing ? <Loader2 className="w-4 h-4 animate-spin" /> : <ImageIcon className="w-5 h-5" strokeWidth={1.5} />}
             </button>
-            <input 
-              type="file" 
-              ref={fileInputRef} 
-              onChange={handleFileChange} 
-              className="hidden" 
-              accept="image/*"
-            />
+            <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept="image/*" />
             
-            <div className="flex-1 relative">
-              <input 
-                type="text"
-                value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                placeholder={isCompressing ? "Otimizando imagem..." : "Descreva o que quer gerar..."}
-                disabled={isLoading || isCompressing}
-                className="w-full bg-transparent px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:outline-none transition-all disabled:opacity-50"
-              />
-            </div>
-
             <button 
               onClick={handleSend}
               disabled={(!inputText.trim() && !selectedFile) || isLoading || isCompressing}
-              className="p-2.5 rounded-xl bg-blue-600 text-white hover:bg-blue-500 shadow-lg shadow-blue-900/20 transition-all disabled:opacity-50 disabled:bg-slate-800"
+              className="flex items-center justify-center w-10 h-10 bg-[#c8bfff] rounded-2xl text-[#1a0063] transition-all active:scale-95 disabled:bg-neutral-800 disabled:text-neutral-600"
             >
-              <Send className="w-4 h-4" />
+              <ArrowUp className="w-5 h-5" strokeWidth={3} />
             </button>
           </div>
+        </div>
+
+        {/* Utility Bar - Now only with Reference on Desktop, no Tokens */}
+        <div className="mt-3 flex items-center px-4">
+          <button className="hidden md:flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-wide text-neutral-600 hover:text-white transition-colors group">
+            <Paperclip className="w-3 h-3 text-neutral-700 group-hover:text-primary transition-colors" />
+            Reference
+          </button>
         </div>
       </div>
     </div>
@@ -216,85 +204,74 @@ function ChatMessage({ message, beforeImageUrl }: { message: Message, beforeImag
 
   return (
     <motion.div 
-      initial={{ opacity: 0, y: 10, scale: 0.98 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
       className={cn(
-        "flex items-start gap-3",
+        "flex items-start gap-4 md:gap-6",
         !isAi && "flex-row-reverse"
       )}
     >
       <div className={cn(
-        "w-7 h-7 rounded-full flex items-center justify-center shrink-0 border",
-        isAi ? "bg-blue-600/20 border-blue-500/20" : "bg-white/10 border-white/10"
+        "w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center shrink-0 border",
+        isAi ? "bg-primary/10 border-primary/20" : "bg-white/5 border-white/10"
       )}>
-        {isAi ? <Bot className="w-3.5 h-3.5 text-blue-400" /> : <User className="w-3.5 h-3.5 text-slate-300" />}
+        {isAi ? <Bot className="w-3.5 h-3.5 md:w-4 md:h-4 text-primary" /> : <User className="w-3.5 h-3.5 md:w-4 md:h-4 text-slate-400" />}
       </div>
 
       <div className={cn(
-        "max-w-[85%] space-y-2",
+        "max-w-[85%] md:max-w-[80%] space-y-3",
         !isAi && "flex flex-col items-end"
       )}>
-        {/* Content Bubble */}
         <div className={cn(
-          "p-3.5 rounded-2xl text-xs md:text-sm leading-relaxed",
+          "p-4 rounded-2xl text-[13px] md:text-sm leading-relaxed font-medium",
           isAi 
-            ? "bg-white/5 border border-white/5 rounded-tl-none text-slate-200" 
-            : "bg-blue-600 text-white rounded-tr-none shadow-lg shadow-blue-900/20"
+            ? "bg-[#111111] border border-white/5 rounded-tl-none text-neutral-300" 
+            : "bg-primary text-black font-bold rounded-tr-none shadow-lg"
         )}>
           {message.content}
         </div>
 
-        {/* User Image Attachment */}
         {message.imageUrl && (
-          <div className="relative w-40 aspect-square rounded-xl overflow-hidden border border-white/10 shadow-xl">
+          <div className="relative w-40 md:w-48 aspect-square rounded-2xl md:rounded-3xl overflow-hidden border border-white/10 shadow-xl">
             <Image src={message.imageUrl} alt="User input" fill className="object-cover" />
-            <div className="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-black/40 backdrop-blur-md text-[9px] font-medium text-white">
+            <div className="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-md text-[8px] font-black uppercase tracking-wide text-white">
               Original
             </div>
           </div>
         )}
 
-        {/* AI Result */}
         {isAi && (message.generatedImageUrl || message.status === "pending" || message.status === "processing") && (
-          <div className="relative w-full max-w-sm rounded-[20px] overflow-hidden border border-white/5 bg-white/[0.02] shadow-2xl mt-1 group">
+          <div className="relative w-full max-w-2xl rounded-[24px] overflow-hidden border border-white/5 bg-[#0A0A0A] shadow-2xl group mt-1">
             {message.generatedImageUrl && beforeImageUrl ? (
               <div className="aspect-square md:aspect-video">
-                <BeforeAfterSlider 
-                  beforeImage={beforeImageUrl}
-                  afterImage={message.generatedImageUrl}
-                />
+                <BeforeAfterSlider beforeImage={beforeImageUrl} afterImage={message.generatedImageUrl} />
               </div>
             ) : message.generatedImageUrl ? (
               <div className="relative aspect-square md:aspect-video">
-                <Image 
-                  src={message.generatedImageUrl} 
-                  alt="Generated result" 
-                  fill 
-                  className="object-cover" 
-                />
+                <Image src={message.generatedImageUrl} alt="Generated result" fill className="object-cover" />
               </div>
             ) : (
               <div className="aspect-square md:aspect-video flex flex-col items-center justify-center space-y-3">
                 <div className="relative">
-                  <div className="w-10 h-10 rounded-full border-2 border-blue-500/20 border-t-blue-500 animate-spin" />
-                  <Sparkles className="w-4 h-4 text-blue-400 absolute inset-0 m-auto animate-pulse" />
+                  <div className="w-10 h-10 rounded-full border-2 border-primary/20 border-t-primary animate-spin" />
+                  <Sparkles className="w-4 h-4 text-primary absolute inset-0 m-auto animate-pulse" />
                 </div>
-                <div className="text-center">
-                  <p className="text-[9px] font-bold text-blue-400 uppercase tracking-widest">
-                    {message.status === "processing" ? "Renderizando..." : "Analisando..."}
+                <div className="text-center px-4">
+                  <p className="text-[9px] font-black text-primary uppercase tracking-label">
+                    {message.status === "processing" ? "RENDERIZANDO HARDWARE" : "ANALISANDO COMPOSIÇÃO"}
                   </p>
                 </div>
               </div>
             )}
             
             {message.generatedImageUrl && (
-              <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity z-20">
+              <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity z-20">
                 <button 
                   onClick={() => handleDownload(message.generatedImageUrl!)}
-                  className="px-3 py-1.5 rounded-lg bg-white text-black text-[10px] font-bold shadow-xl hover:bg-blue-50 transition-colors flex items-center gap-2"
+                  className="px-4 py-2 rounded-full bg-white text-black text-[9px] font-black uppercase tracking-wide shadow-xl hover:bg-primary transition-all flex items-center gap-2"
                 >
                   <Download className="w-3 h-3" />
-                  Download
+                  RAW
                 </button>
               </div>
             )}

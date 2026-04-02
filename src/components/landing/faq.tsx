@@ -1,184 +1,110 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, X } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Plus, Minus, MessageCircle } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-const faqs = [
+const FAQS = [
   {
-    question: 'O que é um crédito?',
-    answer:
-      '1 crédito = 1 imagem gerada. Você envia uma foto do seu prato e o Estúdio IA Pro transforma em uma imagem profissional. Cada geração consome 1 crédito.',
+    question: "Preciso ter um celular caro para usar?",
+    answer: "Não! Nossa IA foi feita justamente para quem tem um celular simples. Ela corrige a iluminação, melhora a nitidez e cria um cenário profissional, não importa a marca ou modelo do seu aparelho."
   },
   {
-    question: 'Quanto tempo leva pra gerar uma foto?',
-    answer:
-      'Em média menos de 30 segundos. Assim que a geração for concluída, a imagem já fica disponível para download.',
+    question: "A foto vai parecer 'mentira' para o meu cliente?",
+    answer: "De jeito nenhum. O Estúdio IA Pro realça o seu produto real. Nós trocamos o fundo e melhoramos a luz para que o cliente veja a qualidade real do seu produto, mantendo a fidelidade do que será entregue."
   },
   {
-    question: 'A IA remove o fundo automaticamente?',
-    answer:
-      'Sim. A IA identifica o prato e aplica um fundo limpo e profissional automaticamente, sem que você precise fazer nada.',
+    question: "Como recebo minhas fotos?",
+    answer: "O processo é instantâneo. Você envia a foto pelo nosso painel e, em segundos, a imagem final em alta resolution (4K) já está disponível para download imediato no seu arquivo digital."
   },
   {
-    question: 'Posso usar as fotos no iFood e outros apps de delivery?',
-    answer:
-      'Sim, as imagens geradas são suas e podem ser usadas em qualquer plataforma — iFood, Rappi, Aiqfome, WhatsApp, Instagram e onde mais precisar.',
+    question: "Posso usar no iFood e nas redes sociais?",
+    answer: "Com certeza! As fotos são entregues no formato ideal para iFood, Instagram, WhatsApp Business e cardápios digitais, prontas para atrair mais cliques e aumentar seu faturamento."
   },
   {
-    question: 'Os créditos expiram?',
-    answer: 'Não. Seus créditos ficam disponíveis até serem utilizados, sem data de vencimento.',
-  },
-  {
-    question: 'Como funciona a compra de créditos?',
-    answer:
-      'Você compra o pacote que preferir e os créditos caem na sua conta na hora. Não há assinatura nem cobrança recorrente — você compra quando precisar.',
-  },
-  {
-    question: 'Quais formas de pagamento são aceitas?',
-    answer: 'PIX, cartão de crédito e débito. O pagamento é processado de forma segura via Stripe.',
-  },
-  {
-    question: 'Que tipo de foto devo enviar pra ter melhor resultado?',
-    answer:
-      'Fotos com boa iluminação e o prato em destaque geram os melhores resultados. Evite fotos muito escuras, borradas ou com muita bagunça ao redor do prato. Quanto mais limpa a foto original, mais profissional fica o resultado.',
-  },
-  {
-    question: 'A ferramenta funciona com qualquer tipo de comida?',
-    answer:
-      'Sim. Funciona com pratos quentes, lanches, açaí, pizzas, marmitas, bebidas e qualquer outro item de cardápio.',
-  },
-  {
-    question: 'Posso refazer uma geração se não gostar do resultado?',
-    answer:
-      'Cada geração consome 1 crédito. Se o resultado não ficou como esperado, você pode gerar novamente com uma foto melhor ou em outro ângulo.',
-  },
-  {
-    question: 'Minhas fotos ficam armazenadas?',
-    answer:
-      'Suas imagens ficam salvas na sua conta para que você possa baixá-las quando quiser. Não compartilhamos suas fotos com terceiros.',
-  },
-  {
-    question: 'Ainda tenho dúvidas. Como entro em contato?',
-    answer:
-      'Fala com a gente pelo Instagram [@estudioia.pro] ou pelo e-mail suporte@estudioiapro.com.br. Respondemos em até 24 horas.',
-  },
+    question: "O que são os créditos e como funcionam?",
+    answer: "1 crédito equivale a 1 produção fotográfica completa. Você compra o pacote que melhor atende sua necessidade e usa os créditos quando quiser, sem mensalidades ou taxas escondidas."
+  }
 ];
 
 export function FAQ() {
-  const [openIndex, setOpenIndex] = React.useState<number | null>(null);
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="py-10 px-4 sm:py-14 sm:px-6 max-w-7xl mx-auto font-inter">
-      <div className="text-center mb-8 sm:mb-10 space-y-3">
-        <p className="text-sm font-bold tracking-widest text-blue-500 uppercase">
-          Dúvidas Frequentes
-        </p>
-        <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold font-work-sans tracking-tight text-white">
-          Tudo o que você precisa saber
-        </h2>
-      </div>
+    <section id="faq" className="py-24 md:py-40 px-6 md:px-8 bg-black relative overflow-hidden">
+      {/* Background Decorative Element */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-[500px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
 
-      <div className="flex flex-col md:flex-row gap-3 items-start">
-        {/* Coluna esquerda */}
-        <div className="flex-1 flex flex-col gap-3">
-          {faqs.slice(0, Math.ceil(faqs.length / 2)).map((faq, i) => {
-            const index = i;
-            const isOpen = openIndex === index;
-            return (
-              <div key={index} className="group">
-                <button
-                  onClick={() => setOpenIndex(isOpen ? null : index)}
-                  className={cn(
-                    'w-full flex items-center justify-between p-4 sm:p-6 text-left transition-all duration-300 rounded-[20px] sm:rounded-[24px] border',
-                    isOpen
-                      ? 'bg-white/10 border-white/20'
-                      : 'bg-white/5 border-white/5 hover:bg-white/[0.08] hover:border-white/10'
-                  )}
-                >
-                  <span className="text-base md:text-lg font-semibold text-slate-200 pr-8">
-                    {faq.question}
-                  </span>
-                  <div
-                    className={cn(
-                      'shrink-0 size-8 rounded-full flex items-center justify-center transition-all duration-300',
-                      isOpen ? 'bg-blue-600 text-white' : 'bg-white/5 text-slate-400'
-                    )}
-                  >
-                    {isOpen ? <X className="size-4" /> : <Plus className="size-4" />}
-                  </div>
-                </button>
-                <AnimatePresence>
-                  {isOpen && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: 'easeInOut' }}
-                      className="overflow-hidden"
-                    >
-                      <div className="px-4 py-4 sm:px-8 sm:py-6">
-                        <p className="text-slate-400 leading-relaxed text-sm md:text-base font-inter">
-                          {faq.answer}
-                        </p>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            );
-          })}
+      <div className="max-w-3xl mx-auto relative z-10">
+        <div className="text-center mb-16 md:mb-20">
+          <h2 className="text-4xl md:text-6xl font-heading font-extrabold text-white tracking-tighter leading-none mb-6">
+            Dúvidas <span className="text-primary italic">Frequentes.</span>
+          </h2>
+          <p className="text-neutral-500 text-sm md:text-base font-medium">
+            Tudo o que você precisa saber para transformar seu negócio hoje.
+          </p>
         </div>
 
-        {/* Coluna direita */}
-        <div className="flex-1 flex flex-col gap-3">
-          {faqs.slice(Math.ceil(faqs.length / 2)).map((faq, i) => {
-            const index = Math.ceil(faqs.length / 2) + i;
-            const isOpen = openIndex === index;
-            return (
-              <div key={index} className="group">
-                <button
-                  onClick={() => setOpenIndex(isOpen ? null : index)}
-                  className={cn(
-                    'w-full flex items-center justify-between p-6 text-left transition-all duration-300 rounded-[24px] border',
-                    isOpen
-                      ? 'bg-white/10 border-white/20'
-                      : 'bg-white/5 border-white/5 hover:bg-white/[0.08] hover:border-white/10'
-                  )}
-                >
-                  <span className="text-base md:text-lg font-semibold text-slate-200 pr-8">
-                    {faq.question}
-                  </span>
-                  <div
-                    className={cn(
-                      'shrink-0 size-8 rounded-full flex items-center justify-center transition-all duration-300',
-                      isOpen ? 'bg-blue-600 text-white' : 'bg-white/5 text-slate-400'
-                    )}
+        <div className="space-y-4">
+          {FAQS.map((faq, idx) => (
+            <div 
+              key={idx}
+              className={cn(
+                "rounded-[24px] border transition-all duration-300 overflow-hidden",
+                openIndex === idx 
+                  ? "bg-white/[0.03] border-primary/20 shadow-[0_10px_30px_rgba(var(--primary-rgb),0.05)]" 
+                  : "bg-white/[0.01] border-white/5 hover:border-white/10"
+              )}
+            >
+              <button
+                onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
+                className="w-full flex items-center justify-between p-6 md:p-8 text-left group"
+              >
+                <span className={cn(
+                  "text-sm md:text-lg font-bold tracking-tight transition-colors",
+                  openIndex === idx ? "text-white" : "text-neutral-400 group-hover:text-white"
+                )}>
+                  {faq.question}
+                </span>
+                <div className={cn(
+                  "w-8 h-8 rounded-full flex items-center justify-center transition-all",
+                  openIndex === idx ? "bg-primary text-white rotate-0" : "bg-white/5 text-neutral-500 rotate-90"
+                )}>
+                  {openIndex === idx ? <Minus className="w-4 h-4" strokeWidth={3} /> : <Plus className="w-4 h-4" strokeWidth={3} />}
+                </div>
+              </button>
+
+              <AnimatePresence>
+                {openIndex === idx && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
                   >
-                    {isOpen ? <X className="size-4" /> : <Plus className="size-4" />}
-                  </div>
-                </button>
-                <AnimatePresence>
-                  {isOpen && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: 'easeInOut' }}
-                      className="overflow-hidden"
-                    >
-                      <div className="px-8 py-6">
-                        <p className="text-slate-400 leading-relaxed text-sm md:text-base font-inter">
-                          {faq.answer}
-                        </p>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            );
-          })}
+                    <div className="px-6 md:px-8 pb-8 pt-0">
+                      <p className="text-neutral-400 text-sm md:text-base leading-relaxed font-medium border-t border-white/5 pt-6">
+                        {faq.answer}
+                      </p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ))}
+        </div>
+
+        {/* Support CTA */}
+        <div className="mt-16 text-center">
+          <p className="text-neutral-600 text-xs font-bold uppercase tracking-widest mb-6">Ainda tem dúvidas?</p>
+          <a 
+            href="#" 
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white/5 border border-white/10 text-white font-bold text-xs hover:bg-white/10 transition-all hover:scale-105"
+          >
+            <MessageCircle className="w-4 h-4 text-primary" />
+            FALAR COM UM ESPECIALISTA
+          </a>
         </div>
       </div>
     </section>

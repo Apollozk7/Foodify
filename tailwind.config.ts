@@ -1,5 +1,7 @@
 import type { Config } from 'tailwindcss';
 
+import tailwindcssAnimate from 'tailwindcss-animate';
+
 export default {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -9,13 +11,15 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        'work-sans': ['var(--font-work-sans)', 'sans-serif'],
-        inter: ['var(--font-inter)', 'sans-serif'],
+        heading: ["var(--font-work-sans)", "sans-serif"],
+        sans: ["var(--font-inter)", "sans-serif"],
       },
       colors: {
-        background: '#020617',
+        background: "#000103",
+        primary: "#F45D01",
+        secondary: "#3E6259",
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [tailwindcssAnimate],
 } satisfies Config;

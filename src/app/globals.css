@@ -7,12 +7,10 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  /* Font Mapping - Luxury Editorial */
+  /* Font Mapping - Pure Work Sans & Inter */
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-work-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono:
-    var(--font-geist-mono), ui-monospace, SFMono-Regular, Roboto Mono, Menlo, Monaco, Consolas,
-    'Liberation Mono', 'Courier New', monospace;
+  --font-mono: var(--font-inter); /* Using Inter for mono-ish areas to keep simplicity */
 
   --color-ring: var(--ring);
   --color-input: var(--input);
@@ -37,37 +35,45 @@
   --radius-lg: 12px;
   --radius-xl: 16px;
   --radius-2xl: 24px;
+
+  /* Semantic Letter Spacing for Luxury Feel */
+  --tracking-heading: -0.05em;
+  --tracking-display: -0.025em;
+  --tracking-action: 0.05em;
+  --tracking-label: 0.05em;
+  --tracking-accent: 0.08em;
 }
 
 :root {
   /* Pure Black & High Contrast Palette */
-  --background: oklch(0% 0 0); /* #000000 */
-  --foreground: oklch(98% 0 0); /* #FAFAFA */
+  --background: oklch(0.5% 0.01 250); /* #000103 - Pure Depth */
+  --foreground: oklch(100% 0 0); /* #FFFFFF */
 
   --card: oklch(12% 0 0); /* #131313 - Deep surface */
-  --card-foreground: oklch(98% 0 0);
+  --card-foreground: oklch(100% 0 0);
 
   --popover: oklch(12% 0 0);
-  --popover-foreground: oklch(98% 0 0);
+  --popover-foreground: oklch(100% 0 0);
 
-  --primary: oklch(75% 0.15 270); /* #9281f7 - Brand Violet */
-  --primary-foreground: oklch(10% 0.05 270);
+  --primary: oklch(62% 0.22 35); /* #F45D01 - Cayenne Red (Action/Heat) */
+  --primary-foreground: oklch(100% 0 0);
+  --primary-rgb: 244 93 1;
 
-  --secondary: oklch(20% 0 0); /* #27272A */
-  --secondary-foreground: oklch(98% 0 0);
+  --secondary: oklch(45% 0.06 185); /* #3E6259 - Granite (Cool/Organic balance) */
+  --secondary-foreground: oklch(100% 0 0);
 
   --muted: oklch(15% 0 0); /* #1F1F1F */
   --muted-foreground: oklch(65% 0 0); /* Soft gray */
 
-  --accent: oklch(20% 0 0);
-  --accent-foreground: oklch(98% 0 0);
+  --accent: oklch(45% 0.06 185); /* Granite as accent */
+  --accent-foreground: oklch(100% 0 0);
 
   --destructive: oklch(60% 0.2 25);
-  --destructive-foreground: oklch(98% 0 0);
+  --destructive-foreground: oklch(100% 0 0);
 
   --border: oklch(100% 0 0 / 5%); /* Hairline effect */
   --input: oklch(100% 0 0 / 10%);
-  --ring: oklch(75% 0.15 270 / 50%);
+  --ring: oklch(62% 0.22 35 / 50%);
 
   --radius: 0.75rem;
 }
@@ -103,17 +109,11 @@
   }
   body {
     @apply bg-background text-foreground font-sans selection:bg-primary/20 selection:text-primary;
-    background-image:
-      radial-gradient(circle at top right, rgba(146, 129, 247, 0.03), transparent 40%),
-      radial-gradient(circle at bottom left, rgba(146, 129, 247, 0.02), transparent 40%);
+    background-image: radial-gradient(circle at top right, rgba(244, 93, 1, 0.03), transparent 40%),
+                      radial-gradient(circle at bottom left, rgba(62, 98, 89, 0.02), transparent 40%);
   }
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-heading tracking-tighter;
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading tracking-heading;
   }
 }
 

@@ -7,37 +7,30 @@ import { Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+  "relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-black tracking-action focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 overflow-hidden group cursor-pointer",
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
-        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-        outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
-        secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        ghost: 'hover:bg-accent hover:text-accent-foreground',
-        link: 'text-primary underline-offset-4 hover:underline',
-        // Neumorph variants integrated from previous NeumorphButton
-        neumorph:
-          'bg-white/5 text-slate-300 border-white/5 hover:text-white shadow-[4px_4px_10px_rgba(0,0,0,0.3),-2px_-2px_6px_rgba(255,255,255,0.02)] active:shadow-inner',
-        'neumorph-primary':
-          'bg-blue-600/90 text-white border-blue-500/50 shadow-[4px_4px_12px_rgba(0,0,0,0.4),-2px_-2px_8px_rgba(59,130,246,0.2)] hover:bg-blue-600',
-        'neumorph-secondary':
-          'bg-indigo-600/90 text-white border-indigo-500/50 shadow-[4px_4px_12px_rgba(0,0,0,0.4),-2px_-2px_8px_rgba(79,70,229,0.2)] hover:bg-indigo-600',
-        'neumorph-danger':
-          'bg-red-600/90 text-white border-red-500/50 shadow-[4px_4px_12px_rgba(0,0,0,0.4),-2px_-2px_8px_rgba(239,68,68,0.2)] hover:bg-red-600',
-        'neumorph-white':
-          'bg-white text-slate-950 border-white shadow-[4px_4px_12px_rgba(0,0,0,0.2)] hover:bg-slate-50',
+        default: "bg-primary text-white shadow-[0_0_20px_rgba(var(--primary-rgb),0.2)]",
+        destructive: "bg-destructive text-destructive-foreground",
+        outline: "border border-white/10 bg-transparent text-white",
+        secondary: "bg-secondary text-secondary-foreground",
+        ghost: "bg-transparent text-current",
+        link: "text-primary underline-offset-4",
+        neumorph: "bg-white/5 text-slate-300 border-white/5 shadow-[4px_4px_10px_rgba(0,0,0,0.3),-2px_-2px_6px_rgba(255,255,255,0.02)]",
+        "neumorph-primary": "bg-primary text-white border-primary/50 shadow-[0_15px_30px_rgba(var(--primary-rgb),0.2)]",
+        "neumorph-secondary": "bg-secondary text-white border-secondary/50 shadow-[0_10px_30px_rgba(62,98,89,0.2)]",
+        "neumorph-danger": "bg-red-600/90 text-white border-red-500/50 shadow-[0_10px_30px_rgba(239,68,68,0.2)]",
+        "neumorph-white": "bg-white text-slate-950 border-white shadow-[0_10px_30_rgba(255,255,255,0.1)]",
       },
       size: {
-        default: 'h-10 px-4 py-2',
-        sm: 'h-9 rounded-md px-3',
-        lg: 'h-11 rounded-md px-8',
-        icon: 'h-10 w-10',
-        // Neumorph sizes
-        'neumorph-sm': 'h-9 px-4 text-xs rounded-xl',
-        'neumorph-md': 'h-11 px-6 text-sm rounded-2xl',
-        'neumorph-lg': 'h-14 px-10 text-base rounded-[24px]',
+        default: "h-11 px-8 py-2",
+        sm: "h-9 px-6",
+        lg: "h-16 px-12 text-base",
+        icon: "h-10 w-10",
+        "neumorph-sm": "h-9 px-6 text-[10px]",
+        "neumorph-md": "h-12 px-8 text-xs",
+        "neumorph-lg": "h-20 px-12 text-sm",
       },
     },
     defaultVariants: {
@@ -54,43 +47,67 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, loading, disabled, children, ...props }, ref) => {
-    const Comp = asChild ? Slot : 'button';
+  ({ className, variant, size, asChild: _asChild = false, loading, disabled, children, ...props }, ref) => {
+    
+    // Omit conflicting props from framer-motion
+    const { 
+      onDrag: _onDrag, 
+      onDragStart: _onDragStart, 
+      onDragEnd: _onDragEnd, 
+      onAnimationStart: _onAnimationStart,
+      onDragEnter: _onDragEnter,
+      onDragLeave: _onDragLeave,
+      onDragOver: _onDragOver,
+      ...filteredProps 
+    } = props as Record<string, unknown>;
 
-    const content = (
-      <>
-        {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-        {!loading && children}
-        {loading && <span className="sr-only">Carregando...</span>}
-      </>
-    );
+    // Variants for the button and shimmer
+    const buttonMotion = {
+      rest: { scale: 1, y: 0 },
+      hover: { 
+        scale: 1.05, 
+        y: -2,
+        boxShadow: variant === 'default' || variant === 'neumorph-primary' 
+          ? "0 20px 40px rgba(var(--primary-rgb), 0.4)" 
+          : "0 10px 25px rgba(255, 255, 255, 0.1)"
+      },
+      tap: { scale: 0.97, y: 0 }
+    }
 
-    // If it's a neumorph variant, we wrap it in a motion component for the nice scale effects
-    if (variant?.toString().includes('neumorph')) {
-      return (
-        <motion.button
-          whileHover={!disabled && !loading ? { scale: 1.01, y: -1 } : {}}
-          whileTap={!disabled && !loading ? { scale: 0.98, y: 0 } : {}}
-          className={cn(buttonVariants({ variant, size, className }))}
-          ref={ref as React.Ref<HTMLButtonElement>}
-          disabled={disabled || loading}
-          {...(props as React.ComponentProps<typeof motion.button>)}
-        >
-          <div className="relative flex items-center justify-center gap-2 z-10">{content}</div>
-        </motion.button>
-      );
+    const shimmerMotion = {
+      rest: { x: "-150%" },
+      hover: { x: "150%" }
     }
 
     return (
-      <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
-        ref={ref}
+      <motion.button
+        ref={ref as React.Ref<HTMLButtonElement>}
         disabled={disabled || loading}
-        {...props}
+        initial="rest"
+        whileHover="hover"
+        whileTap="tap"
+        variants={buttonMotion}
+        transition={{ type: "spring", stiffness: 400, damping: 17 }}
+        className={cn(buttonVariants({ variant, size, className }))}
+        {...filteredProps}
       >
-        {content}
-      </Comp>
-    );
+        {/* Glossy Shimmer - Now triggered by parent variants */}
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-full">
+          <motion.div 
+            variants={shimmerMotion}
+            transition={{ duration: 0.6, ease: "circIn" }}
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12"
+          />
+        </div>
+
+        {/* Content */}
+        <div className="relative flex items-center justify-center gap-2 z-10 font-black pointer-events-none">
+          {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {!loading && children}
+          {loading && <span className="sr-only">Carregando...</span>}
+        </div>
+      </motion.button>
+    )
   }
 );
 Button.displayName = 'Button';

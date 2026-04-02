@@ -60,29 +60,6 @@ export function Hero() {
             </Button>
           </div>
 
-          <div className="flex items-center gap-4 pt-2">
-            <div className="flex -space-x-2">
-              <div className="w-8 h-8 rounded-full border-2 border-[#020617] bg-emerald-500 flex items-center justify-center text-[10px] font-bold text-white shadow-md">
-                MC
-              </div>
-              <div className="w-8 h-8 rounded-full border-2 border-[#020617] bg-blue-500 flex items-center justify-center text-[10px] font-bold text-white shadow-md">
-                RP
-              </div>
-              <div className="w-8 h-8 rounded-full border-2 border-[#020617] bg-purple-500 flex items-center justify-center text-[10px] font-bold text-white shadow-md">
-                JP
-              </div>
-              <div className="w-8 h-8 rounded-full border-2 border-[#020617] bg-slate-700 flex items-center justify-center text-[10px] font-bold text-white shadow-md">
-                +
-              </div>
-            </div>
-            <div className="flex flex-col text-left">
-              <div className="flex text-amber-400 text-xs">★★★★★</div>
-              <p className="text-xs text-slate-400 font-bold font-inter">
-                Mais de <span className="text-white">500 restaurantes</span> já usam
-              </p>
-            </div>
-          </div>
-
           <div className="flex flex-wrap justify-center lg:justify-start gap-6 text-sm text-slate-500 font-inter pt-2">
             <div className="flex items-center gap-2">
               <Check className="w-4 h-4 text-emerald-500" strokeWidth={3} />
