@@ -109,10 +109,16 @@
   }
   body {
     @apply bg-background text-foreground font-sans selection:bg-primary/20 selection:text-primary;
-    background-image: radial-gradient(circle at top right, rgba(244, 93, 1, 0.03), transparent 40%),
-                      radial-gradient(circle at bottom left, rgba(62, 98, 89, 0.02), transparent 40%);
+    background-image:
+      radial-gradient(circle at top right, rgba(244, 93, 1, 0.03), transparent 40%),
+      radial-gradient(circle at bottom left, rgba(62, 98, 89, 0.02), transparent 40%);
   }
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-heading tracking-heading;
   }
 }

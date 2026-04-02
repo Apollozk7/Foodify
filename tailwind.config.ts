@@ -11,13 +11,13 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        heading: ["var(--font-work-sans)", "sans-serif"],
-        sans: ["var(--font-inter)", "sans-serif"],
+        heading: ['var(--font-work-sans)', 'sans-serif'],
+        sans: ['var(--font-inter)', 'sans-serif'],
       },
       colors: {
-        background: "#000103",
-        primary: "#F45D01",
-        secondary: "#3E6259",
+        background: '#000103',
+        primary: '#F45D01',
+        secondary: '#3E6259',
       },
     },
   },

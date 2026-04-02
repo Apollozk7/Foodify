@@ -1,7 +1,7 @@
-import { SignUp } from "@clerk/nextjs";
-import Image from "next/image";
-import Link from "next/link";
-import { dark } from "@clerk/themes";
+import { SignUp } from '@clerk/nextjs';
+import Image from 'next/image';
+import Link from 'next/link';
+import { dark } from '@clerk/themes';
 
 export default function SignUpPage() {
   return (
@@ -10,10 +10,10 @@ export default function SignUpPage() {
       <div className="relative hidden lg:flex flex-col justify-between p-16 overflow-hidden border-r border-white/5 bg-[#050505]">
         {/* Background Image with Elite Overlay */}
         <div className="absolute inset-0 z-0">
-          <Image 
-            src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=1981&auto=format&fit=crop" 
-            alt="Product Photography" 
-            fill 
+          <Image
+            src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=1981&auto=format&fit=crop"
+            alt="Product Photography"
+            fill
             className="object-cover opacity-20 grayscale hover:grayscale-0 transition-all duration-1000"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent z-10" />
@@ -54,23 +54,26 @@ export default function SignUpPage() {
         </div>
 
         <div className="w-full max-w-md animate-fade-up">
-          <SignUp 
+          <SignUp
             signInUrl="/sign-in"
             forceRedirectUrl="/dashboard"
             appearance={{
               baseTheme: dark,
               elements: {
-                formButtonPrimary: "bg-primary hover:bg-primary/90 text-white font-black text-[11px] tracking-label uppercase h-12 rounded-full transition-all shadow-[0_10px_30px_rgba(var(--primary-rgb),0.2)]",
-                card: "bg-transparent shadow-none border-none",
-                headerTitle: "text-white font-heading font-extrabold text-2xl tracking-tight",
-                headerSubtitle: "text-neutral-500 font-medium",
-                socialButtonsBlockButton: "bg-white/[0.03] border-white/5 hover:bg-white/5 text-white rounded-2xl h-12 transition-all",
-                formFieldLabel: "text-neutral-400 font-black text-[10px] uppercase tracking-widest",
-                formFieldInput: "bg-white/[0.03] border-white/5 focus:border-primary/50 text-white rounded-2xl h-12 transition-all",
-                footerActionLink: "text-primary hover:text-primary/80 font-bold",
-                identityPreviewText: "text-white",
-                identityPreviewEditButtonIcon: "text-primary",
-              }
+                formButtonPrimary:
+                  'bg-primary hover:bg-primary/90 text-white font-black text-[11px] tracking-label uppercase h-12 rounded-full transition-all shadow-[0_10px_30px_rgba(var(--primary-rgb),0.2)]',
+                card: 'bg-transparent shadow-none border-none',
+                headerTitle: 'text-white font-heading font-extrabold text-2xl tracking-tight',
+                headerSubtitle: 'text-neutral-500 font-medium',
+                socialButtonsBlockButton:
+                  'bg-white/[0.03] border-white/5 hover:bg-white/5 text-white rounded-2xl h-12 transition-all',
+                formFieldLabel: 'text-neutral-400 font-black text-[10px] uppercase tracking-widest',
+                formFieldInput:
+                  'bg-white/[0.03] border-white/5 focus:border-primary/50 text-white rounded-2xl h-12 transition-all',
+                footerActionLink: 'text-primary hover:text-primary/80 font-bold',
+                identityPreviewText: 'text-white',
+                identityPreviewEditButtonIcon: 'text-primary',
+              },
             }}
           />
         </div>

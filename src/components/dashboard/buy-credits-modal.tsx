@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -79,7 +79,7 @@ export function BuyCreditsModal({ isOpen, onClose }: BuyCreditsModalProps) {
         />
 
         {/* Modal - Editorial Look Rounded */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.98, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.98, y: 10 }}
@@ -89,8 +89,12 @@ export function BuyCreditsModal({ isOpen, onClose }: BuyCreditsModalProps) {
             {/* Header */}
             <div className="flex items-start justify-between">
               <div className="space-y-2">
-                <h3 className="text-2xl md:text-3xl font-heading font-extrabold text-white tracking-tighter uppercase">Adquirir Créditos.</h3>
-                <p className="text-[10px] text-neutral-500 font-bold uppercase tracking-wide">Selecione o volume de processamento desejado.</p>
+                <h3 className="text-2xl md:text-3xl font-heading font-extrabold text-white tracking-tighter uppercase">
+                  Adquirir Créditos.
+                </h3>
+                <p className="text-[10px] text-neutral-500 font-bold uppercase tracking-wide">
+                  Selecione o volume de processamento desejado.
+                </p>
               </div>
               <button
                 onClick={onClose}
@@ -102,22 +106,26 @@ export function BuyCreditsModal({ isOpen, onClose }: BuyCreditsModalProps) {
 
             {/* Plans Grid - Clean Editorial Rounded */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
-              {plans.map((plan) => (
+              {plans.map(plan => (
                 <div
                   key={plan.id}
                   onClick={() => setSelectedPlanId(plan.id)}
                   className={cn(
-                    "relative cursor-pointer p-5 md:p-6 border transition-all duration-300 rounded-2xl md:rounded-3xl",
+                    'relative cursor-pointer p-5 md:p-6 border transition-all duration-300 rounded-2xl md:rounded-3xl',
                     selectedPlanId === plan.id
-                      ? "bg-white/5 border-primary shadow-[0_0_30px_rgba(244,93,1,0.15)]"
-                      : "bg-transparent border-white/5 hover:border-white/20"
+                      ? 'bg-white/5 border-primary shadow-[0_0_30px_rgba(244,93,1,0.15)]'
+                      : 'bg-transparent border-white/5 hover:border-white/20'
                   )}
                 >
                   <div className="flex justify-between items-start mb-4 md:mb-6">
-                    <h3 className={cn(
-                      "text-[10px] font-extrabold uppercase tracking-label",
-                      selectedPlanId === plan.id ? "text-primary" : "text-neutral-500"
-                    )}>{plan.name}</h3>
+                    <h3
+                      className={cn(
+                        'text-[10px] font-extrabold uppercase tracking-label',
+                        selectedPlanId === plan.id ? 'text-primary' : 'text-neutral-500'
+                      )}
+                    >
+                      {plan.name}
+                    </h3>
                     {selectedPlanId === plan.id && (
                       <div className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_10px_#F45D01]" />
                     )}
@@ -126,9 +134,13 @@ export function BuyCreditsModal({ isOpen, onClose }: BuyCreditsModalProps) {
                   <div className="space-y-1">
                     <div className="flex items-baseline gap-1">
                       <span className="text-[10px] font-bold text-neutral-600 uppercase">R$</span>
-                      <span className="text-2xl md:text-3xl font-extrabold text-white">{plan.price}</span>
+                      <span className="text-2xl md:text-3xl font-extrabold text-white">
+                        {plan.price}
+                      </span>
                     </div>
-                    <div className="text-primary font-extrabold text-[10px] uppercase tracking-wide">{plan.credits} CRÉDITOS</div>
+                    <div className="text-primary font-extrabold text-[10px] uppercase tracking-wide">
+                      {plan.credits} CRÉDITOS
+                    </div>
                   </div>
                 </div>
               ))}
@@ -136,8 +148,8 @@ export function BuyCreditsModal({ isOpen, onClose }: BuyCreditsModalProps) {
 
             {/* Action - Minimal Bold Rounded */}
             <div className="pt-2 md:pt-4 space-y-6">
-              <Button 
-                variant="default" 
+              <Button
+                variant="default"
                 className="w-full h-14 md:h-16 rounded-full font-extrabold uppercase text-xs md:text-sm tracking-label bg-primary hover:bg-primary/90 text-white shadow-[0_8px_30px_rgba(244,93,1,0.2)]"
                 onClick={handleContinue}
                 disabled={isRedirecting}
@@ -153,11 +165,15 @@ export function BuyCreditsModal({ isOpen, onClose }: BuyCreditsModalProps) {
               <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 py-4 border-t border-white/5">
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="w-3.5 h-3.5 text-neutral-600" />
-                  <span className="text-[9px] font-bold text-neutral-600 uppercase tracking-wide">Pagamento Seguro</span>
+                  <span className="text-[9px] font-bold text-neutral-600 uppercase tracking-wide">
+                    Pagamento Seguro
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Zap className="w-3.5 h-3.5 text-neutral-600" />
-                  <span className="text-[9px] font-bold text-neutral-600 uppercase tracking-wide">Entrega Instantânea</span>
+                  <span className="text-[9px] font-bold text-neutral-600 uppercase tracking-wide">
+                    Entrega Instantânea
+                  </span>
                 </div>
               </div>
             </div>

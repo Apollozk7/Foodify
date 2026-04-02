@@ -77,8 +77,8 @@ export default function EarlyAccessPage() {
           </h1>
 
           <p className="text-slate-400 font-inter text-base mb-8">
-            Inscreva-se para garantir acesso antecipado ao Apetit. Receba o convite em
-            primeira mão e destaque seu delivery.
+            Inscreva-se para garantir acesso antecipado ao Apetit. Receba o convite em primeira mão
+            e destaque seu delivery.
           </p>
 
           <AnimatePresence mode="wait">

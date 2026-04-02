@@ -1,19 +1,19 @@
-import { NextResponse } from "next/server";
-import { Resend } from "resend";
-import { env } from "@/env";
-import { z } from "zod";
-import { redis } from "@/lib/redis";
+import { NextResponse } from 'next/server';
+import { Resend } from 'resend';
+import { env } from '@/env';
+import { z } from 'zod';
+import { redis } from '@/lib/redis';
 
 const resend = new Resend(env.RESEND_API_KEY);
 
 const schema = z.object({
-  email: z.string().email("E-mail inválido"),
+  email: z.string().email('E-mail inválido'),
 });
 
 export async function POST(request: Request) {
   try {
-    const forwardedFor = request.headers.get("x-forwarded-for");
-    const ip = forwardedFor ? forwardedFor.split(",")[0].trim() : "127.0.0.1";
+    const forwardedFor = request.headers.get('x-forwarded-for');
+    const ip = forwardedFor ? forwardedFor.split(',')[0].trim() : '127.0.0.1';
     const ipKey = `rate_limit:early_access:${ip}`;
 
     const requestCount = await redis.incr(ipKey);
@@ -25,7 +25,10 @@ export async function POST(request: Request) {
 
     // Limit to 3 requests per hour per IP
     if (requestCount > 3) {
-      return NextResponse.json({ error: "Muitas requisições. Tente novamente mais tarde." }, { status: 429 });
+      return NextResponse.json(
+        { error: 'Muitas requisições. Tente novamente mais tarde.' },
+        { status: 429 }
+      );
     }
 
     const body = await request.json();
@@ -33,9 +36,9 @@ export async function POST(request: Request) {
 
     // Enviar notificação de que o usuário entrou na lista de espera
     const data = await resend.emails.send({
-      from: "Estúdio IA Pro <onboarding@resend.dev>",
+      from: 'Estúdio IA Pro <onboarding@resend.dev>',
       to: [email],
-      subject: "Você está na lista! Mas as vagas são limitadas... 🎉",
+      subject: 'Você está na lista! Mas as vagas são limitadas... 🎉',
       html: `
         <div style="font-family: 'Inter', sans-serif; max-width: 600px; margin: 0 auto; background-color: #020617; color: #f8fafc; padding: 40px 30px; border-radius: 24px;">
           <div style="text-align: center; margin-bottom: 30px;">
@@ -79,6 +82,9 @@ export async function POST(request: Request) {
     if (error instanceof z.ZodError) {
       return NextResponse.json({ error: error.issues[0].message }, { status: 400 });
     }
-    return NextResponse.json({ error: "Erro ao processar e-mail. Tente novamente." }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Erro ao processar e-mail. Tente novamente.' },
+      { status: 500 }
+    );
   }
 }

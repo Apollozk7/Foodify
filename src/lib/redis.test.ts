@@ -57,11 +57,7 @@ describe('redis credit management', () => {
 
       const result = await consumeCredit(mockUserId);
 
-      expect(redis.eval).toHaveBeenCalledWith(
-        expect.any(String),
-        [mockKey],
-        []
-      );
+      expect(redis.eval).toHaveBeenCalledWith(expect.any(String), [mockKey], []);
       expect(result).toBe(9);
     });
 
@@ -70,11 +66,7 @@ describe('redis credit management', () => {
 
       const result = await consumeCredit(mockUserId);
 
-      expect(redis.eval).toHaveBeenCalledWith(
-        expect.any(String),
-        [mockKey],
-        []
-      );
+      expect(redis.eval).toHaveBeenCalledWith(expect.any(String), [mockKey], []);
       expect(result).toBeNull();
     });
 
@@ -83,11 +75,7 @@ describe('redis credit management', () => {
 
       const result = await consumeCredit(mockUserId);
 
-      expect(redis.eval).toHaveBeenCalledWith(
-        expect.any(String),
-        [mockKey],
-        []
-      );
+      expect(redis.eval).toHaveBeenCalledWith(expect.any(String), [mockKey], []);
       expect(result).toBe(-2);
     });
   });

@@ -31,7 +31,7 @@ export async function submitGeneration({
         image_url: imageUrl,
         prompt,
         negative_prompt: negativePrompt,
-      } as any,
+      } as Record<string, unknown>,
     });
 
     if (!result.request_id) {

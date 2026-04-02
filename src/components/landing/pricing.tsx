@@ -102,9 +102,11 @@ export function Pricing() {
                   Mais Popular
                 </div>
               )}
-              
-              <h3 className="text-slate-400 text-sm font-semibold uppercase tracking-wide mb-4">{plan.name}</h3>
-              
+
+              <h3 className="text-slate-400 text-sm font-semibold uppercase tracking-wide mb-4">
+                {plan.name}
+              </h3>
+
               <div className="flex flex-col mb-6">
                 <div className="flex items-baseline gap-1">
                   <span className="text-3xl font-bold text-white">R$ {plan.price}</span>
@@ -148,5 +150,3 @@ function PricingFeature({ text }: { text: string }) {
     </li>
   );
 }
-
-

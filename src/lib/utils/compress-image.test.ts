@@ -10,7 +10,9 @@ vi.mock('browser-image-compression', () => {
 
 describe('compressImage', () => {
   const mockFile = new File(['test image content'], 'test.jpg', { type: 'image/jpeg' });
-  const mockCompressedFile = new File(['compressed content'], 'test-compressed.jpg', { type: 'image/jpeg' });
+  const mockCompressedFile = new File(['compressed content'], 'test-compressed.jpg', {
+    type: 'image/jpeg',
+  });
 
   // Override sizes for logging purposes to ensure predictable numbers
   Object.defineProperty(mockFile, 'size', { value: 2000000, configurable: true }); // ~1.91 MB
@@ -42,10 +44,7 @@ describe('compressImage', () => {
       1,
       '[Compression] Starting compression for: test.jpg (Original size: 1.91 MB)'
     );
-    expect(console.info).toHaveBeenNthCalledWith(
-      2,
-      '[Compression] Finished. New size: 0.48 MB'
-    );
+    expect(console.info).toHaveBeenNthCalledWith(2, '[Compression] Finished. New size: 0.48 MB');
     expect(console.error).not.toHaveBeenCalled();
   });
 
@@ -67,6 +66,9 @@ describe('compressImage', () => {
       '[Compression] Starting compression for: test.jpg (Original size: 1.91 MB)'
     );
     expect(console.error).toHaveBeenCalledTimes(1);
-    expect(console.error).toHaveBeenCalledWith('[Compression] Error during image compression:', error);
+    expect(console.error).toHaveBeenCalledWith(
+      '[Compression] Error during image compression:',
+      error
+    );
   });
 });

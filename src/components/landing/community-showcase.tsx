@@ -24,10 +24,9 @@ export function CommunityShowcase() {
               <span>Galeria da Comunidade</span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold font-work-sans tracking-tight">
-              Resultados Reais.<br />
-              <span className="text-primary">
-                Pessoas Reais.
-              </span>
+              Resultados Reais.
+              <br />
+              <span className="text-primary">Pessoas Reais.</span>
             </h2>
           </div>
           <p className="text-slate-400 font-inter max-w-md text-base sm:text-lg">

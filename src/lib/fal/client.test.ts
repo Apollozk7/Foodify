@@ -28,7 +28,7 @@ describe('fal/client', () => {
       // Mock successful response
       vi.mocked(fal.queue.submit).mockResolvedValueOnce({
         request_id: 'test-req-123',
-      } as any);
+      } as unknown);
 
       const params = {
         imageUrl: 'https://example.com/image.jpg',
@@ -55,7 +55,7 @@ describe('fal/client', () => {
       // Mock response without request_id
       vi.mocked(fal.queue.submit).mockResolvedValueOnce({
         other_data: 'something',
-      } as any);
+      } as unknown);
 
       const params = {
         imageUrl: 'https://example.com/image.jpg',
@@ -87,9 +87,7 @@ describe('fal/client', () => {
         prompt: 'A test prompt',
       };
 
-      await expect(submitGeneration(params)).rejects.toThrow(
-        'Fal.ai submission failed'
-      );
+      await expect(submitGeneration(params)).rejects.toThrow('Fal.ai submission failed');
     });
   });
 });

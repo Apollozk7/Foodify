@@ -19,7 +19,10 @@ export default clerkMiddleware(async (auth, req) => {
   // Se o usuário já está autenticado e tenta ir para landing ou auth
   if (
     userId &&
-    (pathname === '/' || pathname === '/early-access' || pathname === '/sign-in' || pathname === '/sign-up')
+    (pathname === '/' ||
+      pathname === '/early-access' ||
+      pathname === '/sign-in' ||
+      pathname === '/sign-up')
   ) {
     return NextResponse.redirect(new URL('/dashboard', req.url));
   }
