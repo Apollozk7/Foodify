@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-// Reference standard images for the luxury food feel
+// Standard images for the luxury food feel
 const HERO_IMAGES = [
   "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&q=80&w=800",
   "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=800",
@@ -229,7 +229,7 @@ export default function LandingPage() {
       </AnimatePresence>
 
       <main className="flex-1">
-        {/* Hero Section - Reference Visuals */}
+        {/* Hero Section */}
         <section id="inicio" className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
           {/* Floating Grid Background - Optimized for mobile */}
           <div className="absolute inset-0 z-0 opacity-10 md:opacity-20 grid grid-cols-2 md:grid-cols-6 gap-4 p-4 pointer-events-none">
@@ -511,7 +511,7 @@ export default function LandingPage() {
         </section>
       </main>
 
-      {/* Footer - Reference Styled */}
+      {/* Footer */}
       <footer className="w-full border-t border-white/5 bg-black pt-20 md:pt-24 pb-12">
         <div className="max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-2 md:grid-cols-4 gap-12 mb-20">
           <div className="col-span-2 md:col-span-1">

@@ -170,14 +170,6 @@ export function ChatInterface({ messages, onSendMessage, isLoading }: ChatInterf
             </button>
           </div>
         </div>
-
-        {/* Utility Bar - Now only with Reference on Desktop, no Tokens */}
-        <div className="mt-3 flex items-center px-4">
-          <button className="hidden md:flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-wide text-neutral-600 hover:text-white transition-colors group">
-            <Paperclip className="w-3 h-3 text-neutral-700 group-hover:text-primary transition-colors" />
-            Reference
-          </button>
-        </div>
       </div>
     </div>
   );

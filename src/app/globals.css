@@ -117,7 +117,7 @@
   }
 }
 
-/* Special Utility Classes for reference aesthetics */
+/* Special Utility Classes */
 .hairline {
   @apply border border-white/5;
 }
