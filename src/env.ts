@@ -8,10 +8,7 @@ export const env = createEnv({
       str => (str === '' ? undefined : str),
       z.string().min(1).optional()
     ),
-    SUPABASE_SECRET_KEY: z.preprocess(
-      str => (str === '' ? undefined : str),
-      z.string().min(1).optional()
-    ),
+    SUPABASE_SECRET_KEY: z.string().min(1),
     UPSTASH_REDIS_REST_URL: z.preprocess(
       str => (str === '' ? undefined : str),
       z.string().url().optional()
