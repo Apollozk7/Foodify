@@ -28,7 +28,7 @@ describe('Supabase Client - createClient', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockConsoleWarn = vi.fn();
-    console.warn = mockConsoleWarn;
+    console.warn = mockConsoleWarn as any;
 
     // Reset mockEnv vars to undefined before each test
     mockEnv.NEXT_PUBLIC_SUPABASE_URL = undefined;
