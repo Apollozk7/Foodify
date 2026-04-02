@@ -57,17 +57,17 @@ export default function EarlyAccessPage() {
       >
         <div className="flex justify-center mb-12">
           <div className="inline-flex items-center gap-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-white italic">
-              E
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center font-bold text-white italic">
+              A
             </div>
             <span className="font-work-sans font-bold text-xl text-white tracking-tight">
-              Estúdio IA Pro
+              Apetit
             </span>
           </div>
         </div>
 
         <div className="bg-white/5 border border-white/10 rounded-[32px] p-8 md:p-12 backdrop-blur-xl shadow-2xl">
-          <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider mb-6">
+          <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 text-primary text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider mb-6">
             <Sparkles className="w-3.5 h-3.5" />
             Apenas 5 vagas restantes
           </div>
@@ -77,7 +77,7 @@ export default function EarlyAccessPage() {
           </h1>
 
           <p className="text-slate-400 font-inter text-base mb-8">
-            Inscreva-se para garantir acesso antecipado ao Estúdio IA Pro. Receba o convite em
+            Inscreva-se para garantir acesso antecipado ao Apetit. Receba o convite em
             primeira mão e destaque seu delivery.
           </p>
 

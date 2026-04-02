@@ -1,4 +1,4 @@
--- Initial schema for Estúdio IA Pro
+-- Initial schema for Apetit
 -- Migration: 20260318000000_initial_schema.sql
 
 -- Enable necessary extensions

@@ -50,8 +50,8 @@ export async function refinePrompt({
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${apiKey}`,
-        'HTTP-Referer': 'https://estudio-ia-pro.vercel.app',
-        'X-Title': 'Estúdio IA Pro',
+        'HTTP-Referer': 'https://apetit.vercel.app',
+        'X-Title': 'Apetit',
       },
       body: JSON.stringify({
         model: 'deepseek/deepseek-v3.2',

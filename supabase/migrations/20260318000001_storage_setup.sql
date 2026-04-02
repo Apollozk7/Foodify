@@ -1,4 +1,4 @@
--- Storage setup for Estúdio IA Pro
+-- Storage setup for Apetit
 -- Migration: 20260318000001_storage_setup.sql
 
 -- 1. Create the 'generations' bucket if it doesn't exist

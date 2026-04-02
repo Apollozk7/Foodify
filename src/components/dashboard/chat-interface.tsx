@@ -185,7 +185,7 @@ function ChatMessage({ message, beforeImageUrl }: { message: Message, beforeImag
       const downloadUrl = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = downloadUrl;
-      link.download = `estudio-ia-pro-${Date.now()}.png`;
+      link.download = `apetit-${Date.now()}.png`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

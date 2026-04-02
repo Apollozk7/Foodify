@@ -2,9 +2,9 @@
 
 Plataforma de transformação de fotos culinárias em imagens profissionais usando inteligência artificial.
 
-## 🎯 Visão Geral
+# Apetit
 
-Estúdio IA Pro é uma aplicação Next.js que permite restaurantes e profissionais de food photography transformarem fotos amadoras em imagens de estúdio profissionais de alta qualidade. Utiliza tecnologias de ponta como FAL.ai para geração de imagens, Clerk para autenticação, Stripe para pagamentos e Supabase como banco de dados.
+Apetit é uma aplicação Next.js que permite restaurantes e profissionais de food photography transformarem fotos amadoras em imagens de estúdio profissionais de alta qualidade. Utiliza tecnologias de ponta como FAL.ai para geração de imagens, Clerk para autenticação, Stripe para pagamentos e Supabase como banco de dados.
 
 ## 🛠️ Stack Tecnológico
 

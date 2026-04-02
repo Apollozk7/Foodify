@@ -17,7 +17,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Estúdio IA Pro - Transforme suas fotos de comida',
+  title: 'Apetit - Transforme suas fotos de comida',
   description:
     'Fotos profissionais para o seu delivery em segundos usando Inteligência Artificial.',
 };

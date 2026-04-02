@@ -22,10 +22,10 @@ export default function SignInPage() {
         {/* Branding */}
         <Link href="/" className="relative z-20 flex items-center gap-3 group">
           <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center font-extrabold text-white italic text-xl shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)] transition-transform group-hover:scale-110 duration-500">
-            E
+            A
           </div>
           <span className="font-heading font-extrabold text-2xl tracking-tighter text-white">
-            ESTÚDIO IA PRO
+            APETIT
           </span>
         </Link>
 
@@ -46,10 +46,10 @@ export default function SignInPage() {
         {/* Mobile Logo */}
         <div className="lg:hidden mb-12 flex flex-col items-center gap-4">
           <div className="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center font-extrabold text-white italic text-2xl shadow-[0_0_30px_rgba(var(--primary-rgb),0.3)]">
-            E
+            A
           </div>
           <span className="font-heading font-extrabold text-xl tracking-tighter text-white">
-            ESTÚDIO IA PRO
+            APETIT
           </span>
         </div>
 

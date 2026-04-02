@@ -129,10 +129,10 @@ export default function LandingPage() {
               className="flex items-center gap-3 group cursor-pointer"
             >
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center font-extrabold text-white italic text-lg shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)] font-heading transition-transform group-hover:scale-105">
-                E
+                A
               </div>
               <span className="font-heading font-extrabold text-lg md:text-xl tracking-tighter text-white transition-opacity group-hover:opacity-80">
-                ESTÚDIO IA PRO
+                APETIT
               </span>
             </button>
 
@@ -515,7 +515,7 @@ export default function LandingPage() {
       <footer className="w-full border-t border-white/5 bg-black pt-20 md:pt-24 pb-12">
         <div className="max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-2 md:grid-cols-4 gap-12 mb-20">
           <div className="col-span-2 md:col-span-1">
-            <div className="text-lg font-extrabold text-white font-heading tracking-tighter mb-6">Estúdio IA Pro</div>
+            <div className="text-lg font-extrabold text-white font-heading tracking-tighter mb-6">Apetit</div>
             <p className="text-[10px] text-neutral-500 leading-relaxed max-w-[200px] tracking-wide font-bold uppercase">
               Definindo o futuro visual da excelência culinária brasileira.
             </p>
@@ -531,7 +531,7 @@ export default function LandingPage() {
         </div>
         <div className="max-w-7xl mx-auto px-6 md:px-8 flex flex-col md:flex-row justify-between items-center gap-6 pt-12 border-t border-white/5 text-center md:text-left">
           <div className="text-[10px] text-neutral-600 font-bold tracking-wide uppercase">
-            © 2024 Estúdio IA Pro. Todos os direitos reservados.
+            © 2024 Apetit. Todos os direitos reservados.
           </div>
           <div className="flex items-center gap-8">
             <div className="flex items-center gap-2 px-3 py-1 bg-white/5 rounded-full border border-white/5">

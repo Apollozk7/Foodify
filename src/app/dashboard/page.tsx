@@ -105,8 +105,8 @@ export default function DashboardPage() {
       {/* Sidebar - Desktop */}
       <aside className="fixed left-0 top-0 bottom-0 w-64 border-r border-white/5 bg-[#050505] hidden lg:flex flex-col p-6 z-40">
         <div className="flex items-center gap-3 mb-10">
-          <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center font-extrabold text-white font-heading">E</div>
-          <span className="font-heading font-extrabold text-base tracking-tighter text-white">Estúdio IA Pro</span>
+          <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center font-extrabold text-white font-heading">A</div>
+          <span className="font-heading font-extrabold text-base tracking-tighter text-white">Apetit</span>
         </div>
 
         <div className="flex-1">
@@ -152,8 +152,8 @@ export default function DashboardPage() {
             >
               <div className="flex items-center justify-between mb-10">
                 <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center font-extrabold text-black font-heading">E</div>
-                  <span className="font-heading font-extrabold text-base tracking-tighter text-white">Estúdio IA Pro</span>
+                  <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center font-extrabold text-black font-heading">A</div>
+                  <span className="font-heading font-extrabold text-base tracking-tighter text-white">Apetit</span>
                 </div>
                 <button onClick={() => setIsMobileSidebarOpen(false)} className="p-2 text-neutral-500">
                   <X className="w-5 h-5" />
@@ -197,7 +197,7 @@ export default function DashboardPage() {
             >
               <Menu className="w-5 h-5" />
             </button>
-            <div className="lg:hidden w-7 h-7 bg-primary rounded flex items-center justify-center font-bold text-black italic font-sans">E</div>
+            <div className="lg:hidden w-7 h-7 bg-primary rounded flex items-center justify-center font-bold text-black italic font-sans">A</div>
           </div>
 
           <div className="flex items-center gap-2 md:gap-6">

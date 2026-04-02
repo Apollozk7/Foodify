@@ -12,7 +12,7 @@ const FAQS = [
   },
   {
     question: "A foto vai parecer 'mentira' para o meu cliente?",
-    answer: "De jeito nenhum. O Estúdio IA Pro realça o seu produto real. Nós trocamos o fundo e melhoramos a luz para que o cliente veja a qualidade real do seu produto, mantendo a fidelidade do que será entregue."
+    answer: "De jeito nenhum. O Apetit realça o seu produto real. Nós trocamos o fundo e melhoramos a luz para que o cliente veja a qualidade real do seu produto, mantendo a fidelidade do que será entregue."
   },
   {
     question: "Como recebo minhas fotos?",
