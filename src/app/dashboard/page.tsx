@@ -224,7 +224,7 @@ export default function DashboardPage() {
                 {(genError || uploadError) && (
                   <div className="border border-red-500/20 bg-red-500/5 p-3 rounded-full flex items-center gap-3">
                     <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-                    <p className="text-red-400 text-[9px] font-extrabold tracking-wide font-sans">{genError || uploadError}</p>
+                    <p className="text-red-400 text-[11px] font-extrabold tracking-wide font-sans">{genError || uploadError}</p>
                   </div>
                 )}
               </section>
@@ -234,7 +234,7 @@ export default function DashboardPage() {
               <section className="space-y-8 animate-fade-up">
                 <div className="space-y-1.5">
                   <h2 className="text-2xl font-heading font-extrabold text-white tracking-tighter">Arquivo Digital.</h2>
-                  <p className="text-[9px] text-neutral-500 font-extrabold tracking-label font-sans">Histórico completo de gerações profissionais.</p>
+                  <p className="text-[11px] text-neutral-500 font-extrabold tracking-label font-sans">Histórico completo de gerações profissionais.</p>
                 </div>
                 <HistoryGrid />
               </section>
@@ -252,7 +252,7 @@ export default function DashboardPage() {
                         key={item.id}
                         onClick={() => setActiveSettingsTab(item.id as "ai" | "account" | "plan")}
                         className={cn(
-                          "px-4 py-2 text-[9px] font-extrabold tracking-wide text-left transition-all rounded-full whitespace-nowrap font-sans",
+                          "px-4 py-2 text-[11px] font-extrabold tracking-wide text-left transition-all rounded-full whitespace-nowrap font-sans",
                           activeSettingsTab === item.id 
                             ? "text-primary bg-primary/5" 
                             : "text-neutral-600"
@@ -267,12 +267,12 @@ export default function DashboardPage() {
                     {activeSettingsTab === 'account' && (
                       <div className="space-y-6">
                         <div className="hairline p-6 space-y-6 bg-[#050505] rounded-[24px]">
-                          <h3 className="text-xs font-extrabold text-white tracking-label font-heading">Perfil</h3>
+                          <h3 className="text-sm font-extrabold text-white tracking-label font-heading">Perfil</h3>
                           <div className="flex items-center gap-4 p-4 bg-white/[0.02] border border-white/5 rounded-xl">
-                            <UserButton appearance={{ elements: { userButtonAvatarBox: "w-10 h-10 rounded-full" } }} />
+                            <UserButton appearance={{ elements: { userButtonAvatarBox: "w-12 h-12 rounded-full" } }} />
                             <div className="min-w-0">
-                              <p className="text-white text-[11px] font-extrabold tracking-wide truncate font-sans">Gerenciar Identidade</p>
-                              <p className="text-[9px] text-neutral-600 tracking-wide mt-0.5 truncate font-sans">Configurações de acesso.</p>
+                              <p className="text-white text-[13px] font-extrabold tracking-wide truncate font-sans">Gerenciar Identidade</p>
+                              <p className="text-[11px] text-neutral-600 tracking-wide mt-0.5 truncate font-sans">Configurações de acesso.</p>
                             </div>
                           </div>
                         </div>
@@ -283,30 +283,30 @@ export default function DashboardPage() {
                       <div className="space-y-6">
                         <div className="hairline p-6 space-y-6 bg-[#050505] rounded-[24px]">
                           <div className="flex items-center justify-between">
-                            <h3 className="text-xs font-extrabold text-white tracking-label font-heading">Status</h3>
-                            <div className="flex items-center gap-2 px-2.5 py-1 bg-primary/10 border border-primary/20 rounded-full">
-                              <ShieldCheck className="w-3 h-3 text-primary" />
-                              <span className="text-[8px] font-extrabold text-primary tracking-wide font-sans">Ativo</span>
+                            <h3 className="text-sm font-extrabold text-white tracking-label font-heading">Status</h3>
+                            <div className="flex items-center gap-2 px-3 py-1 bg-primary/10 border border-primary/20 rounded-full">
+                              <ShieldCheck className="w-4 h-4 text-primary" />
+                              <span className="text-[10px] font-extrabold text-primary tracking-wide font-sans">Ativo</span>
                             </div>
                           </div>
                           
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="p-6 bg-white/[0.02] border border-white/5 space-y-3 rounded-xl text-center sm:text-left">
-                              <p className="text-neutral-600 text-[9px] font-extrabold tracking-wide font-sans">Saldo</p>
+                              <p className="text-neutral-600 text-[11px] font-extrabold tracking-wide font-sans">Saldo</p>
                               <div className="flex items-baseline justify-center sm:justify-start gap-1.5 text-white">
-                                <span className="text-3xl font-extrabold tracking-tighter font-sans">124</span>
-                                <span className="text-[8px] font-bold tracking-wide text-primary font-sans">Fotos</span>
+                                <span className="text-4xl font-extrabold tracking-tighter font-sans">124</span>
+                                <span className="text-[10px] font-bold tracking-wide text-primary font-sans">Fotos</span>
                               </div>
                             </div>
                             <div className="p-6 bg-white/[0.02] border border-white/5 flex flex-col justify-center rounded-xl text-center sm:text-left">
-                              <p className="text-neutral-600 text-[9px] font-extrabold mb-1 font-sans tracking-wide">Próxima Renovação</p>
-                              <p className="text-[11px] font-extrabold text-white tracking-wide font-sans">18 Abr 2026</p>
+                              <p className="text-neutral-600 text-[11px] font-extrabold mb-1 font-sans tracking-wide">Próxima Renovação</p>
+                              <p className="text-[13px] font-extrabold text-white tracking-wide font-sans">18 Abr 2026</p>
                             </div>
                           </div>
 
                           <Button
                             variant="neumorph-primary"
-                            className="w-full h-12 font-extrabold text-[10px] tracking-label rounded-full font-sans"
+                            className="w-full h-14 font-extrabold text-[12px] tracking-label rounded-full font-sans"
                             onClick={() => setIsBuyModalOpen(true)}
                           >
                             Adicionar Créditos
