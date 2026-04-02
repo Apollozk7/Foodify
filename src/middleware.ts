@@ -15,13 +15,17 @@ export default clerkMiddleware(async (auth, req) => {
   const { userId } = await auth();
   const { pathname } = req.nextUrl;
 
-  // Se o usuário já está autenticado e tenta ir para login/cadastro,
-  // só redirecionamos se ele realmente já tiver uma sessão completa.
+  // Se o usuário já está autenticado e tenta ir para landing ou auth
   if (
     userId &&
-    (pathname === '/early-access' || pathname === '/sign-in' || pathname === '/sign-up')
+    (pathname === '/' || pathname === '/early-access' || pathname === '/sign-in' || pathname === '/sign-up')
   ) {
     return NextResponse.redirect(new URL('/dashboard', req.url));
+  }
+
+  // Se não está autenticado e tenta acessar o root '/'
+  if (!userId && pathname === '/') {
+    return NextResponse.redirect(new URL('/early-access', req.url));
   }
 
   // Sem sessão e fora de rota pública → /early-access
