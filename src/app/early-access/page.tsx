@@ -7,9 +7,8 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
-// ⚠️ ROTA TEMPORARIAMENTE DESATIVADA — remover esta linha para restaurar
+// Rota restaurada
 export default function EarlyAccessPage() {
-  redirect('/');
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);

@@ -7,6 +7,7 @@ const isPublicRoute = createRouteMatcher([
   '/',
   '/early-access',
   '/api/early-access(.*)',
+  '/api/webhooks(.*)',
   '/sign-in(.*)',
   '/sign-up(.*)',
 ]);
@@ -23,14 +24,9 @@ export default clerkMiddleware(async (auth, req) => {
     return NextResponse.redirect(new URL('/dashboard', req.url));
   }
 
-  // Se não está autenticado e tenta acessar o root '/'
-  if (!userId && pathname === '/') {
-    return NextResponse.redirect(new URL('/early-access', req.url));
-  }
-
-  // Sem sessão e fora de rota pública → /early-access
+  // Sem sessão e fora de rota pública → /
   if (!userId && !isPublicRoute(req)) {
-    return NextResponse.redirect(new URL('/early-access', req.url));
+    return NextResponse.redirect(new URL('/', req.url));
   }
 
   // Atualiza sessão Supabase
