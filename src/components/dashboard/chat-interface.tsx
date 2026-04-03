@@ -61,7 +61,11 @@ export function ChatInterface({ messages, onSendMessage, isLoading }: ChatInterf
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  const lastUserImage = [...messages].reverse().find(m => m.role === "user" && m.imageUrl)?.imageUrl;
+  // ⚡ Bolt: Optimize finding the last user image by using findLast and memoization
+  // This prevents unnecessary array clones and O(n) loops on every keystroke
+  const lastUserImage = useMemo(() => {
+    return messages.findLast(m => m.role === "user" && m.imageUrl)?.imageUrl;
+  }, [messages]);
 
   return (
     <div className="flex flex-col h-full flex-1 bg-black overflow-hidden min-h-0">
