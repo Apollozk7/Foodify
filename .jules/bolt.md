@@ -1,3 +1,3 @@
-## 2024-05-24 - Avoid O(N) memory allocation in React Renders
-**Learning:** React components that render frequently should avoid creating new arrays for calculations (like `[...array].reverse()`). Instead, leveraging native browser capabilities like `Array.prototype.findLast()` provides a zero-allocation backward search that improves memory usage and CPU cycles during renders.
-**Action:** Use `findLast` or `findLastIndex` over manual `reverse().find()` in array traversals.
+## 2024-05-24 - CI Workload Identity Issue
+**Learning:** We need to conditionally execute actions that depend on API keys (like google-github-actions/run-gemini-cli) to prevent workflow failures when the secrets are absent.
+**Action:** Always check the CI configuration.
