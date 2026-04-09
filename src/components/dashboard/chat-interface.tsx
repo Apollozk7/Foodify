@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useMemo } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUp, Paperclip, Image as ImageIcon, X, Sparkles, Loader2, User, Bot, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -61,7 +61,9 @@ export function ChatInterface({ messages, onSendMessage, isLoading }: ChatInterf
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  const lastUserImage = [...messages].reverse().find(m => m.role === "user" && m.imageUrl)?.imageUrl;
+  // Bolt Optimization: Replace [...array].reverse().find() with Array.prototype.findLast()
+  // to eliminate O(N) memory allocation and array copy on every render.
+  const lastUserImage = messages.findLast(m => m.role === "user" && m.imageUrl)?.imageUrl;
 
   return (
     <div className="flex flex-col h-full flex-1 bg-black overflow-hidden min-h-0">
