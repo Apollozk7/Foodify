@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
-// Standard images for the luxury food feel
+// Reference standard images for the luxury food feel
 const HERO_IMAGES = [
   'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&q=80&w=800',
   'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=800',
@@ -120,10 +120,10 @@ export default function LandingPage() {
           <div className="px-6 md:px-10 flex items-center justify-between">
             <button onClick={scrollToTop} className="flex items-center gap-3 group cursor-pointer">
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center font-extrabold text-white italic text-lg shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)] font-heading transition-transform group-hover:scale-105">
-                A
+                E
               </div>
               <span className="font-heading font-extrabold text-lg md:text-xl tracking-tighter text-white transition-opacity group-hover:opacity-80">
-                APETIT
+                ESTÚDIO IA PRO
               </span>
             </button>
 
@@ -220,7 +220,7 @@ export default function LandingPage() {
       </AnimatePresence>
 
       <main className="flex-1">
-        {/* Hero Section */}
+        {/* Hero Section - Reference Visuals */}
         <section
           id="inicio"
           className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden"
@@ -594,12 +594,12 @@ export default function LandingPage() {
         </section>
       </main>
 
-      {/* Footer */}
+      {/* Footer - Reference Styled */}
       <footer className="w-full border-t border-white/5 bg-black pt-20 md:pt-24 pb-12">
         <div className="max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-2 md:grid-cols-4 gap-12 mb-20">
           <div className="col-span-2 md:col-span-1">
             <div className="text-lg font-extrabold text-white font-heading tracking-tighter mb-6">
-              Apetit
+              Estúdio IA Pro
             </div>
             <p className="text-[10px] text-neutral-500 leading-relaxed max-w-[200px] tracking-wide font-bold uppercase">
               Definindo o futuro visual da excelência culinária brasileira.
@@ -633,7 +633,7 @@ export default function LandingPage() {
         </div>
         <div className="max-w-7xl mx-auto px-6 md:px-8 flex flex-col md:flex-row justify-between items-center gap-6 pt-12 border-t border-white/5 text-center md:text-left">
           <div className="text-[10px] text-neutral-600 font-bold tracking-wide uppercase">
-            © 2024 Apetit. Todos os direitos reservados.
+            © 2024 Estúdio IA Pro. Todos os direitos reservados.
           </div>
           <div className="flex items-center gap-8">
             <div className="flex items-center gap-2 px-3 py-1 bg-white/5 rounded-full border border-white/5">

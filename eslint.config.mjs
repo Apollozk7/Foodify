@@ -14,6 +14,7 @@ const eslintConfig = defineConfig([
     'out/**',
     'build/**',
     'next-env.d.ts',
+    // Standalone Node.js scripts (CommonJS)
     'benchmark*.js',
     'scripts/**',
     '.gemini/**',

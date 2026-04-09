@@ -87,12 +87,15 @@ export default function DashboardPage() {
             setIsMobileSidebarOpen(false);
           }}
           className={cn(
-            'w-full flex items-center gap-3 px-4 py-3 text-[11px] font-extrabold tracking-label rounded-full text-left transition-colors',
+            'w-full flex items-center gap-3 px-4 py-2.5 text-[9px] font-extrabold tracking-label rounded-full text-left transition-colors',
             activeTab === item.id ? 'bg-white/5 text-primary' : 'text-neutral-600 hover:text-white'
           )}
         >
           <item.icon
-            className={cn('w-4 h-4', activeTab === item.id ? 'text-primary' : 'text-neutral-700')}
+            className={cn(
+              'w-3.5 h-3.5',
+              activeTab === item.id ? 'text-primary' : 'text-neutral-700'
+            )}
           />
           {item.label}
         </button>
@@ -106,10 +109,10 @@ export default function DashboardPage() {
       <aside className="fixed left-0 top-0 bottom-0 w-64 border-r border-white/5 bg-[#050505] hidden lg:flex flex-col p-6 z-40">
         <div className="flex items-center gap-3 mb-10">
           <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center font-extrabold text-white font-heading">
-            A
+            E
           </div>
           <span className="font-heading font-extrabold text-base tracking-tighter text-white">
-            Apetit
+            Estúdio IA Pro
           </span>
         </div>
 
@@ -125,10 +128,10 @@ export default function DashboardPage() {
               }}
             />
             <div className="flex flex-col">
-              <span className="text-[11px] font-extrabold text-white tracking-wide font-sans">
+              <span className="text-[9px] font-extrabold text-white tracking-wide font-sans">
                 Identidade
               </span>
-              <span className="text-[10px] text-primary font-bold tracking-wide leading-none mt-0.5 font-sans">
+              <span className="text-[8px] text-primary font-bold tracking-wide leading-none mt-0.5 font-sans">
                 Premium
               </span>
             </div>
@@ -136,9 +139,9 @@ export default function DashboardPage() {
 
           <button
             onClick={() => signOut({ redirectUrl: '/early-access' })}
-            className="w-full flex items-center gap-2 px-4 py-2 text-[10px] font-extrabold tracking-label text-neutral-700 transition-colors font-sans"
+            className="w-full flex items-center gap-2 px-4 py-2 text-[8px] font-extrabold tracking-label text-neutral-700 transition-colors font-sans"
           >
-            <LogOut className="w-3.5 h-3.5" />
+            <LogOut className="w-3 h-3" />
             Encerrar Sessão
           </button>
         </div>
@@ -165,10 +168,10 @@ export default function DashboardPage() {
               <div className="flex items-center justify-between mb-10">
                 <div className="flex items-center gap-3">
                   <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center font-extrabold text-black font-heading">
-                    A
+                    E
                   </div>
                   <span className="font-heading font-extrabold text-base tracking-tighter text-white">
-                    Apetit
+                    Estúdio IA Pro
                   </span>
                 </div>
                 <button
@@ -193,10 +196,10 @@ export default function DashboardPage() {
                     }}
                   />
                   <div className="flex flex-col text-left">
-                    <span className="text-[12px] font-extrabold text-white tracking-wide font-sans">
+                    <span className="text-[10px] font-extrabold text-white tracking-wide font-sans">
                       Identidade
                     </span>
-                    <span className="text-[11px] text-primary font-bold tracking-wide leading-none mt-0.5 font-sans">
+                    <span className="text-[9px] text-primary font-bold tracking-wide leading-none mt-0.5 font-sans">
                       Premium Plan
                     </span>
                   </div>
@@ -206,8 +209,8 @@ export default function DashboardPage() {
                   onClick={() => signOut({ redirectUrl: '/early-access' })}
                   className="w-full flex items-center justify-start gap-2 text-neutral-700 bg-transparent border-none px-4 font-sans"
                 >
-                  <LogOut className="w-[18px] h-[18px]" />
-                  <span className="text-[11px] font-black tracking-wide">Encerrar Sessão</span>
+                  <LogOut className="w-4 h-4" />
+                  <span className="text-[9px] font-black tracking-wide">Encerrar Sessão</span>
                 </Button>
               </div>
             </motion.aside>
@@ -227,7 +230,7 @@ export default function DashboardPage() {
               <Menu className="w-5 h-5" />
             </button>
             <div className="lg:hidden w-7 h-7 bg-primary rounded flex items-center justify-center font-bold text-black italic font-sans">
-              A
+              E
             </div>
           </div>
 
@@ -255,7 +258,7 @@ export default function DashboardPage() {
                 {(genError || uploadError) && (
                   <div className="border border-red-500/20 bg-red-500/5 p-3 rounded-full flex items-center gap-3">
                     <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-                    <p className="text-red-400 text-[11px] font-extrabold tracking-wide font-sans">
+                    <p className="text-red-400 text-[9px] font-extrabold tracking-wide font-sans">
                       {genError || uploadError}
                     </p>
                   </div>
@@ -269,7 +272,7 @@ export default function DashboardPage() {
                   <h2 className="text-2xl font-heading font-extrabold text-white tracking-tighter">
                     Arquivo Digital.
                   </h2>
-                  <p className="text-[11px] text-neutral-500 font-extrabold tracking-label font-sans">
+                  <p className="text-[9px] text-neutral-500 font-extrabold tracking-label font-sans">
                     Histórico completo de gerações profissionais.
                   </p>
                 </div>
@@ -289,7 +292,7 @@ export default function DashboardPage() {
                         key={item.id}
                         onClick={() => setActiveSettingsTab(item.id as 'ai' | 'account' | 'plan')}
                         className={cn(
-                          'px-4 py-2 text-[11px] font-extrabold tracking-wide text-left transition-all rounded-full whitespace-nowrap font-sans',
+                          'px-4 py-2 text-[9px] font-extrabold tracking-wide text-left transition-all rounded-full whitespace-nowrap font-sans',
                           activeSettingsTab === item.id
                             ? 'text-primary bg-primary/5'
                             : 'text-neutral-600'
@@ -304,20 +307,20 @@ export default function DashboardPage() {
                     {activeSettingsTab === 'account' && (
                       <div className="space-y-6">
                         <div className="hairline p-6 space-y-6 bg-[#050505] rounded-[24px]">
-                          <h3 className="text-sm font-extrabold text-white tracking-label font-heading">
+                          <h3 className="text-xs font-extrabold text-white tracking-label font-heading">
                             Perfil
                           </h3>
                           <div className="flex items-center gap-4 p-4 bg-white/[0.02] border border-white/5 rounded-xl">
                             <UserButton
                               appearance={{
-                                elements: { userButtonAvatarBox: 'w-12 h-12 rounded-full' },
+                                elements: { userButtonAvatarBox: 'w-10 h-10 rounded-full' },
                               }}
                             />
                             <div className="min-w-0">
-                              <p className="text-white text-[13px] font-extrabold tracking-wide truncate font-sans">
+                              <p className="text-white text-[11px] font-extrabold tracking-wide truncate font-sans">
                                 Gerenciar Identidade
                               </p>
-                              <p className="text-[11px] text-neutral-600 tracking-wide mt-0.5 truncate font-sans">
+                              <p className="text-[9px] text-neutral-600 tracking-wide mt-0.5 truncate font-sans">
                                 Configurações de acesso.
                               </p>
                             </div>
@@ -330,12 +333,12 @@ export default function DashboardPage() {
                       <div className="space-y-6">
                         <div className="hairline p-6 space-y-6 bg-[#050505] rounded-[24px]">
                           <div className="flex items-center justify-between">
-                            <h3 className="text-sm font-extrabold text-white tracking-label font-heading">
+                            <h3 className="text-xs font-extrabold text-white tracking-label font-heading">
                               Status
                             </h3>
-                            <div className="flex items-center gap-2 px-3 py-1 bg-primary/10 border border-primary/20 rounded-full">
-                              <ShieldCheck className="w-4 h-4 text-primary" />
-                              <span className="text-[10px] font-extrabold text-primary tracking-wide font-sans">
+                            <div className="flex items-center gap-2 px-2.5 py-1 bg-primary/10 border border-primary/20 rounded-full">
+                              <ShieldCheck className="w-3 h-3 text-primary" />
+                              <span className="text-[8px] font-extrabold text-primary tracking-wide font-sans">
                                 Ativo
                               </span>
                             </div>
@@ -343,23 +346,23 @@ export default function DashboardPage() {
 
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="p-6 bg-white/[0.02] border border-white/5 space-y-3 rounded-xl text-center sm:text-left">
-                              <p className="text-neutral-600 text-[11px] font-extrabold tracking-wide font-sans">
+                              <p className="text-neutral-600 text-[9px] font-extrabold tracking-wide font-sans">
                                 Saldo
                               </p>
                               <div className="flex items-baseline justify-center sm:justify-start gap-1.5 text-white">
-                                <span className="text-4xl font-extrabold tracking-tighter font-sans">
+                                <span className="text-3xl font-extrabold tracking-tighter font-sans">
                                   124
                                 </span>
-                                <span className="text-[10px] font-bold tracking-wide text-primary font-sans">
+                                <span className="text-[8px] font-bold tracking-wide text-primary font-sans">
                                   Fotos
                                 </span>
                               </div>
                             </div>
                             <div className="p-6 bg-white/[0.02] border border-white/5 flex flex-col justify-center rounded-xl text-center sm:text-left">
-                              <p className="text-neutral-600 text-[11px] font-extrabold mb-1 font-sans tracking-wide">
+                              <p className="text-neutral-600 text-[9px] font-extrabold mb-1 font-sans tracking-wide">
                                 Próxima Renovação
                               </p>
-                              <p className="text-[13px] font-extrabold text-white tracking-wide font-sans">
+                              <p className="text-[11px] font-extrabold text-white tracking-wide font-sans">
                                 18 Abr 2026
                               </p>
                             </div>
@@ -367,7 +370,7 @@ export default function DashboardPage() {
 
                           <Button
                             variant="neumorph-primary"
-                            className="w-full h-14 font-extrabold text-[12px] tracking-label rounded-full font-sans"
+                            className="w-full h-12 font-extrabold text-[10px] tracking-label rounded-full font-sans"
                             onClick={() => setIsBuyModalOpen(true)}
                           >
                             Adicionar Créditos
