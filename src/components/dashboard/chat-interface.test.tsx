@@ -98,8 +98,8 @@ describe('ChatInterface — image compression loading state', () => {
     render(<ChatInterface {...defaultProps} />);
 
     const buttons = screen.getAllByRole('button');
-    // The send button is the second-to-last (before the Reference button)
-    const sendBtn = buttons[buttons.length - 2];
+    // The send button is the last button
+    const sendBtn = buttons[buttons.length - 1];
 
     // Before selecting a file, send button is disabled (no text/file)
     expect(sendBtn).toBeDisabled();
@@ -123,8 +123,8 @@ describe('ChatInterface — image compression loading state', () => {
     render(<ChatInterface {...defaultProps} />);
 
     const buttons = screen.getAllByRole('button');
-    // The attach button is the third-to-last (before send and Reference)
-    const attachBtn = buttons[buttons.length - 3];
+    // The attach button is the second-to-last (before send)
+    const attachBtn = buttons[buttons.length - 2];
 
     expect(attachBtn).not.toBeDisabled();
 
