@@ -160,8 +160,10 @@ export function ChatInterface({ messages, onSendMessage, isLoading }: ChatInterf
             value={inputText}
             onChange={e => setInputText(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && handleSend()}
-            placeholder="Diga algo ou descreva um visual..."
-            disabled={isLoading}
+            placeholder={
+              isCompressing ? 'Otimizando imagem...' : 'Diga algo ou descreva um visual...'
+            }
+            disabled={isLoading || isCompressing}
             className="flex-1 bg-transparent text-white placeholder:text-neutral-600 text-base focus:outline-none disabled:opacity-50 h-10"
           />
 
