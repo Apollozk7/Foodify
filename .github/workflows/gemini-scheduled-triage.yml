@@ -139,9 +139,7 @@ jobs:
       needs.triage.outputs.triaged_issues != '' &&
       needs.triage.outputs.triaged_issues != '[]'
     permissions:
-      contents: 'read'
       issues: 'write'
-      pull-requests: 'write'
     steps:
       - name: 'Mint identity token'
         id: 'mint_identity_token'
@@ -151,9 +149,7 @@ jobs:
         with:
           app-id: '${{ vars.APP_ID }}'
           private-key: '${{ secrets.APP_PRIVATE_KEY }}'
-          permission-contents: 'read'
           permission-issues: 'write'
-          permission-pull-requests: 'write'
 
       - name: 'Apply labels'
         env:
